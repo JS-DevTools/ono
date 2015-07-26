@@ -32,11 +32,11 @@ function create(Klass) {
     var formattedMessage, stack;
     var formatter = module.exports.formatter;
 
-    if (util.isString(err)) {
+    if (typeof(err) === 'string') {
       formattedMessage = formatter.apply(null, arguments);
       err = props = undefined;
     }
-    else if (util.isString(props)) {
+    else if (typeof(props) === 'string') {
       formattedMessage = formatter.apply(null, slice.call(arguments, 1));
     }
     else {
@@ -72,7 +72,7 @@ function extendError(error, stack, props) {
     error.stack += ' \n\n' + stack;
   }
 
-  if (util.isObject(props)) {
+  if (props && typeof(props) === 'object') {
     var keys = Object.keys(props);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
@@ -107,7 +107,7 @@ function errorToJSON() {
   for (var i = 0; i < keys.length; i++) {
     var key = keys[i];
     var value = this[key];
-    if (!util.isUndefined(value)) {
+    if (value !== undefined) {
       json[key] = value;
     }
   }
