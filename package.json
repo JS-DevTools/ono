@@ -1,6 +1,6 @@
 {
   "name": "ono",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Throw better errors.",
   "keywords": [
     "error",
@@ -21,11 +21,11 @@
   "scripts": {
     "build": "npm run lint && npm run browserify",
     "lint": "jshint . --verbose && jscs . --verbose",
-    "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --debug --minify",
+    "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --debug --minify --test",
     "watch": "npm run browserify -- --watch",
     "test": "istanbul cover _mocha -- --bail --recursive tests && npm run karma",
     "mocha": "mocha --bail --recursive tests",
-    "karma": "npm run browserify -- --test && karma start --single-run",
+    "karma": "karma start --single-run",
     "upgrade": "npm-check-updates -u && npm update",
     "bump": "bump --prompt --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
