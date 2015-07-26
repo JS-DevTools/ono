@@ -31,6 +31,20 @@
     "bump": "bump --prompt --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
+  "testling": {
+    "harness": "mocha",
+    "files": "tests/**/*.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/5.0..latest",
+      "opera/11.0..latest",
+      "iphone/6..latest",
+      "ipad/6..latest",
+      "android-browser/4.2..latest"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/bigstickcarpet/ono.git"

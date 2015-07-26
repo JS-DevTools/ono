@@ -1,6 +1,6 @@
 'use strict';
 
-var isBrowser = typeof(window) === 'object';
+var isBrowser = typeof(window) === 'object' && typeof(process) === 'undefined';
 
 var helper = {
   isNode: !isBrowser,
