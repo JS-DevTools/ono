@@ -29,7 +29,7 @@ module.exports = function(config) {
         return ['PhantomJS', 'Firefox', 'Chrome', 'Safari', 'IE'];
       }
       else if (isLinux) {
-        return ['PhantomJS', 'Firefox', 'Chrome'];
+        return ['PhantomJS', 'Firefox'];
       }
     })(),
 
