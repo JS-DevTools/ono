@@ -1,0 +1,25 @@
+{
+  "name": "ono",
+  "description": "Throw better errors.",
+  "keywords": [],
+  "authors": [
+    {
+      "name": "James Messinger",
+      "homepage": "https://github.com/BigstickCarpet"
+    }
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/BigstickCarpet/ono",
+  "main": "dist/ono.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BigstickCarpet/ono.git"
+  },
+  "ignore": [
+    "/bower_components",
+    "/tests",
+    "/lib",
+    "/.*"
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,63 @@
+{
+  "name": "ono",
+  "version": "0.0.1",
+  "description": "Throw better errors.",
+  "keywords": [
+    "error",
+    "errors",
+    "exception",
+    "printf",
+    "format",
+    "wrap",
+    "inner"
+  ],
+  "author": {
+    "name": "James Messinger",
+    "url": "http://jamesmessinger.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/bigstickcarpet/ono",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run lint && npm run browserify",
+    "lint": "jshint . --verbose && jscs . --verbose",
+    "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --debug --minify",
+    "watch": "npm run browserify -- --watch",
+    "test": "istanbul cover _mocha -- --bail --recursive tests && npm run karma",
+    "mocha": "mocha --bail --recursive tests",
+    "karma": "npm run browserify -- --test && karma start --single-run",
+    "upgrade": "npm-check-updates -u && npm update",
+    "bump": "bump --prompt --tag --push --all",
+    "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigstickcarpet/ono.git"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "coveralls": "^2.11.3",
+    "istanbul": "^0.3.17",
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0",
+    "karma": "^0.13.3",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.2.0",
+    "karma-cli": "0.1.0",
+    "karma-coverage": "^0.4.2",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-ie-launcher": "^0.2.0",
+    "karma-mocha": "^0.2.0",
+    "karma-mocha-reporter": "^1.0.2",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-safari-launcher": "^0.1.1",
+    "karma-sinon": "^1.0.4",
+    "mocha": "^2.2.5",
+    "npm-check-updates": "^1.5.1",
+    "simplifyify": "^1.1.1",
+    "sinon": "^1.15.4",
+    "useragent-lite": "0.0.2",
+    "version-bump-prompt": "^1.4.2"
+  },
+  "dependencies": {}
+}
