@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Throw better errors.",
   "keywords": [
+    "throw",
     "error",
     "errors",
     "exception",
