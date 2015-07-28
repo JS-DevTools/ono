@@ -67,7 +67,7 @@ function configureSauceLabs(config) {
   if (username && accessKey && jobNumber <= 1) {
     var project = require('./package.json');
     var testName = project.name + ' v' + project.version;
-    var build = testName + ' @ ' + new Date();
+    var build = testName + ' Build #' + process.env.TRAVIS_JOB_NUMBER + ' @ ' + new Date();
 
     config.sauceLabs = {
       build: build,
