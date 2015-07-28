@@ -9,7 +9,7 @@ module.exports = function(config) {
 
     files: [
       // ono
-      'dist/ono.test.js',
+      'dist/ono.min.js',
 
       // Unit tests
       'tests/helper.js',
@@ -21,6 +21,7 @@ module.exports = function(config) {
   configureSauceLabs(baseConfig);
   config.set(baseConfig);
 };
+
 
 /**
  * Configures the browsers for the current platform
