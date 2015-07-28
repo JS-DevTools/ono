@@ -22,7 +22,6 @@ module.exports = function(config) {
   config.set(baseConfig);
 };
 
-
 /**
  * Configures the browsers for the current platform
  */
