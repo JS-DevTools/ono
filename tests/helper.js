@@ -40,7 +40,7 @@ beforeEach(function() {
 /**
  * Invokes the given function for each {@link Ono} method
  *
- * @param {function} fn
+ * @param {function} fn - The function that's invoked for each method
  */
 function forEachMethod(fn) {
   var ono = require('../');
@@ -67,7 +67,7 @@ function forEachMethod(fn) {
 /**
  * Asserts that a JSON-serialized Error has the expected properties & values.
  *
- * @param {object} expected
+ * @param {object} expected - The expected properties & values
  * @returns {function}
  */
 function matchesJSON(expected) {
