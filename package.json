@@ -28,7 +28,7 @@
     "mocha": "mocha --bail --recursive tests",
     "karma": "karma start --single-run",
     "upgrade": "ncu --upgradeAll && npm update && bower update",
-    "bump": "bump --prompt --grep lib/index.js --tag --push --all",
+    "bump": "bump --prompt --grep lib/index.js --tag --push --all && npm run build",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
   "repository": {
