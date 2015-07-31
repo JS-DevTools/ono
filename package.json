@@ -1,6 +1,6 @@
 {
   "name": "ono",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Throw better errors.",
   "keywords": [
     "throw",
