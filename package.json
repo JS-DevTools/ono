@@ -20,13 +20,14 @@
   "homepage": "https://github.com/bigstickcarpet/ono",
   "main": "lib/index.js",
   "scripts": {
-    "build": "npm run lint && npm run browserify",
     "lint": "jshint . --verbose && jscs . --verbose",
+    "build": "npm run lint && npm run browserify",
     "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --debug --minify",
+    "watch": "npm run browserify -- --watch",
     "test": "istanbul cover _mocha -- --bail --recursive tests && npm run karma",
     "mocha": "mocha --bail --recursive tests",
     "karma": "karma start --single-run",
-    "upgrade": "ncu --upgradeAll && npm update",
+    "upgrade": "ncu --upgradeAll && npm update && bower update",
     "bump": "bump --prompt --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
@@ -35,19 +36,17 @@
     "url": "https://github.com/bigstickcarpet/ono.git"
   },
   "devDependencies": {
-    "simplifyify": "^1.1.1",
+    "simplifyify": "^1.2.0",
+    "bower": "^1.4.1",
     "karma": "^0.13.3",
-    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.2.0",
     "karma-cli": "0.1.0",
-    "karma-coverage": "^0.4.2",
     "karma-firefox-launcher": "^0.1.6",
     "karma-ie-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",
-    "karma-mocha-reporter": "^1.0.3",
+    "karma-mocha-reporter": "^1.0.4",
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-safari-launcher": "^0.1.1",
-    "karma-sinon": "^1.0.4",
     "istanbul": "^0.3.17",
     "coveralls": "^2.11.3",
     "mocha": "^2.2.5",
@@ -55,10 +54,10 @@
     "sinon": "^1.15.4",
     "jscs": "^2.0.0",
     "jshint": "^2.8.0",
-    "npm-check-updates": "^2.0.0",
+    "npm-check-updates": "^2.0.1",
     "version-bump-prompt": "^1.4.2",
     "karma-sauce-launcher": "^0.2.14",
-    "useragent-lite": "0.0.2"
+    "karma-sinon": "^1.0.4"
   },
   "dependencies": {}
 }

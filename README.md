@@ -13,7 +13,7 @@ ono (Oh No!)
 [![Bower](http://img.shields.io/bower/v/ono.svg)](#bower)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
-[![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](https://saucelabs.com/u/bigstickcarpet-ono)
+[![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](http://bigstickcarpet.github.io/ono)
 
 Features
 --------------------------

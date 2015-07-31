@@ -3,8 +3,8 @@
 **/.DS_Store
 npm-debug.log
 /.idea
-/bower_components
 /coverage
 /dist/*.test.js
 /tests
+/www
 /.*

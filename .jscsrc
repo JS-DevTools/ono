@@ -1,7 +1,9 @@
 {
   "excludeFiles": [
     "coverage/**",
+    "tests/**",
     "dist/**",
+    "www/**",
     "node_modules/**"
   ],
   "requireCurlyBraces": [

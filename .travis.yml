@@ -10,8 +10,8 @@ node_js:
   - '0.12'
 branches:
   only:
-    - /^v\d\.\d\.\d/    # only build version-tagged commits (rather than EVERY commit)
-    - /^PR /            # pull requests
+    - /^v\d\.\d\.\d/    # only build tagged versions (rather than EVERY push)
+    - /^PR /            # also build pull requests
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
