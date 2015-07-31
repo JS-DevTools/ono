@@ -28,7 +28,7 @@
     "mocha": "mocha --bail --recursive tests",
     "karma": "karma start --single-run",
     "upgrade": "ncu --upgradeAll && npm update && bower update",
-    "bump": "bump --prompt --tag --push --all",
+    "bump": "bump --prompt --grep lib/index.js --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
   "repository": {
@@ -36,7 +36,7 @@
     "url": "https://github.com/bigstickcarpet/ono.git"
   },
   "devDependencies": {
-    "simplifyify": "^1.2.0",
+    "simplifyify": "^1.3.0",
     "bower": "^1.4.1",
     "karma": "^0.13.3",
     "karma-chrome-launcher": "^0.2.0",
@@ -56,7 +56,7 @@
     "jscs": "^2.0.0",
     "jshint": "^2.8.0",
     "npm-check-updates": "^2.0.1",
-    "version-bump-prompt": "^1.4.2",
+    "version-bump-prompt": "^1.5.0",
     "karma-sinon": "^1.0.4"
   },
   "dependencies": {}
