@@ -1,11 +1,20 @@
 {
   "name": "ono",
   "description": "Throw better errors.",
-  "keywords": [],
+  "keywords": [
+    "throw",
+    "error",
+    "errors",
+    "exception",
+    "printf",
+    "format",
+    "wrap",
+    "inner"
+  ],
   "authors": [
     {
       "name": "James Messinger",
-      "homepage": "https://github.com/BigstickCarpet"
+      "homepage": "http://jamesmessinger.com"
     }
   ],
   "license": "MIT",
@@ -21,5 +30,11 @@
     "/lib",
     "/.*"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*",
+    "sinon-js": "*",
+    "useragent-parser": "*"
+  }
 }

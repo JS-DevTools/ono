@@ -1,0 +1,31 @@
+{
+  "name": "useragent-parser",
+  "main": "dist/useragent-parser.min.js",
+  "version": "1.0.3",
+  "homepage": "https://github.com/nokrasnov/useragent-parser",
+  "authors": [
+    "Nikita Krasnov <nokrasnov@gmail.com> (https://github.com/nokrasnov)"
+  ],
+  "description": "JavaScript-based user-agent string parser",
+  "keywords": [
+    "javascript",
+    "user-agent",
+    "parser"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nokrasnov/useragent-parser.git"
+  },
+  "devDependencies": {
+    "nodeunit": "^0.9.1",
+    "uglifyjs": "^2.4.10"
+  }
+}

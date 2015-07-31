@@ -1,9 +1,6 @@
-'use strict';
+utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
+  'use strict';
 
-var helper = require('./helper'),
-    expect = require('chai').expect;
-
-helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
   describe(name, function() {
 
     it('can be called without any args',
@@ -21,7 +18,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -44,7 +41,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -67,7 +64,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -90,7 +87,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -113,7 +110,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -140,12 +137,12 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (helper.isChrome) {
+        if (userAgent.isChrome) {
           expect(err.stack).to.match(/SyntaxError: This is the inner error/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -172,12 +169,12 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (helper.isChrome) {
+        if (userAgent.isChrome) {
           expect(err.stack).to.match(/ReferenceError: This is the inner error/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -204,12 +201,12 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (helper.isChrome) {
+        if (userAgent.isChrome) {
           expect(err.stack).to.match(/RangeError: This is the inner error/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -244,7 +241,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -286,12 +283,12 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
         }
 
-        if (helper.isChrome) {
+        if (userAgent.isChrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -329,7 +326,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -366,7 +363,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -412,12 +409,12 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (helper.isChrome) {
+        if (userAgent.isChrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
+        expect(json).to.satisfy(utils.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,

@@ -1,13 +1,11 @@
-'use strict';
-
-var helper = require('./helper'),
-    expect = require('chai').expect,
-    ono    = require('../');
-
 describe('ono.formatter', function() {
-  var originalFormatter = ono.formatter;
+  'use strict';
+
+  var originalFormatter;
 
   before(function() {
+    originalFormatter = ono.formatter;
+
     // A simple formatter that replaces $0, $1, $2, etc. with the corresponding param
     ono.formatter = function(message) {
       var params = Array.prototype.slice.call(arguments, 1);
@@ -30,7 +28,7 @@ describe('ono.formatter', function() {
       expect(err.message).to.equal('4 must be greater than 10');
 
       var json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(helper.matchesJSON({
+      expect(json).to.satisfy(utils.matchesJSON({
         name: err.name,
         message: err.message,
         stack: err.stack
@@ -47,7 +45,7 @@ describe('ono.formatter', function() {
       expect(err.message).to.equal('4 must be greater than 10');
 
       var json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(helper.matchesJSON({
+      expect(json).to.satisfy(utils.matchesJSON({
         name: err.name,
         message: err.message,
         stack: err.stack
