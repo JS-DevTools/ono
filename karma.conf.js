@@ -148,6 +148,13 @@ function configureSauceLabs(config) {
 
     config.reporters.push('saucelabs');
     config.browsers = Object.keys(config.customLaunchers);
+
+    // Sauce Connect sometimes hangs (https://github.com/karma-runner/karma-sauce-launcher/issues/14)
+    // So terminate the process after a few minutes
+    setTimeout(function() {
+      console.warn('\nWARNING: Sauce Connect appears to have hung. Forcefully terminating.\n');
+      process.exit();
+    }, 1000 * 60 * 8); // 8 minutes
   }
 }
 
