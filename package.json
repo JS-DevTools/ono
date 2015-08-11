@@ -36,7 +36,7 @@
     "url": "https://github.com/bigstickcarpet/ono.git"
   },
   "devDependencies": {
-    "simplifyify": "^1.4.0",
+    "simplifyify": "^1.4.1",
     "bower": "^1.4.1",
     "karma": "^0.13.8",
     "karma-chrome-launcher": "^0.2.0",
@@ -56,7 +56,7 @@
     "jscs": "^2.0.0",
     "jshint": "^2.8.0",
     "npm-check-updates": "^2.2.0",
-    "version-bump-prompt": "^1.5.0",
+    "version-bump-prompt": "^1.5.1",
     "karma-sinon": "^1.0.4"
   },
   "dependencies": {}
