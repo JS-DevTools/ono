@@ -1,6 +1,6 @@
 {
   "name": "ono",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Throw better errors.",
   "keywords": [
     "throw",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "simplifyify": "^1.4.1",
     "bower": "^1.4.1",
-    "karma": "^0.13.8",
+    "karma": "^0.13.9",
     "karma-chrome-launcher": "^0.2.0",
     "karma-cli": "0.1.0",
     "karma-firefox-launcher": "^0.1.6",
@@ -49,11 +49,11 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.2.14",
     "istanbul": "^0.3.17",
-    "coveralls": "^2.11.3",
+    "coveralls": "^2.11.4",
     "mocha": "^2.2.5",
     "chai": "^3.2.0",
     "sinon": "^1.15.4",
-    "jscs": "^2.0.0",
+    "jscs": "^2.1.0",
     "jshint": "^2.8.0",
     "npm-check-updates": "^2.2.0",
     "version-bump-prompt": "^1.5.1",
