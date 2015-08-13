@@ -1,4 +1,4 @@
-utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
+helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
   'use strict';
 
   describe(name, function() {
@@ -18,7 +18,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -41,7 +41,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -64,7 +64,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -87,7 +87,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -110,7 +110,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -142,7 +142,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -174,7 +174,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -206,7 +206,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack
@@ -241,7 +241,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -288,7 +288,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -326,7 +326,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -363,7 +363,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,
@@ -414,7 +414,7 @@ utils.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         }
 
         var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(utils.matchesJSON({
+        expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
           stack: err.stack,

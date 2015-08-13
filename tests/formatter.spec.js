@@ -28,7 +28,7 @@ describe('ono.formatter', function() {
       expect(err.message).to.equal('4 must be greater than 10');
 
       var json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(utils.matchesJSON({
+      expect(json).to.satisfy(helper.matchesJSON({
         name: err.name,
         message: err.message,
         stack: err.stack
@@ -45,7 +45,7 @@ describe('ono.formatter', function() {
       expect(err.message).to.equal('4 must be greater than 10');
 
       var json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(utils.matchesJSON({
+      expect(json).to.satisfy(helper.matchesJSON({
         name: err.name,
         message: err.message,
         stack: err.stack

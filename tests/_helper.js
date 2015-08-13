@@ -2,9 +2,9 @@
   'use strict';
 
   /**
-   * Utility methods for use in tests
+   * Helper methods for use in tests
    */
-  global.utils = {
+  global.helper = {
     forEachMethod: forEachMethod,
     matchesJSON: matchesJSON
   };
