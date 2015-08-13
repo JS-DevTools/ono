@@ -31,7 +31,7 @@ Example
 throw ono("%s is invalid. Must be at least %d characters.", username, minLength);
 
 // Wrap and re-throw an error without losing the original error's message and stack
-throw ono(err, "Unable to save account #%d", accountNumber);
+throw ono(err, "An error occurred while saving your changes");
 
 // Throw an error with custom properties (even a custom method!)
 throw ono({code: 413, status: "Invalid data", retry: function() {...}});
@@ -39,7 +39,7 @@ throw ono({code: 413, status: "Invalid data", retry: function() {...}});
 // Add custom properties to an existing Error
 throw ono(err, {code: 413, status: "Invalid data", retry: function() {...}})
 
-// Any of the above can be throw a specific Error type
+// Any of the above can throw a specific Error subtype instead
 throw ono.range(...);       // RangeError
 throw ono.syntax(...);      // SyntaxError
 throw ono.reference(...);   // ReferenceError
