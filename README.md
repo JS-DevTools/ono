@@ -13,7 +13,7 @@ ono (Oh No!)
 [![Bower](http://img.shields.io/bower/v/ono.svg)](#bower)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
-[![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](http://bigstickcarpet.github.io/ono)
+[![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](https://saucelabs.com/u/bigstickcarpet-ono)
 
 Features
 --------------------------
@@ -21,6 +21,7 @@ Features
 * Wrap and re-throw an error _without_ losing the original error's message and stack trace
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
+* [Tested](http://bigstickcarpet.github.io/ono/tests/index.html) in Node, IO.js, and all modern web browsers on Mac, Windows, Linux, iOS, and Android
 
 
 Example
