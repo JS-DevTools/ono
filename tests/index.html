@@ -7,25 +7,28 @@
 
     <title>Ono Tests</title>
 
-    <link rel="stylesheet" href="../www/bower_components/mocha/mocha.css"/>
+    <link rel="stylesheet" href="bower_components/mocha/mocha.css"/>
   </head>
   <body>
     <div id="mocha"></div>
 
     <!-- Third-Party Libraries -->
-    <script src="../www/bower_components/mocha/mocha.js"></script>
-    <script src="../www/bower_components/chai/chai.js"></script>
-    <script src="../www/bower_components/sinon-js/sinon.js"></script>
-    <script src="../www/bower_components/useragent-parser/src/useragent-parser.js"></script>
+    <script src="bower_components/mocha/mocha.js"></script>
+    <script src="bower_components/chai/chai.js"></script>
+    <script src="bower_components/sinon-js/sinon.js"></script>
+    <script src="bower_components/useragent-parser/src/useragent-parser.js"></script>
 
     <!-- Ono -->
     <script src="../dist/ono.js"></script>
 
-    <!-- Unit Tests -->
-    <script src="_config.js"></script>
-    <script src="_helper.js"></script>
-    <script src="ono.spec.js"></script>
-    <script src="formatter.spec.js"></script>
+    <!-- Test Fixtures -->
+    <script src="fixtures/config.js"></script>
+    <script src="fixtures/globals.js"></script>
+    <script src="fixtures/helper.js"></script>
+
+    <!-- Tests -->
+    <script src="specs/ono.spec.js"></script>
+    <script src="specs/formatter.spec.js"></script>
 
     <script>
       mocha.run();
