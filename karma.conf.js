@@ -131,6 +131,11 @@ function configureSauceLabs(config) {
       browserName: 'internet explorer',
       version: '11'
     },
+    'IE-Edge': {
+      base: 'SauceLabs',
+      platform: 'Windows 10',
+      browserName: 'microsoftedge'
+    },
     'Chrome-Latest': {
       base: 'SauceLabs',
       platform: 'Windows 7',
