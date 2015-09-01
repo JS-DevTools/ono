@@ -1,21 +1,125 @@
 
+2.3.0 / 2015-08-30
+==================
+
+  * [#553] - added --allowUncaught option ([@amsul])
+  * [#1490] - Allow --async-only to be satisfied by returning a promise ([@jlai])
+  * [#1829] - support --max-old-space-size ([@gigadude])
+  * [#1811] - upgrade Jade dependency ([@outsideris])
+  * [#1769] - Fix async hook error handling ([@ajaykodali])
+  * [#1230] - More descriptive beforeEach/afterEach messages ([@duncanbeevers])
+  * [#1787] - Scope loading behaviour instead of using early return ([@aryeguy])
+  * [#1789] - Fix: html-runner crashing ([@sunesimonsen])
+  * [#1749] - Fix maximum call stack error on large amount of tests ([@tinganho])  
+  * [#1230] - Decorate failed hook titles with test title ([@duncanbeevers])
+  * [#1260] - Build using Browserify ([@ndhoule])
+  * [#1728] - Don't use `__proto__` ([@ndhoule])
+  * [#1781] - Fix hook error tests ([@glenjamin])
+  * [#1754] - Allow boolean --reporter-options ([@papandreou])
+  * [#1766] - Fix overly aggressive stack suppression ([@moll])
+  * [#1752] - Avoid potential infinite loop ([@gsilk])
+  * [#1761] - Fix problems running under PhantomJS ([@chromakode])
+  * [#1700] - Fix more problems running under PhantomJS ([@jbnicolai])  
+  * [#1774] - Support escaped spaces in CLI options ([@adamgruber])
+  * [#1687] - Fix HTML reporter links with special chars ([@benvinegar])
+  * [#1359] - Adopt code style and enforce it using ESLint ([@ndhoule] w/ assist from [@jbnicolai] & [@boneskull])
+  * various refactors ([@jbnicolai])
+  * [#1758] - Add cross-frame compatible Error checking ([@outdooricon])
+  * [#1741] - Remove moot `version` property from bower.json ([@kkirsche])
+  * [#1739] - Improve `HISTORY.md` ([@rstacruz])
+  * [#1730] - Support more io.js flags ([@ryedog])
+  * [#1349] - Allow HTML in HTML reporter errors ([@papandreou] / [@sunesimonsen])
+  * [#1572] - Prevent default browser behavior for failure/pass links ([@jschilli])
+  * [#1630] - Support underscored harmony flags ([@dominicbarnes])
+  * [#1718] - Support more harmony flags ([@slyg])
+  * [#1689] - Add stack to JSON-stream reporter ([@jonathandelgado])
+  * [#1654] - Fix `ReferenceError` "location is not defined" ([@jakemmarsh])
+
+  [#553]: https://github.com/mochajs/mocha/issues/553
+  [#1490]: https://github.com/mochajs/mocha/issues/1490
+  [#1829]: https://github.com/mochajs/mocha/issues/1829
+  [#1811]: https://github.com/mochajs/mocha/issues/1811
+  [#1769]: https://github.com/mochajs/mocha/issues/1769
+  [#1230]: https://github.com/mochajs/mocha/issues/1230
+  [#1787]: https://github.com/mochajs/mocha/issues/1787
+  [#1789]: https://github.com/mochajs/mocha/issues/1789
+  [#1749]: https://github.com/mochajs/mocha/issues/1749
+  [#1230]: https://github.com/mochajs/mocha/issues/1230
+  [#1260]: https://github.com/mochajs/mocha/issues/1260
+  [#1728]: https://github.com/mochajs/mocha/issues/1728
+  [#1781]: https://github.com/mochajs/mocha/issues/1781
+  [#1754]: https://github.com/mochajs/mocha/issues/1754
+  [#1766]: https://github.com/mochajs/mocha/issues/1766
+  [#1752]: https://github.com/mochajs/mocha/issues/1752
+  [#1761]: https://github.com/mochajs/mocha/issues/1761
+  [#1700]: https://github.com/mochajs/mocha/issues/1700
+  [#1774]: https://github.com/mochajs/mocha/issues/1774
+  [#1687]: https://github.com/mochajs/mocha/issues/1687
+  [#1359]: https://github.com/mochajs/mocha/issues/1359
+  [#1758]: https://github.com/mochajs/mocha/issues/1758
+  [#1741]: https://github.com/mochajs/mocha/issues/1741
+  [#1739]: https://github.com/mochajs/mocha/issues/1739
+  [#1730]: https://github.com/mochajs/mocha/issues/1730
+  [#1349]: https://github.com/mochajs/mocha/issues/1349
+  [#1572]: https://github.com/mochajs/mocha/issues/1572
+  [#1630]: https://github.com/mochajs/mocha/issues/1630
+  [#1718]: https://github.com/mochajs/mocha/issues/1718
+  [#1689]: https://github.com/mochajs/mocha/issues/1689
+  [#1654]: https://github.com/mochajs/mocha/issues/1654
+  [@adamgruber]: https://github.com/adamgruber
+  [@ajaykodali]: https://github.com/ajaykodali
+  [@amsul]: https://github.com/amsul
+  [@aryeguy]: https://github.com/aryeguy
+  [@benvinegar]: https://github.com/benvinegar
+  [@boneskull]: https://github.com/boneskull
+  [@chromakode]: https://github.com/chromakode
+  [@dominicbarnes]: https://github.com/dominicbarnes
+  [@duncanbeevers]: https://github.com/duncanbeevers
+  [@gigadude]: https://github.com/gigadude
+  [@glenjamin]: https://github.com/glenjamin
+  [@gsilk]: https://github.com/gsilk
+  [@jakemmarsh]: https://github.com/jakemmarsh
+  [@jbnicolai]: https://github.com/jbnicolai
+  [@jlai]: https://github.com/jlai
+  [@jonathandelgado]: https://github.com/jonathandelgado
+  [@jschilli]: https://github.com/jschilli
+  [@kkirsche]: https://github.com/kkirsche
+  [@moll]: https://github.com/moll
+  [@ndhoule]: https://github.com/ndhoule
+  [@outdooricon]: https://github.com/outdooricon
+  [@outsideris]: https://github.com/outsideris
+  [@papandreou]: https://github.com/papandreou
+  [@rstacruz]: https://github.com/rstacruz
+  [@ryedog]: https://github.com/ryedog
+  [@slyg]: https://github.com/slyg
+  [@sunesimonsen]: https://github.com/sunesimonsen
+  [@tinganho]: https://github.com/tinganho
+
 2.2.5 / 2015-05-14
 ==================
 
-  * Merge pull request #1699 from nylen/upgrade/jsdiff
-  * Upgrade jsdiff to v1.4.0
-  * Merge pull request #1648 from nylen/fix/diff-colors
-  * Merge pull request #1686 from danielstjules/1327-regression
-  * Sanity check: update fixtures/regression/issue-1327.js to be closer to orig test
-  * Fix diff colors
-  * Merge pull request #1675 from danielstjules/integration-tests
-  * Merge pull request #1682 from kemitchell/spdx-license
-  * use a valid SPDX license identifier
-  * Add integration tests
-  * Merge pull request #1655 from a8m/fix-issue-1241
-  * Merge pull request #1661 from a8m/fix-issue-1660
-  * fix(utils/stringify): fix issue #1660
-  * fix(reporter/base): issue #1241
+  * [#1699] - Upgrade jsdiff to v1.4.0 ([@nylen])
+  * [#1648] - fix diff background colors in the console ([@nylen])
+  * [#1327] - fix tests running twice, a regression issue. ([#1686], [@danielstjules])
+  * [#1675] - add integration tests ([@danielstjules])
+  * [#1682] - use a valid SPDX license identifier in package.json ([@kemitchell])
+  * [#1660] - fix assertion of invalid dates ([#1661], [@a8m])
+  * [#1241] - fix issue with multiline diffs appearing as single line ([#1655], [@a8m])
+
+[#1699]: https://github.com/mochajs/mocha/issues/1699
+[#1648]: https://github.com/mochajs/mocha/issues/1648
+[#1327]: https://github.com/mochajs/mocha/issues/1327
+[#1686]: https://github.com/mochajs/mocha/issues/1686
+[#1675]: https://github.com/mochajs/mocha/issues/1675
+[#1682]: https://github.com/mochajs/mocha/issues/1682
+[#1660]: https://github.com/mochajs/mocha/issues/1660
+[#1661]: https://github.com/mochajs/mocha/issues/1661
+[#1241]: https://github.com/mochajs/mocha/issues/1241
+[#1655]: https://github.com/mochajs/mocha/issues/1655
+[@nylen]: https://github.com/nylen
+[@danielstjules]: https://github.com/danielstjules
+[@kemitchell]: https://github.com/kemitchell
+[@a8m]: https://github.com/a8m
 
 2.2.4 / 2015-04-08
 ==================
@@ -26,27 +130,27 @@
 ==================
 
   * fix(reporter/base): string diff - issue #1241
-  * fix(reporter/base): string diff - issue #1241 
-  * fix(reporter/base): don't show diffs for errors without expectation 
-  * fix(reporter/base): don't assume error message is first line of stack 
-  * improve: dry up reporter/base test 
-  * fix(reporter/base): explicitly ignore showDiff #1614 
-  * Add iojs to travis build 
-  * Pass `--allow-natives-syntax` flag to node. 
-  * Support --harmony_classes flag for io.js 
-  * Fix 1556: Update utils.clean to handle newlines in func declarations 
-  * Fix 1606: fix err handling in IE <= 8 and non-ES5 browsers 
-  * Fix 1585: make _mocha executable again 
-  * chore(package.json): add a8m as a contributor 
-  * Fixed broken link on html-cov reporter 
-  * support --es_staging flag 
-  * fix issue where menu overlaps content. 
-  * update contributors in package.json 
-  * Remove trailing whitespace from reporter output 
-  * Remove contributors list from readme 
-  * log third-party reporter errors 
-  * [Fix] Exclude not own properties when looping on options 
-  * fix: support node args in mocha.opts (close #1573) 
+  * fix(reporter/base): string diff - issue #1241
+  * fix(reporter/base): don't show diffs for errors without expectation
+  * fix(reporter/base): don't assume error message is first line of stack
+  * improve: dry up reporter/base test
+  * fix(reporter/base): explicitly ignore showDiff #1614
+  * Add iojs to travis build
+  * Pass `--allow-natives-syntax` flag to node.
+  * Support --harmony_classes flag for io.js
+  * Fix 1556: Update utils.clean to handle newlines in func declarations
+  * Fix 1606: fix err handling in IE <= 8 and non-ES5 browsers
+  * Fix 1585: make _mocha executable again
+  * chore(package.json): add a8m as a contributor
+  * Fixed broken link on html-cov reporter
+  * support --es_staging flag
+  * fix issue where menu overlaps content.
+  * update contributors in package.json
+  * Remove trailing whitespace from reporter output
+  * Remove contributors list from readme
+  * log third-party reporter errors
+  * [Fix] Exclude not own properties when looping on options
+  * fix: support node args in mocha.opts (close #1573)
   * fix(reporter/base): string diff - issue #1241
 
 2.2.1 / 2015-03-09

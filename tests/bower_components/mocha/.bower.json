@@ -1,6 +1,5 @@
 {
   "name": "mocha",
-  "version": "2.2.5",
   "homepage": "http://mocha.github.io/mocha",
   "description": "simple, flexible, fun test framework",
   "authors": [
@@ -44,11 +43,12 @@
     "tap"
   ],
   "license": "MIT",
-  "_release": "2.2.5",
+  "version": "2.3.0",
+  "_release": "2.3.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.2.5",
-    "commit": "cb841cac0e14a65317fec5db6ea9e835e6c9b771"
+    "tag": "2.3.0",
+    "commit": "236c7ea3e03221adfe5ad1e27d28607bab2a987d"
   },
   "_source": "git://github.com/mochajs/mocha.git",
   "_target": "*",
