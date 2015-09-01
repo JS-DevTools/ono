@@ -16,6 +16,7 @@
     window.userAgent = userAgentParser.parse(navigator.userAgent);
     window.userAgent.isNode = false;
     window.userAgent.isBrowser = true;
+    window.userAgent.isIE = window.userAgent.isIE || /Edge/.test(navigator.userAgent);
   }
   else {
     // Expose Node globals
