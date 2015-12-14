@@ -4,7 +4,7 @@
 
 var baseConfig = {
   frameworks: ['mocha'],
-  reporters: ['mocha'],
+  reporters: ['progress'],
   files: [
     // Third-Party Libraries
     'tests/bower_components/chai/chai.js',
