@@ -52,7 +52,8 @@
         expected.columnNumber = json.columnNumber;
       }
 
-      if (userAgent.isSafari) {
+      // Only recent versions of Safari include these properties
+      if (userAgent.isSafari && json.sourceURL) {
         expect(json.sourceURL).to.be.a('string').and.not.empty;
         expect(json.line).to.be.a('number').above(0);
         expect(json.column).to.be.a('number').above(0);
