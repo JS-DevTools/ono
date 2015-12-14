@@ -52,6 +52,15 @@
         expected.columnNumber = json.columnNumber;
       }
 
+      if (userAgent.isSafari) {
+        expect(json.sourceURL).to.be.a('string').and.not.empty;
+        expect(json.line).to.be.a('number').above(0);
+        expect(json.column).to.be.a('number').above(0);
+        expected.sourceURL = json.sourceURL;
+        expected.line = json.line;
+        expected.column = json.column;
+      }
+
       if (userAgent.isIE && 'description' in json) {
         expect(json.description).to.be.a('string');
         expected.description = json.description;

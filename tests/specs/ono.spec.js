@@ -121,7 +121,10 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
     it('can be called with just an inner-error',
       function() {
         function makeInnerError() {
-          return new SyntaxError('This is the inner error');
+          var err = new SyntaxError('This is the inner error');
+          err.foo = 'bar';
+          err.code = 404;
+          return err;
         }
 
         var err = (function newErrorWithInnerError(innerErr) {
@@ -131,6 +134,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('This is the inner error');
+        expect(err.foo).to.equal('bar');
+        expect(err.code).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/newErrorWithInnerError/);
@@ -145,7 +150,9 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
-          stack: err.stack
+          stack: err.stack,
+          foo: 'bar',
+          code: 404
         }));
       }
     );
@@ -153,7 +160,10 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
     it('can be called with an inner-error and a message',
       function() {
         function makeInnerError() {
-          return new ReferenceError('This is the inner error');
+          var err = new ReferenceError('This is the inner error');
+          err.foo = 'bar';
+          err.code = 404;
+          return err;
         }
 
         var err = (function newErrorWithInnerErrorAndMessage(innerErr) {
@@ -163,6 +173,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Oops, an error happened. \nThis is the inner error');
+        expect(err.foo).to.equal('bar');
+        expect(err.code).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
@@ -177,7 +189,9 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
-          stack: err.stack
+          stack: err.stack,
+          foo: 'bar',
+          code: 404
         }));
       }
     );
@@ -185,7 +199,10 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
     it('can be called with an inner-error and a parameterized message',
       function() {
         function makeInnerError() {
-          return new RangeError('This is the inner error');
+          var err = new RangeError('This is the inner error');
+          err.foo = 'bar';
+          err.code = 404;
+          return err;
         }
 
         var err = (function newErrorWithInnerErrorAndParamMessage(innerErr) {
@@ -195,6 +212,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+        expect(err.foo).to.equal('bar');
+        expect(err.code).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
@@ -209,7 +228,9 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(json).to.satisfy(helper.matchesJSON({
           name: err.name,
           message: err.message,
-          stack: err.stack
+          stack: err.stack,
+          foo: 'bar',
+          code: 404
         }));
       }
     );
@@ -256,10 +277,13 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
       function() {
         var now = new Date();
 
-        function foo() {}
+        function someMethod() {return this.code;}
 
         function makeInnerError() {
-          return new EvalError('This is the inner error');
+          var err = new EvalError('This is the inner error');
+          err.foo = 'bar';
+          err.code = 500;
+          return err;
         }
 
         var err = (function newErrorWithInnerErrorAndProps(innerErr) {
@@ -267,7 +291,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
             code: 404,
             text: 'Not Found',
             timestamp: now,
-            foo: foo
+            someMethod: someMethod
           });
         })(makeInnerError());
 
@@ -277,6 +301,9 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
+        expect(err.foo).to.equal('bar');
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/makeInnerError/);
@@ -294,7 +321,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           stack: err.stack,
           code: 404,
           text: 'Not Found',
-          timestamp: now.toJSON()
+          timestamp: now.toJSON(),
+          foo: 'bar'
         }));
       }
     );
@@ -303,14 +331,14 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
       function() {
         var now = new Date();
 
-        function foo() {}
+        function someMethod() {return this.code;}
 
         var err = (function newErrorWithPropsAndMessage() {
           return ono({
             code: 404,
             text: 'Not Found',
             timestamp: now,
-            foo: foo
+            someMethod: someMethod
           }, 'Onoes! Something bad happened.');
         })();
 
@@ -320,6 +348,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
@@ -378,10 +408,13 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
       function() {
         var now = new Date();
 
-        function foo() {}
+        function someMethod() {return this.code;}
 
         function makeInnerError() {
-          return new EvalError('This is the inner error');
+          var err = new EvalError('This is the inner error');
+          err.foo = 'bar';
+          err.code = 500;
+          return err;
         }
 
         var err = (function newErrorWithInnerErrorPropsAndParamMessage(innerErr) {
@@ -391,7 +424,7 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
               code: 404,
               text: 'Not Found',
               timestamp: now,
-              foo: foo
+              someMethod: someMethod
             },
             'Testing, %s, %d, %j', 1, '2', '3'
           );
@@ -403,6 +436,9 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
+        expect(err.foo).to.equal('bar');
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
 
         if (err.stack) {
           expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
@@ -420,7 +456,8 @@ helper.forEachMethod(function(name, ono, ErrorType, ErrorTypeName) {
           stack: err.stack,
           code: 404,
           text: 'Not Found',
-          timestamp: now.toJSON()
+          timestamp: now.toJSON(),
+          foo: 'bar'
         }));
       }
     );

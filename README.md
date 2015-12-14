@@ -18,7 +18,7 @@ ono (Oh No!)
 Features
 --------------------------
 * Formatted error messages, using Node's [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format) or your own custom formatter
-* Wrap and re-throw an error _without_ losing the original error's message and stack trace
+* Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
 * [Tested](http://bigstickcarpet.github.io/ono/tests/index.html) in Node, IO.js, and all modern web browsers on Mac, Windows, Linux, iOS, and Android
@@ -87,7 +87,7 @@ API
 ### `ono([err], [props], [message, ...])`
 Creates an [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object with the given properties.
 
-* `err` - _(optional)_ An existing error object. This error's message and stack trace will be appended to the new error.
+* `err` - _(optional)_ An existing error object. This error's message, stack trace, and properties will be appended to the new error.
 
 * `props` - _(optional)_ An object whose properties will be added to the new error. Properties can be anything, including objects and functions.
 

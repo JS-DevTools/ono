@@ -1,6 +1,6 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ono = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**!
- * Ono v1.0.22
+ * Ono v2.0.0
  *
  * @link https://github.com/BigstickCarpet/ono
  * @license MIT
@@ -8,7 +8,11 @@
 'use strict';
 
 var util  = require('util'),
-    slice = Array.prototype.slice;
+    slice = Array.prototype.slice,
+    vendorSpecificErrorProperties = [
+      'name', 'message', 'description', 'number', 'fileName', 'lineNumber', 'columnNumber',
+      'sourceURL', 'line', 'column', 'stack'
+    ];
 
 module.exports = create(Error);
 module.exports.error = create(Error);
@@ -55,38 +59,74 @@ function create(Klass) {
     }
 
     if (err) {
-      // The inner-error's message and stack will be added to the new error
+      // The inner-error's message will be added to the new message
       formattedMessage += (formattedMessage ? ' \n' : '') + err.message;
-      stack = err.stack;
     }
 
-    var error = new Klass(formattedMessage);
-    extendError(error, stack, props);
-    return error;
+    // Create the new error
+    // NOTE: DON'T move this to a separate function! We don't want to pollute the stack trace
+    var newError = new Klass(formattedMessage);
+
+    // Extend the new error with the additional properties
+    extendError(newError, err);   // Copy properties of the original error
+    extendToJSON(newError);       // Replace the original toJSON method
+    extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
+
+    return newError;
   };
 }
 
 /**
- * Extends the given Error object with the given values
+ * Extends the targetError with the properties of the source error.
  *
- * @param {Error}   error - The error object to extend
- * @param {?string} stack - The stack trace from the original error
- * @param {?object} props - Properties to add to the error object
+ * @param {Error}   targetError - The error object to extend
+ * @param {?Error}  sourceError - The source error object, if any
  */
-function extendError(error, stack, props) {
-  if (stack) {
-    error.stack += ' \n\n' + stack;
+function extendError(targetError, sourceError) {
+  if (sourceError) {
+    targetError.stack += ' \n\n' + sourceError.stack;
+    extend(targetError, sourceError, true);
   }
+}
 
-  if (props && typeof(props) === 'object') {
-    var keys = Object.keys(props);
+/**
+ * JavaScript engines differ in how errors are serialized to JSON - especially when it comes
+ * to custom error properties and stack traces.  So we add our own toJSON method that ALWAYS
+ * outputs every property of the error.
+ */
+function extendToJSON(error) {
+  error.toJSON = errorToJSON;
+
+  // Also add an inspect() method, for compatibility with Node.js' `util.inspect()` method
+  error.inspect = errorToJSON;
+}
+
+/**
+ * Extends the target object with the properties of the source object.
+ *
+ * @param {object}  target - The object to extend
+ * @param {?source} source - The object whose properties are copied
+ * @param {boolean} omitVendorSpecificProperties - Skip vendor-specific Error properties
+ */
+function extend(target, source, omitVendorSpecificProperties) {
+  if (source && typeof(source) === 'object') {
+    var keys = Object.keys(source);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
-      error[key] = props[key];
+
+      // Don't bother trying to copy read-only vendor-specific Error properties
+      if (omitVendorSpecificProperties && vendorSpecificErrorProperties.indexOf(key) >= 0) {
+        continue;
+      }
+
+      try {
+        target[key] = source[key];
+      }
+      catch (e) {
+        // This property is read-only, so it can't be copied
+      }
     }
   }
-
-  error.toJSON = errorToJSON;
 }
 
 /**
@@ -97,18 +137,13 @@ function extendError(error, stack, props) {
  */
 function errorToJSON() {
   // jshint -W040
+  var json = {};
 
-  // All Errors have "name" and "message"
-  var json = {
-    name: this.name,
-    message: this.message
-  };
-
-  // Append any custom properties that were added
+  // Get all the properties of this error
   var keys = Object.keys(this);
 
-  // Also include any vendor-specific Error properties
-  keys = keys.concat(['description', 'number', 'fileName', 'lineNumber', 'columnNumber', 'stack']);
+  // Also include vendor-specific properties from the prototype
+  keys = keys.concat(vendorSpecificErrorProperties);
 
   for (var i = 0; i < keys.length; i++) {
     var key = keys[i];
@@ -179,7 +214,9 @@ function drainQueue() {
         currentQueue = queue;
         queue = [];
         while (++queueIndex < len) {
-            currentQueue[queueIndex].run();
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
         }
         queueIndex = -1;
         len = queue.length;
@@ -231,7 +268,6 @@ process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
 
-// TODO(shtylman)
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
