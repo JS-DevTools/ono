@@ -152,7 +152,8 @@ function errorToJSON() {
   for (var i = 0; i < keys.length; i++) {
     var key = keys[i];
     var value = this[key];
-    if (value !== undefined) {
+    var type = typeof value;
+    if (type !== 'undefined' && type !== 'function') {
       json[key] = value;
     }
   }
