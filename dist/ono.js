@@ -39,7 +39,7 @@ function create(Klass) {
    * @returns {Error}
    */
   return function ono(err, props, message, params) {
-    var formattedMessage, stack;
+    var formattedMessage;
     var formatter = module.exports.formatter;
 
     if (typeof(err) === 'string') {
@@ -102,7 +102,7 @@ function extendToJSON(error) {
   error.toJSON = errorToJSON;
 
   // Also add an inspect() method, for compatibility with Node.js' `util.inspect()` method
-  error.inspect = errorToJSON;
+  error.inspect = errorToString;
 }
 
 /**
@@ -159,6 +159,16 @@ function errorToJSON() {
   }
 
   return json;
+}
+
+/**
+ * Serializes Error objects as human-readable JSON strings for debugging/logging purposes.
+ *
+ * @returns {string}
+ */
+function errorToString() {
+  // jshint -W040
+  return JSON.stringify(this, null, 2).replace(/\\n/g, '\n');
 }
 
 },{"util":5}],2:[function(require,module,exports){
