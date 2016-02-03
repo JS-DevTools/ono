@@ -173,7 +173,8 @@ function errorToString() {
 function extendStack(targetError, sourceError) {
   if (hasLazyStack(sourceError)) {
     extendStackProperty(targetError, sourceError);
-  } else {
+  }
+  else {
     var stack = sourceError.stack;
     if (stack) {
       targetError.stack += ' \n\n' + sourceError.stack;
@@ -181,15 +182,27 @@ function extendStack(targetError, sourceError) {
   }
 }
 
-var descriptors = Object.getOwnPropertyDescriptor && Object.defineProperty;
+/**
+ * Does a one-time determination of whether this JavaScript engine
+ * supports lazy `Error.stack` properties.
+ */
+var supportsLazyStack = (function() {
+  return !!(
+    // ES5 property descriptors must be supported
+    Object.getOwnPropertyDescriptor && Object.defineProperty &&
+
+    // Chrome on Android doesn't support lazy stacks :(
+    (typeof navigator === 'undefined' || !/Android/.test(navigator.userAgent))
+  );
+})();
 
 /**
- * Does this error have a lazy stack parameter?
+ * Does this error have a lazy stack property?
  *
  * @returns {boolean}
  */
 function hasLazyStack(err) {
-  if (!descriptors) {
+  if (!supportsLazyStack) {
     return false;
   }
   var descriptor = Object.getOwnPropertyDescriptor(err, 'stack');
@@ -206,10 +219,9 @@ function extendStackProperty(targetError, sourceError) {
   var sourceStack = Object.getOwnPropertyDescriptor(sourceError, 'stack');
   if (sourceStack) {
     var targetStack = Object.getOwnPropertyDescriptor(targetError, 'stack');
-    Object.defineProperty(targetError, '_stack', targetStack);
     Object.defineProperty(targetError, 'stack', {
       get: function() {
-        return targetError._stack + ' \n\n' + sourceError.stack;
+        return targetStack.get.apply(targetError) + ' \n\n' + sourceError.stack;
       },
       enumerable: false,
       configurable: true
