@@ -43,38 +43,44 @@
    */
   function matchesJSON(expected) {
     return function(json) {
-      if (userAgent.isFirefox) {
-        expect(json.fileName).to.be.a('string').and.not.empty;
-        expect(json.lineNumber).to.be.a('number').above(0);
-        expect(json.columnNumber).to.be.a('number').above(0);
-        expected.fileName = json.fileName;
-        expected.lineNumber = json.lineNumber;
-        expected.columnNumber = json.columnNumber;
-      }
+      try {
+        if (userAgent.isFirefox) {
+          expect(json.fileName).to.be.a('string').and.not.empty;
+          expect(json.lineNumber).to.be.a('number').above(0);
+          expect(json.columnNumber).to.be.a('number').above(0);
+          expected.fileName = json.fileName;
+          expected.lineNumber = json.lineNumber;
+          expected.columnNumber = json.columnNumber;
+        }
 
-      // Only recent versions of Safari include these properties
-      if (userAgent.isSafari && json.sourceURL && json.line && json.column) {
-        expect(json.sourceURL).to.be.a('string').and.not.empty;
-        expect(json.line).to.be.a('number').above(0);
-        expect(json.column).to.be.a('number').above(0);
-        expected.sourceURL = json.sourceURL;
-        expected.line = json.line;
-        expected.column = json.column;
-      }
+        // Only recent versions of Safari include these properties
+        if (userAgent.isSafari && json.sourceURL && json.line && json.column) {
+          expect(json.sourceURL).to.be.a('string').and.not.empty;
+          expect(json.line).to.be.a('number').above(0);
+          expect(json.column).to.be.a('number').above(0);
+          expected.sourceURL = json.sourceURL;
+          expected.line = json.line;
+          expected.column = json.column;
+        }
 
-      if (userAgent.isIE && 'description' in json) {
-        expect(json.description).to.be.a('string');
-        expected.description = json.description;
-      }
+        if (userAgent.isIE && 'description' in json) {
+          expect(json.description).to.be.a('string');
+          expected.description = json.description;
+        }
 
-      if (!('stack' in json)) {
-        // Some browsers don't support the "stack" property
-        delete expected.stack;
-      }
+        if (!('stack' in json)) {
+          // Some browsers don't support the "stack" property
+          delete expected.stack;
+        }
 
-      expect(json).to.deep.equal(expected);
-      return true;
+        expect(json).to.deep.equal(expected);
+        return true;
+      }
+      catch (e) {
+        console.error('\nEXPECTED: ', expected);
+        console.error('\nACTUAL: ', json);
+        throw e;
+      }
     }
   }
 })();
-
