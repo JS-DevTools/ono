@@ -9,8 +9,8 @@ describe('ono.formatter', function () {
     // A simple formatter that replaces $0, $1, $2, etc. with the corresponding param
     ono.formatter = function (message) {
       var params = Array.prototype.slice.call(arguments, 1);
-      return params.reduce(function (message, param, index) {
-        return message.replace('$' + index, param);
+      return params.reduce(function (msg, param, index) {
+        return msg.replace('$' + index, param);
       }, message);
     };
   });

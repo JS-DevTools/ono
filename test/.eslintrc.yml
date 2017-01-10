@@ -1,6 +1,12 @@
 extends:
   - modular/test
 
+globals:
+  userAgent: false
+  userAgentParser: false
+  ono: false
+  helper: false
+
 rules:
   strict:
     - error
