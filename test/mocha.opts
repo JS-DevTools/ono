@@ -1,0 +1,4 @@
+--bail
+--retries 2
+test/fixtures/*.js
+test/specs/*.js
