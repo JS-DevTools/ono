@@ -7,7 +7,7 @@
  */
 'use strict';
 
-var util  = require('util'),
+var util = require('util'),
     slice = Array.prototype.slice,
     vendorSpecificErrorProperties = [
       'name', 'message', 'description', 'number', 'fileName', 'lineNumber', 'columnNumber',
@@ -30,7 +30,7 @@ module.exports.formatter = util.format;
  * @param {Class} Klass - The Error subclass to create
  * @returns {ono}
  */
-function create(Klass) {
+function create (Klass) {
   /**
    * @param {Error}   [err]     - The original error, if any
    * @param {object}  [props]   - An object whose properties will be added to the error object
@@ -38,15 +38,15 @@ function create(Klass) {
    * @param {...*}    [params]  - Parameters that map to the `message` placeholders
    * @returns {Error}
    */
-  return function ono(err, props, message, params) {
+  return function ono (err, props, message, params) {
     var formattedMessage;
     var formatter = module.exports.formatter;
 
-    if (typeof(err) === 'string') {
+    if (typeof (err) === 'string') {
       formattedMessage = formatter.apply(null, arguments);
       err = props = undefined;
     }
-    else if (typeof(props) === 'string') {
+    else if (typeof (props) === 'string') {
       formattedMessage = formatter.apply(null, slice.call(arguments, 1));
     }
     else {
@@ -82,7 +82,7 @@ function create(Klass) {
  * @param {Error}   targetError - The error object to extend
  * @param {?Error}  sourceError - The source error object, if any
  */
-function extendError(targetError, sourceError) {
+function extendError (targetError, sourceError) {
   if (sourceError) {
     extendStack(targetError, sourceError);
     extend(targetError, sourceError, true);
@@ -94,7 +94,7 @@ function extendError(targetError, sourceError) {
  * to custom error properties and stack traces.  So we add our own toJSON method that ALWAYS
  * outputs every property of the error.
  */
-function extendToJSON(error) {
+function extendToJSON (error) {
   error.toJSON = errorToJSON;
 
   // Also add an inspect() method, for compatibility with Node.js' `util.inspect()` method
@@ -108,8 +108,8 @@ function extendToJSON(error) {
  * @param {?source} source - The object whose properties are copied
  * @param {boolean} omitVendorSpecificProperties - Skip vendor-specific Error properties
  */
-function extend(target, source, omitVendorSpecificProperties) {
-  if (source && typeof(source) === 'object') {
+function extend (target, source, omitVendorSpecificProperties) {
+  if (source && typeof (source) === 'object') {
     var keys = Object.keys(source);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
@@ -135,8 +135,7 @@ function extend(target, source, omitVendorSpecificProperties) {
  *
  * @returns {object}
  */
-function errorToJSON() {
-  // jshint -W040
+function errorToJSON () {
   var json = {};
 
   // Get all the properties of this error
@@ -162,15 +161,14 @@ function errorToJSON() {
  *
  * @returns {string}
  */
-function errorToString() {
-  // jshint -W040
+function errorToString () {
   return JSON.stringify(this, null, 2).replace(/\\n/g, '\n');
 }
 
 /**
  * Extend the error stack to include its cause
  */
-function extendStack(targetError, sourceError) {
+function extendStack (targetError, sourceError) {
   if (hasLazyStack(sourceError)) {
     extendStackProperty(targetError, sourceError);
   }
@@ -186,7 +184,7 @@ function extendStack(targetError, sourceError) {
  * Does a one-time determination of whether this JavaScript engine
  * supports lazy `Error.stack` properties.
  */
-var supportsLazyStack = (function() {
+var supportsLazyStack = (function () {
   return !!(
     // ES5 property descriptors must be supported
     Object.getOwnPropertyDescriptor && Object.defineProperty &&
@@ -194,14 +192,14 @@ var supportsLazyStack = (function() {
     // Chrome on Android doesn't support lazy stacks :(
     (typeof navigator === 'undefined' || !/Android/.test(navigator.userAgent))
   );
-})();
+}());
 
 /**
  * Does this error have a lazy stack property?
  *
  * @returns {boolean}
  */
-function hasLazyStack(err) {
+function hasLazyStack (err) {
   if (!supportsLazyStack) {
     return false;
   }
@@ -215,12 +213,12 @@ function hasLazyStack(err) {
 /**
  * Extend the error stack to include its cause, lazily
  */
-function extendStackProperty(targetError, sourceError) {
+function extendStackProperty (targetError, sourceError) {
   var sourceStack = Object.getOwnPropertyDescriptor(sourceError, 'stack');
   if (sourceStack) {
     var targetStack = Object.getOwnPropertyDescriptor(targetError, 'stack');
     Object.defineProperty(targetError, 'stack', {
-      get: function() {
+      get: function () {
         return targetStack.get.apply(targetError) + ' \n\n' + sourceError.stack;
       },
       enumerable: false,

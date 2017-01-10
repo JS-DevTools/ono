@@ -1,11 +1,11 @@
-describe('error.toJSON', function() {
+describe('error.toJSON', function () {
   'use strict';
 
   it('should return all built-in error properties',
-    function() {
-      var err = (function newError(message) {
+    function () {
+      var err = (function newError (message) {
         return ono('Oh No! %s', message);
-      })('Something went wrong');
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({
@@ -17,10 +17,10 @@ describe('error.toJSON', function() {
   );
 
   it('should return custom properties',
-    function() {
-      var err = (function newError(message) {
-        return ono({foo: 'bar', biz: 5}, 'Oh No! %s', message);
-      })('Something went wrong');
+    function () {
+      var err = (function newError (message) {
+        return ono({ foo: 'bar', biz: 5 }, 'Oh No! %s', message);
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({
@@ -34,11 +34,11 @@ describe('error.toJSON', function() {
   );
 
   it('should return custom object properties',
-    function() {
+    function () {
       var now = new Date();
-      var err = (function newError(message) {
-        return ono({foo: 'bar', biz: now}, 'Oh No! %s', message);
-      })('Something went wrong');
+      var err = (function newError (message) {
+        return ono({ foo: 'bar', biz: now }, 'Oh No! %s', message);
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({
@@ -52,16 +52,16 @@ describe('error.toJSON', function() {
   );
 
   it('should return inherited properties',
-    function() {
+    function () {
       var now = new Date();
-      var err = (function newError(message) {
+      var err = (function newError (message) {
         var originalError = new Error(message);
         originalError.foo = 'bar';
         originalError.biz = 5;
         originalError.baz = now;
 
-        return ono(originalError, {foo: 'xyz', bob: 'abc'}, 'Oh No!');
-      })('Something went wrong');
+        return ono(originalError, { foo: 'xyz', bob: 'abc' }, 'Oh No!');
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({
@@ -77,10 +77,10 @@ describe('error.toJSON', function() {
   );
 
   it('should NOT return undefined properties',
-    function() {
-      var err = (function newError(message) {
-        return ono({foo: 'bar', biz: undefined}, 'Oh No! %s', message);
-      })('Something went wrong');
+    function () {
+      var err = (function newError (message) {
+        return ono({ foo: 'bar', biz: undefined }, 'Oh No! %s', message);
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({
@@ -93,12 +93,12 @@ describe('error.toJSON', function() {
   );
 
   it('should NOT return function properties',
-    function() {
-      function noop() {};
+    function () {
+      function noop () {}
 
-      var err = (function newError(message) {
-        return ono({foo: 'bar', biz: noop}, 'Oh No! %s', message);
-      })('Something went wrong');
+      var err = (function newError (message) {
+        return ono({ foo: 'bar', biz: noop }, 'Oh No! %s', message);
+      }('Something went wrong'));
 
       var json = err.toJSON();
       expect(json).to.satisfy(helper.matchesJSON({

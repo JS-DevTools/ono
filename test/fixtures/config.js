@@ -1,7 +1,7 @@
-(function() {
+(function () {
   'use strict';
 
-  if (typeof(mocha) === 'object') {
+  if (typeof (mocha) === 'object') {
     // Configure Mocha
     mocha.setup('bdd');
     mocha.fullTrace();
@@ -10,9 +10,9 @@
   }
 
   // Set global settings for all tests
-  beforeEach(function() {
+  beforeEach(function () {
     this.currentTest.timeout(2000);
     this.currentTest.slow(100);
   });
 
-})();
+}());

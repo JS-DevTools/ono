@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   /**
@@ -14,7 +14,7 @@
    *
    * @param {function} fn - The function that's invoked for each method
    */
-  function forEachMethod(fn) {
+  function forEachMethod (fn) {
     var names = ['', 'error', 'eval', 'range', 'reference', 'syntax', 'type', 'uri'];
     var types = ['Error', 'Error', 'EvalError', 'RangeError', 'ReferenceError', 'SyntaxError', 'TypeError', 'URIError'];
 
@@ -41,8 +41,8 @@
    * @param {object} expected - The expected properties & values
    * @returns {function}
    */
-  function matchesJSON(expected) {
-    return function(json) {
+  function matchesJSON (expected) {
+    return function (json) {
       try {
         if (userAgent.isFirefox) {
           expect(json.fileName).to.be.a('string').and.not.empty;
@@ -81,6 +81,6 @@
         console.error('\nACTUAL: ', json);
         throw e;
       }
-    }
+    };
   }
-})();
+}());

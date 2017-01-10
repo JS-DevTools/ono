@@ -24,7 +24,7 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint lib test/fixtures test/specs",
+    "lint": "eslint lib test/fixtures test/specs --fix",
     "build": "npm run lint && npm run browserify",
     "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
     "watch": "npm run browserify -- --watch",
