@@ -3,7 +3,7 @@
  *
  * Why not use Browserify instead of globals?
  *  - To make sure Ono works properly when Node and CommonJS are not available
- *  - Some of our devDependencies have separate packages packages for Node vs. Browser (e.g. Mocha, Sinon)
+ *  - Some of our devDependencies have separate packages packages for Node vs. Browser (e.g. Mocha)
  *  - This reduces redundant boilerplate code in the .spec files
  */
 (function() {
@@ -22,7 +22,6 @@
     // Expose Node globals
     global.ono = require('../../');
     global.expect = require('chai').expect;
-    global.sinon = require('sinon');
 
     global.userAgent = {
       isNode: true,

@@ -8,7 +8,6 @@ var baseConfig = {
   files: [
     // Third-Party Libraries
     'test/bower_components/chai/chai.js',
-    'test/bower_components/sinon-js/sinon.js',
     'test/bower_components/useragent-parser/src/useragent-parser.js',
 
     // Ono

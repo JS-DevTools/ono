@@ -39,7 +39,6 @@
   "devDependencies": {
     "chai": "*",
     "mocha": "*",
-    "sinon-js": "*",
     "useragent-parser": "*"
   }
 }
