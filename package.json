@@ -40,6 +40,7 @@
   "devDependencies": {
     "bower": "^1.7.7",
     "chai": "^3.5.0",
+    "codacy-coverage": "^2.0.0",
     "coveralls": "^2.11.6",
     "http-server": "^0.8.5",
     "istanbul": "^0.4.2",
