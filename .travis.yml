@@ -38,7 +38,7 @@ before_script:
 after_success:
   # concatenate all code-coverage data into a single file
   - ls -R1 coverage/*/lcov.info
-  - cat coverage/*/lcov.info > lcov.info
+  - cat coverage/*/lcov.info > ./coverage/lcov.info
 
   # send code-coverage data to Codacy
   - cat ./coverage/lcov.info | node_modules/.bin/codacy-coverage -p .
