@@ -1,0 +1,7 @@
+extends:
+  - modular/test
+
+rules:
+  strict:
+    - error
+    - function

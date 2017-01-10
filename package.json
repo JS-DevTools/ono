@@ -24,7 +24,7 @@
     "lib"
   ],
   "scripts": {
-    "lint": "jshint . --verbose && jscs . --verbose",
+    "lint": "eslint lib test/fixtures test/specs",
     "build": "npm run lint && npm run browserify",
     "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
     "watch": "npm run browserify -- --watch",
@@ -46,10 +46,10 @@
     "chai": "^3.5.0",
     "codacy-coverage": "^2.0.0",
     "coveralls": "^2.11.6",
+    "eslint": "^3.12.2",
+    "eslint-config-modular": "^2.0.1",
     "http-server": "^0.8.5",
     "istanbul": "^0.4.2",
-    "jscs": "^2.9.0",
-    "jshint": "^2.9.1",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-cli": "0.1.2",
