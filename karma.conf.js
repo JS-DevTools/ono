@@ -7,19 +7,19 @@ var baseConfig = {
   reporters: ['verbose'],
   files: [
     // Third-Party Libraries
-    'tests/bower_components/chai/chai.js',
-    'tests/bower_components/sinon-js/sinon.js',
-    'tests/bower_components/useragent-parser/src/useragent-parser.js',
+    'test/bower_components/chai/chai.js',
+    'test/bower_components/sinon-js/sinon.js',
+    'test/bower_components/useragent-parser/src/useragent-parser.js',
 
     // Ono
     'dist/ono.min.js',
     {pattern: 'dist/*.map', included: false, served: true},
 
     // Test Fixtures
-    'tests/fixtures/**/*.js',
+    'test/fixtures/**/*.js',
 
     // Tests
-    'tests/specs/**/*.spec.js'
+    'test/specs/**/*.spec.js'
   ]
 };
 

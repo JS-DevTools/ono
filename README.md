@@ -21,7 +21,7 @@ Features
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
-* [Tested](http://bigstickcarpet.github.io/ono/tests/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
+* [Tested](http://bigstickcarpet.github.io/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
 
 
 Example
@@ -138,9 +138,7 @@ To build/test the project locally on your computer:
 `npm run build`
 
 4. __Run the unit tests__<br>
-`npm run mocha` (test in Node)<br>
-`npm run karma` (test in web browsers)<br>
-`npm test` (test in Node and browsers, and report code coverage)
+`npm test`
 
 
 License
