@@ -1,33 +1,19 @@
 /**
- * This script exposes everything as globals, to allow tests to run in Node and in browsers.
- *
- * Why not use Browserify instead of globals?
- *  - To make sure Ono works properly when Node and CommonJS are not available
- *  - Some of our devDependencies have separate packages packages for Node vs. Browser (e.g. Mocha)
- *  - This reduces redundant boilerplate code in the .spec files
+ * This script exposes test dependencies as globals. This saves us from having to `require()`
+ * them in every spec file, and also allows the same spec files to work in Node.js and web browsers.
  */
 (function () {
   'use strict';
 
-  if (typeof (window) === 'object') {
-    // Expose Browser globals
+  if (env.BROWSER) {
+    // Define globals for web browsers
     window.global = window;
     window.expect = chai.expect;
-    window.userAgent = userAgentParser.parse(navigator.userAgent);
-    window.userAgent.isNode = false;
-    window.userAgent.isBrowser = true;
-    window.userAgent.isIE = window.userAgent.isIE || /Edge/.test(navigator.userAgent);
   }
   else {
-    // Expose Node globals
+    // Define globals for Node.js
     global.ono = require('../../');
     global.expect = require('chai').expect;
-
-    global.userAgent = {
-      isNode: true,
-      isChrome: true,
-      isBrowser: false
-    };
   }
 
 }());

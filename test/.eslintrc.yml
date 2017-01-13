@@ -2,8 +2,8 @@ extends:
   - modular/test
 
 globals:
-  userAgent: false
   userAgentParser: false
+  env: false
   ono: false
   helper: false
 

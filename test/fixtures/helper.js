@@ -44,7 +44,7 @@
   function matchesJSON (expected) {
     return function (json) {
       try {
-        if (userAgent.isFirefox) {
+        if (env.FIREFOX) {
           expect(json.fileName).to.be.a('string').and.not.empty;
           expect(json.lineNumber).to.be.a('number').above(0);
           expect(json.columnNumber).to.be.a('number').above(0);
@@ -54,7 +54,7 @@
         }
 
         // Only recent versions of Safari include these properties
-        if (userAgent.isSafari && json.sourceURL && json.line && json.column) {
+        if (env.SAFARI && json.sourceURL && json.line && json.column) {
           expect(json.sourceURL).to.be.a('string').and.not.empty;
           expect(json.line).to.be.a('number').above(0);
           expect(json.column).to.be.a('number').above(0);
@@ -63,7 +63,7 @@
           expected.column = json.column;
         }
 
-        if (userAgent.isIE && 'description' in json) {
+        if (env.IE && 'description' in json) {
           expect(json.description).to.be.a('string');
           expected.description = json.description;
         }

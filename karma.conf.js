@@ -16,10 +16,11 @@ module.exports = function (karma) {
       { pattern: 'dist/*.map', included: false, served: true },
 
       // Test Fixtures
-      'test/fixtures/**/*.js',
+      'test/fixtures/env.js',
+      'test/fixtures/*.js',
 
-      // Tests
-      'test/specs/**/*.spec.js'
+      // Test Specs
+      'test/specs/*.spec.js'
     ],
   };
 
