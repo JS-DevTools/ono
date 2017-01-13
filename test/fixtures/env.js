@@ -8,9 +8,10 @@
       NODE: '',
       BROWSER: 'true',
       KARMA: 'true',
-      CHROME: userAgent.isChrome,
-      SAFARI: userAgent.isSafari,
-      IE: userAgent.isIE || /Edge/.test(navigator.userAgent),
+      CHROME: userAgent.isChrome ? 'true' : '',
+      SAFARI: userAgent.isSafari ? 'true' : '',
+      FIREFOX: userAgent.isFirefox ? 'true' : '',
+      IE: userAgent.isIE || /Edge/.test(navigator.userAgent) ? 'true' : '',
     };
   }
   else {
