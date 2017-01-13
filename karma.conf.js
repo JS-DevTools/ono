@@ -41,6 +41,7 @@ function exitIfDisabled () {
   const KARMA = process.env.KARMA === 'true';
 
   if (CI && !KARMA) {
+    console.warn('Karma is not enabled');
     process.exit();
   }
 }
@@ -50,7 +51,7 @@ function exitIfDisabled () {
  */
 function configureCodeCoverage (config) {
   if (process.argv.indexOf('--cover') === -1) {
-    console.log('Not evaluating code-coverage for this run');
+    console.warn('Code-coverage is not enabled');
     return;
   }
 
@@ -112,7 +113,7 @@ function configureSauceLabs (config) {
   const accessKey = process.env.SAUCE_ACCESS_KEY;
 
   if (!username || !accessKey) {
-    console.log('Not including SauceLabs for this run');
+    console.warn('SauceLabs is not enabled');
     return;
   }
 
@@ -123,17 +124,17 @@ function configureSauceLabs (config) {
   let sauceLaunchers = {
     'SauceLabs_Chrome_Latest': {
       base: 'SauceLabs',
-      platform: 'Windows 7',
+      platform: 'Windows 10',
       browserName: 'chrome'
     },
     'SauceLabs_Firefox_Latest': {
       base: 'SauceLabs',
-      platform: 'Windows 7',
+      platform: 'Windows 10',
       browserName: 'firefox'
     },
     'SauceLabs_Opera_Latest': {
       base: 'SauceLabs',
-      platform: 'Windows 7',
+      platform: 'Windows 10',
       browserName: 'opera'
     },
     'SauceLabs_Safari_Latest': {
