@@ -138,7 +138,7 @@ To build/test the project locally on your computer:
 3. __Run the build script__<br>
 `npm run build`
 
-4. __Run the unit tests__<br>
+4. __Run the tests__<br>
 `npm test`
 
 

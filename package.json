@@ -25,13 +25,12 @@
   ],
   "scripts": {
     "lint": "eslint lib test/fixtures test/specs --fix",
-    "build": "npm run lint && npm run browserify",
-    "browserify": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
+    "build": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
+    "test": "npm run mocha && npm run karma",
     "mocha": "mocha",
-    "cover": "istanbul cover _mocha --dir coverage/node",
     "karma": "karma start --single-run",
-    "test": "npm run browserify -- --test && npm run mocha && npm run karma",
-    "www": "npm run browserify && http-server -o -c-1",
+    "cover": "istanbul cover _mocha --dir coverage/node && npm run build -- --test && npm run karma -- --cover",
+    "www": "http-server -o -c-1",
     "upgrade": "npm-check -u && bower update",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
