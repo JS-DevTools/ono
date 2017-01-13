@@ -132,14 +132,9 @@ function configureSauceLabs (config) {
       platform: 'Windows 10',
       browserName: 'firefox'
     },
-    'SauceLabs_Opera_Latest': {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'opera'
-    },
     'SauceLabs_Safari_Latest': {
       base: 'SauceLabs',
-      platform: 'OS X 10.10',
+      platform: 'macOS 10.12',
       browserName: 'safari'
     },
     'SauceLabs_IE_9': {
