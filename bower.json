@@ -27,18 +27,12 @@
   "ignore": [
     "/bower_components",
     "/lib",
-    "/www",
     "/dist/*.test.js",
-    "/tests",
+    "/test",
     "/karma.conf.js",
     "/.*",
-    "/index.html",
     "/package.json"
   ],
   "dependencies": {},
-  "devDependencies": {
-    "chai": "*",
-    "mocha": "*",
-    "useragent-parser": "*"
-  }
+  "devDependencies": {}
 }
