@@ -20,8 +20,11 @@
   "homepage": "https://github.com/bigstickcarpet/ono",
   "main": "lib/index.js",
   "files": [
-    "dist",
-    "lib"
+    "dist/ono.js",
+    "dist/ono.js.map",
+    "dist/ono.min.js",
+    "dist/ono.min.js.map",
+    "lib/index.js"
   ],
   "scripts": {
     "lint": "eslint lib test/fixtures test/specs --fix",
