@@ -34,7 +34,7 @@
     "karma": "karma start --single-run",
     "cover": "istanbul cover _mocha --dir coverage/node && npm run build -- --test && npm run karma -- --cover",
     "www": "http-server -o -c-1",
-    "upgrade": "npm-check -u && bower update",
+    "upgrade": "npm-check -u",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
