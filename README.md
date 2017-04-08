@@ -5,10 +5,10 @@ ono (Oh No!)
 [![Build Status](https://api.travis-ci.org/BigstickCarpet/ono.svg)](https://travis-ci.org/BigstickCarpet/ono)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/bigstickcarpet/ono?svg=true&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/BigstickCarpet/ono)
 
-[![Dependencies](https://david-dm.org/BigstickCarpet/ono.svg)](https://david-dm.org/BigstickCarpet/ono)
 [![Coverage Status](https://coveralls.io/repos/BigstickCarpet/ono/badge.svg?branch=master&service=github)](https://coveralls.io/r/BigstickCarpet/ono)
 [![Codacy Score](https://www.codacy.com/project/badge/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/jamesmessinger/ono)
 [![Inline docs](http://inch-ci.org/github/BigstickCarpet/ono.svg?branch=master&style=shields)](http://inch-ci.org/github/BigstickCarpet/ono)
+[![Dependencies](https://david-dm.org/BigstickCarpet/ono.svg)](https://david-dm.org/BigstickCarpet/ono)
 
 [![npm](http://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![Bower](http://img.shields.io/bower/v/ono.svg)](#bower)
