@@ -16,8 +16,12 @@
     "name": "James Messinger",
     "url": "http://jamesmessinger.com"
   },
-  "license": "MIT",
   "homepage": "https://github.com/bigstickcarpet/ono",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigstickcarpet/ono.git"
+  },
+  "license": "MIT",
   "main": "lib/index.js",
   "files": [
     "dist/ono.js",
@@ -29,21 +33,16 @@
   "scripts": {
     "lint": "eslint lib test/fixtures test/specs --fix",
     "build": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
-    "test": "npm run mocha && npm run karma && npm run lint",
+    "test": "mocha && npm run karma && npm run lint",
     "mocha": "mocha",
     "karma": "karma start --single-run",
     "cover": "istanbul cover _mocha --dir coverage/node && npm run build -- --test && npm run karma -- --cover",
-    "www": "http-server -o -c-1",
+    "start": "http-server -o -c-1",
     "upgrade": "npm-check -u",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bigstickcarpet/ono.git"
-  },
   "devDependencies": {
-    "bower": "^1.7.7",
     "chai": "^3.5.0",
     "codacy-coverage": "^2.0.0",
     "coveralls": "^2.11.6",

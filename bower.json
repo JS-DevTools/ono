@@ -17,13 +17,13 @@
       "homepage": "http://jamesmessinger.com"
     }
   ],
-  "license": "MIT",
   "homepage": "https://github.com/BigstickCarpet/ono",
-  "main": "dist/ono.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/BigstickCarpet/ono.git"
   },
+  "license": "MIT",
+  "main": "dist/ono.js",
   "ignore": [
     "/bower_components",
     "/dist/*.test.js",
