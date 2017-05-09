@@ -1,13 +1,8 @@
 extends:
   - modular/test
+  - modular/browser
 
 globals:
-  userAgentParser: false
-  env: false
+  host: false
   ono: false
   helper: false
-
-rules:
-  strict:
-    - error
-    - function

@@ -13,7 +13,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('');
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoArgs/);
         }
 
@@ -36,7 +36,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Onoes!!!');
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithMessage/);
         }
 
@@ -59,7 +59,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1, 2, "3"');
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithParams/);
         }
 
@@ -82,7 +82,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1 2 3');
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
         }
 
@@ -105,7 +105,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing %s, %d, %j');
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoParams/);
         }
 
@@ -137,12 +137,12 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithInnerError/);
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (env.CHROME) {
+        if (host.browser.chrome) {
           expect(err.stack).to.match(/SyntaxError: This is the inner error/);
         }
 
@@ -176,12 +176,12 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (env.CHROME) {
+        if (host.browser.chrome) {
           expect(err.stack).to.match(/ReferenceError: This is the inner error/);
         }
 
@@ -215,12 +215,12 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (env.CHROME) {
+        if (host.browser.chrome) {
           expect(err.stack).to.match(/RangeError: This is the inner error/);
         }
 
@@ -257,7 +257,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithProps/);
         }
 
@@ -305,12 +305,12 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/makeInnerError/);
           expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
         }
 
-        if (env.CHROME) {
+        if (host.browser.chrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
@@ -351,7 +351,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
         }
 
@@ -388,7 +388,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithPropsAndParamMessage/);
         }
 
@@ -440,12 +440,12 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !env.SAFARI) {
+        if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
           expect(err.stack).to.match(/makeInnerError/);
         }
 
-        if (env.CHROME) {
+        if (host.browser.chrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 

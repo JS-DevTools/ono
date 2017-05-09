@@ -1,4 +1,4 @@
 --bail
---require test/fixtures/env
+--require karma-host-environment
 test/fixtures/*.js
 test/specs/*.js

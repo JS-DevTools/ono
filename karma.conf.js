@@ -1,22 +1,19 @@
-'use strict';
-
 // Karma config
 // https://karma-runner.github.io/0.12/config/configuration-file.html
+
+'use strict';
+
 module.exports = function (karma) {
-  let config = {
-    frameworks: ['mocha', 'chai'],
+  var config = {
+    frameworks: ['mocha', 'chai', 'host-environment'],
     reporters: ['verbose'],
 
     files: [
-      // Third-Party libraries
-      'https://cdn.rawgit.com/nokrasnov/useragent-parser/64dbc1cc/dist/useragent-parser.min.js',
-
       // Ono
       'dist/ono.min.js',
       { pattern: 'dist/*.map', included: false, served: true },
 
       // Test Fixtures
-      'test/fixtures/env.js',
       'test/fixtures/*.js',
 
       // Test Specs
@@ -38,8 +35,8 @@ module.exports = function (karma) {
  * (useful for CI jobs that are only testing Node.js, not web browsers)
  */
 function exitIfDisabled () {
-  const CI = process.env.CI === 'true';
-  const KARMA = process.env.KARMA === 'true';
+  var CI = process.env.CI === 'true';
+  var KARMA = process.env.KARMA === 'true';
 
   if (CI && !KARMA) {
     console.warn('Karma is not enabled');
@@ -64,12 +61,12 @@ function configureCodeCoverage (config) {
     ]
   };
 
-  config.files.map(file => {
+  config.files.map(function (file) {
     if (typeof file === 'string') {
       return file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.test.js');
     }
     else {
-       return file;
+      return file;
     }
   });
 }
@@ -78,9 +75,9 @@ function configureCodeCoverage (config) {
  * Configures the browsers for the current platform
  */
 function configureLocalBrowsers (config) {
-  const isMac = /^darwin/.test(process.platform);
-  const isWindows = /^win/.test(process.platform);
-  const isLinux = !isMac && !isWindows;
+  var isMac = /^darwin/.test(process.platform);
+  var isWindows = /^win/.test(process.platform);
+  var isLinux = !isMac && !isWindows;
 
   if (isMac) {
     config.browsers = ['PhantomJS', 'Firefox', 'Chrome', 'Safari'];
@@ -110,41 +107,41 @@ function configureLocalBrowsers (config) {
  * https://github.com/karma-runner/karma-sauce-launcher
  */
 function configureSauceLabs (config) {
-  const username = process.env.SAUCE_USERNAME;
-  const accessKey = process.env.SAUCE_ACCESS_KEY;
+  var username = process.env.SAUCE_USERNAME;
+  var accessKey = process.env.SAUCE_ACCESS_KEY;
 
   if (!username || !accessKey) {
     console.warn('SauceLabs is not enabled');
     return;
   }
 
-  let project = require('./package.json');
-  let testName = project.name + ' v' + project.version;
-  let build = testName + ' Build #' + process.env.TRAVIS_JOB_NUMBER + ' @ ' + new Date();
+  var project = require('./package.json');
+  var testName = project.name + ' v' + project.version;
+  var build = testName + ' Build #' + process.env.TRAVIS_JOB_NUMBER + ' @ ' + new Date();
 
-  let sauceLaunchers = {
-    'SauceLabs_Chrome_Latest': {
+  var sauceLaunchers = {
+    SauceLabs_Chrome_Latest: {
       base: 'SauceLabs',
       platform: 'Windows 10',
       browserName: 'chrome'
     },
-    'SauceLabs_Firefox_Latest': {
+    SauceLabs_Firefox_Latest: {
       base: 'SauceLabs',
       platform: 'Windows 10',
       browserName: 'firefox'
     },
-    'SauceLabs_Safari_Latest': {
+    SauceLabs_Safari_Latest: {
       base: 'SauceLabs',
       platform: 'macOS 10.12',
       browserName: 'safari'
     },
-    'SauceLabs_IE_9': {
+    SauceLabs_IE_9: {
       base: 'SauceLabs',
       platform: 'Windows 7',
       browserName: 'internet explorer',
       version: '9'
     },
-    'SauceLabs_IE_Edge': {
+    SauceLabs_IE_Edge: {
       base: 'SauceLabs',
       platform: 'Windows 10',
       browserName: 'microsoftedge'
