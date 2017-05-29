@@ -1,8 +1,18 @@
+# ESLint config
+# http://eslint.org/docs/user-guide/configuring
+# https://github.com/BigstickCarpet/eslint-config-modular
+
 extends:
   - modular/test
   - modular/browser
 
 globals:
-  host: false
+  # ono global
   ono: false
+
+  # helper object for tests
   helper: false
+
+  # karma-host-environment
+  # https://www.npmjs.com/package/karma-host-environment
+  host: false
