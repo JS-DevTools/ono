@@ -4,7 +4,7 @@
   /**
    * Helper methods for use in tests
    */
-  global.helper = {
+  host.global.helper = {
     forEachMethod: forEachMethod,
     matchesJSON: matchesJSON
   };
@@ -31,7 +31,7 @@
       }
 
       var type = types[i];
-      fn(name, method, global[type], type);
+      fn(name, method, host.global[type], type);
     }
   }
 

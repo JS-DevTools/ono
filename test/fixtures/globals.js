@@ -7,7 +7,6 @@
 
   if (host.browser) {
     // Define globals for web browsers
-    window.global = window;
     window.expect = chai.expect;
   }
   else {
