@@ -22,11 +22,11 @@
       var name, method;
 
       if (i === 0) {
-        name = 'ono()';
+        name = 'ono';
         method = ono;
       }
       else {
-        name = 'ono.' + names[i] + '()';
+        name = 'ono.' + names[i];
         method = ono[names[i]];
       }
 

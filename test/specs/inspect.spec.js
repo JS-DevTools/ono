@@ -1,7 +1,7 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
   'use strict';
 
-  describe('error.inspect', function () {
+  describe(name + '().inspect', function () {
     it('should contain newlines instead of "\\n"',
       function () {
         var err = (function newError () {
@@ -111,5 +111,20 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         err.stack && expect(string).to.contain('\n  "stack": "');
       }
     );
+
+    var factoryName = ono.name || 'onoFactory';
+    it('should NOT include ' + factoryName + ' in the stack trace',
+      function () {
+        var now = new Date();
+        var err = (function newError (message) {
+          return ono({ foo: 'bar', biz: now }, 'Oh No! %s', message);
+        }('Something went wrong'));
+
+        var string = err.inspect();
+        expect(string).not.to.contain(factoryName);
+        err.stack && expect(string).to.contain('\n  "stack": "');
+      }
+    );
+
   });
 });

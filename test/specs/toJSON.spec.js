@@ -1,7 +1,7 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
   'use strict';
 
-  describe('error.toJSON', function () {
+  describe(name + '().toJSON', function () {
     it('should return all built-in error properties',
       function () {
         var err = (function newError (message) {
@@ -110,5 +110,19 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         }));
       }
     );
+
+    var factoryName = ono.name || 'onoFactory';
+    it('should NOT include ' + factoryName + ' in the stack trace',
+      function () {
+        var now = new Date();
+        var err = (function newError (message) {
+          return ono({ foo: 'bar', biz: now }, 'Oh No! %s', message);
+        }('Something went wrong'));
+
+        var json = err.toJSON();
+        expect(json.stack).not.to.contain(factoryName);
+      }
+    );
+
   });
 });

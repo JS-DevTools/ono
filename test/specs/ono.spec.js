@@ -1,6 +1,8 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
   'use strict';
 
+  var factoryName = ono.name || 'onoFactory';
+
   describe(name, function () {
 
     it('can be called without any args',
@@ -12,6 +14,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('');
+        expect(err.stack).not.to.contain(factoryName);
 
         if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoArgs/);
@@ -35,6 +38,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Onoes!!!');
+        expect(err.stack).not.to.contain(factoryName);
 
         if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithMessage/);
@@ -58,6 +62,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1, 2, "3"');
+        expect(err.stack).not.to.contain(factoryName);
 
         if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithParams/);
@@ -81,6 +86,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1 2 3');
+        expect(err.stack).not.to.contain(factoryName);
 
         if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
@@ -104,6 +110,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing %s, %d, %j');
+        expect(err.stack).not.to.contain(factoryName);
 
         if (err.stack && !host.browser.safari) {
           expect(err.stack).to.match(/newErrorWithNoParams/);
@@ -134,6 +141,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('This is the inner error');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
@@ -173,6 +181,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Oops, an error happened. \nThis is the inner error');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
@@ -212,6 +221,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
@@ -253,6 +263,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -298,6 +309,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('This is the inner error');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -345,6 +357,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Onoes! Something bad happened.');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -384,6 +397,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3"');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -433,6 +447,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
