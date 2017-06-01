@@ -1,5 +1,5 @@
 /*!
- * Ono v2.2.5 (May 29th 2017)
+ * Ono v3.0.0-beta.1 (June 1st 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
@@ -40,7 +40,7 @@ function create (Klass) {
    * @param {...*}    [params]  - Parameters that map to the `message` placeholders
    * @returns {Error}
    */
-  return function ono (err, props, message, params) {   // eslint-disable-line no-unused-vars
+  return function onoFactory (err, props, message, params) {   // eslint-disable-line no-unused-vars
     var formattedMessage;
     var formatter = module.exports.formatter;
 
@@ -85,10 +85,8 @@ function create (Klass) {
  * @param {?Error}  sourceError - The source error object, if any
  */
 function extendError (targetError, sourceError) {
-  if (sourceError) {
-    extendStack(targetError, sourceError);
-    extend(targetError, sourceError, true);
-  }
+  extendStack(targetError, sourceError);
+  extend(targetError, sourceError, true);
 }
 
 /**
@@ -169,17 +167,63 @@ function errorToString () {
 
 /**
  * Extend the error stack to include its cause
+ *
+ * @param {Error} targetError
+ * @param {Error} sourceError
  */
 function extendStack (targetError, sourceError) {
-  if (hasLazyStack(sourceError)) {
-    extendStackProperty(targetError, sourceError);
-  }
-  else {
-    var stack = sourceError.stack;
-    if (stack) {
-      targetError.stack += ' \n\n' + sourceError.stack;
+  if (hasLazyStack(targetError)) {
+    if (sourceError) {
+      lazyJoinStacks(targetError, sourceError);
+    }
+    else {
+      lazyPopStack(targetError);
     }
   }
+  else {
+    if (sourceError) {
+      targetError.stack = joinStacks(targetError.stack, sourceError.stack);
+    }
+    else {
+      targetError.stack = popStack(targetError.stack);
+    }
+  }
+}
+
+/**
+ * Appends the original {@link Error#stack} property to the new Error's stack.
+ *
+ * @param {string} newStack
+ * @param {string} originalStack
+ * @returns {string}
+ */
+function joinStacks (newStack, originalStack) {
+  newStack = popStack(newStack || '');
+  originalStack = originalStack || '';
+  return newStack + '\n\n' + originalStack;
+}
+
+/**
+ * Removes Ono from the stack, so that the stack starts at the original error location
+ *
+ * @param {string} stack
+ * @returns {string}
+ */
+function popStack (stack) {
+  var lines = stack.split('\n');
+
+  if (lines.length > 1) {
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (line.indexOf('onoFactory') >= 0) {
+        lines.splice(i, 1);
+        stack = lines.join('\n');
+        break;
+      }
+    }
+  }
+
+  return stack;
 }
 
 /**
@@ -199,12 +243,14 @@ var supportsLazyStack = (function () {
 /**
  * Does this error have a lazy stack property?
  *
+ * @param {Error} err
  * @returns {boolean}
  */
 function hasLazyStack (err) {
   if (!supportsLazyStack) {
     return false;
   }
+
   var descriptor = Object.getOwnPropertyDescriptor(err, 'stack');
   if (!descriptor) {
     return false;
@@ -213,20 +259,38 @@ function hasLazyStack (err) {
 }
 
 /**
- * Extend the error stack to include its cause, lazily
+ * Calls {@link joinStacks} lazily, when the {@link Error#stack} property is accessed.
+ *
+ * @param {Error} targetError
+ * @param {Error} sourceError
  */
-function extendStackProperty (targetError, sourceError) {
-  var sourceStack = Object.getOwnPropertyDescriptor(sourceError, 'stack');
-  if (sourceStack) {
-    var targetStack = Object.getOwnPropertyDescriptor(targetError, 'stack');
-    Object.defineProperty(targetError, 'stack', {
-      get: function () {
-        return targetStack.get.apply(targetError) + ' \n\n' + sourceError.stack;
-      },
-      enumerable: false,
-      configurable: true
-    });
-  }
+function lazyJoinStacks (targetError, sourceError) {
+  var targetStack = Object.getOwnPropertyDescriptor(targetError, 'stack');
+
+  Object.defineProperty(targetError, 'stack', {
+    get: function () {
+      return joinStacks(targetStack.get.apply(targetError), sourceError.stack);
+    },
+    enumerable: false,
+    configurable: true
+  });
+}
+
+/**
+ * Calls {@link popStack} lazily, when the {@link Error#stack} property is accessed.
+ *
+ * @param {Error} error
+ */
+function lazyPopStack (error) {
+  var targetStack = Object.getOwnPropertyDescriptor(error, 'stack');
+
+  Object.defineProperty(error, 'stack', {
+    get: function () {
+      return popStack(targetStack.get.apply(error));
+    },
+    enumerable: false,
+    configurable: true
+  });
 }
 
 },{"util":5}],2:[function(require,module,exports){
@@ -400,6 +464,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
