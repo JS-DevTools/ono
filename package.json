@@ -62,7 +62,7 @@
     "karma-verbose-reporter": "0.0.6",
     "mocha": "^3.4.2",
     "npm-check": "^5.4.4",
-    "simplifyify": "^3.2.1",
+    "simplifyify": "^3.2.2",
     "version-bump-prompt": "^3.1.0"
   },
   "dependencies": {}
