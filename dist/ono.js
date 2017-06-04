@@ -231,6 +231,11 @@ function popStack (stack) {
         return lines.join('\n');
       }
     }
+
+    // If we get here, then the stack doesn't contain a call to `onoFactory`.
+    // This may be due to minification or some optimization of the JS engine.
+    // So just return the stack as-is.
+    return stack;
   }
 }
 
