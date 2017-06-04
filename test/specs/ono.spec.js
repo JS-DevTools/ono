@@ -7,9 +7,11 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
     it('can be called without any args',
       function () {
-        var err = (function newErrorWithNoArgs () {
+        function newErrorWithNoArgs () {
           return ono();
-        }());
+        }
+
+        var err = newErrorWithNoArgs();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -34,9 +36,11 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
     it('can be called with just a message',
       function () {
-        var err = (function newErrorWithMessage () {
+        function newErrorWithMessage () {
           return ono('Onoes!!!');
-        }());
+        }
+
+        var err = newErrorWithMessage();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -61,9 +65,11 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
     it('can be called with a parameterized message',
       function () {
-        var err = (function newErrorWithParams () {
+        function newErrorWithParams () {
           return ono('Testing %s, %d, %j', 1, '2', '3');
-        }());
+        }
+
+        var err = newErrorWithParams();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -88,9 +94,11 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
     it('can be called with parameters, even if the message has no placeholders',
       function () {
-        var err = (function newErrorWithNoPlaceholders () {
+        function newErrorWithNoPlaceholders () {
           return ono('Testing', 1, '2', '3');
-        }());
+        }
+
+        var err = newErrorWithNoPlaceholders();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -115,9 +123,11 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
     it('can be called without parameters, even if the message has placeholders',
       function () {
-        var err = (function newErrorWithNoParams () {
+        function newErrorWithNoParams () {
           return ono('Testing %s, %d, %j');
-        }());
+        }
+
+        var err = newErrorWithNoParams();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -143,15 +153,17 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
     it('can be called with just an inner-error',
       function () {
         function makeInnerError () {
-          var err = new SyntaxError('This is the inner error');
-          err.foo = 'bar';
-          err.code = 404;
-          return err;
+          var innerError = new SyntaxError('This is the inner error');
+          innerError.foo = 'bar';
+          innerError.code = 404;
+          return innerError;
         }
 
-        var err = (function newErrorWithInnerError (innerErr) {
+        function newErrorWithInnerError (innerErr) {
           return ono(innerErr);
-        }(makeInnerError()));
+        }
+
+        var err = newErrorWithInnerError(makeInnerError());
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -186,15 +198,17 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
     it('can be called with an inner-error and a message',
       function () {
         function makeInnerError () {
-          var err = new ReferenceError('This is the inner error');
-          err.foo = 'bar';
-          err.code = 404;
-          return err;
+          var innerError = new ReferenceError('This is the inner error');
+          innerError.foo = 'bar';
+          innerError.code = 404;
+          return innerError;
         }
 
-        var err = (function newErrorWithInnerErrorAndMessage (innerErr) {
+        function newErrorWithInnerErrorAndMessage (innerErr) {
           return ono(innerErr, 'Oops, an error happened.');
-        }(makeInnerError()));
+        }
+
+        var err = newErrorWithInnerErrorAndMessage(makeInnerError());
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -229,15 +243,17 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
     it('can be called with an inner-error and a parameterized message',
       function () {
         function makeInnerError () {
-          var err = new RangeError('This is the inner error');
-          err.foo = 'bar';
-          err.code = 404;
-          return err;
+          var innerError = new RangeError('This is the inner error');
+          innerError.foo = 'bar';
+          innerError.code = 404;
+          return innerError;
         }
 
-        var err = (function newErrorWithInnerErrorAndParamMessage (innerErr) {
+        function newErrorWithInnerErrorAndParamMessage (innerErr) {
           return ono(innerErr, 'Testing, %s, %d, %j', 1, '2', '3');
-        }(makeInnerError()));
+        }
+
+        var err = newErrorWithInnerErrorAndParamMessage(makeInnerError());
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -275,14 +291,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         function foo () {}
 
-        var err = (function newErrorWithProps () {
+        function newErrorWithProps () {
           return ono({
             code: 404,
             text: 'Not Found',
             timestamp: now,
             foo: foo
           });
-        }());
+        }
+
+        var err = newErrorWithProps();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -318,20 +336,22 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         function someMethod () { return this.code; }
 
         function makeInnerError () {
-          var err = new EvalError('This is the inner error');
-          err.foo = 'bar';
-          err.code = 500;
-          return err;
+          var innerError = new EvalError('This is the inner error');
+          innerError.foo = 'bar';
+          innerError.code = 500;
+          return innerError;
         }
 
-        var err = (function newErrorWithInnerErrorAndProps (innerErr) {
+        function newErrorWithInnerErrorAndProps (innerErr) {
           return ono(innerErr, {
             code: 404,
             text: 'Not Found',
             timestamp: now,
             someMethod: someMethod
           });
-        }(makeInnerError()));
+        }
+
+        var err = newErrorWithInnerErrorAndProps(makeInnerError());
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -375,14 +395,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         function someMethod () { return this.code; }
 
-        var err = (function newErrorWithPropsAndMessage () {
+        function newErrorWithPropsAndMessage () {
           return ono({
             code: 404,
             text: 'Not Found',
             timestamp: now,
             someMethod: someMethod
           }, 'Onoes! Something bad happened.');
-        }());
+        }
+
+        var err = newErrorWithPropsAndMessage();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -418,14 +440,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         function foo () {}
 
-        var err = (function newErrorWithPropsAndParamMessage () {
+        function newErrorWithPropsAndParamMessage () {
           return ono({
             code: 404,
             text: 'Not Found',
             timestamp: now,
             foo: foo
           }, 'Testing, %s, %d, %j', 1, '2', '3');
-        }());
+        }
+
+        var err = newErrorWithPropsAndParamMessage();
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
@@ -461,13 +485,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         function someMethod () { return this.code; }
 
         function makeInnerError () {
-          var err = new EvalError('This is the inner error');
-          err.foo = 'bar';
-          err.code = 500;
-          return err;
+          var innerError = new EvalError('This is the inner error');
+          innerError.foo = 'bar';
+          innerError.code = 500;
+          return innerError;
         }
 
-        var err = (function newErrorWithInnerErrorPropsAndParamMessage (innerErr) {
+        function newErrorWithInnerErrorPropsAndParamMessage (innerErr) {
           return ono(
             innerErr,
             {
@@ -478,7 +502,9 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
             },
             'Testing, %s, %d, %j', 1, '2', '3'
           );
-        }(makeInnerError()));
+        }
+
+        var err = newErrorWithInnerErrorPropsAndParamMessage(makeInnerError());
 
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
