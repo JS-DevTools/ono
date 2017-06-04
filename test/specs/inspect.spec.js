@@ -24,7 +24,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         var string = err.inspect();
         expect(string).to.contain('\n  "name": "' + ErrorTypeName + '"');
         expect(string).to.contain('\n  "message": "Oh No! Something went wrong"');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -39,7 +42,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(string).to.contain('\n  "message": "Oh No! Something went wrong"');
         expect(string).to.contain('\n  "foo": "bar"');
         expect(string).to.contain('\n  "biz": 5');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -55,7 +61,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(string).to.contain('\n  "message": "Oh No! Something went wrong"');
         expect(string).to.contain('\n  "foo": "bar"');
         expect(string).to.contain('\n  "biz": "' + now.toISOString() + '"');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -78,7 +87,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(string).to.contain('\n  "biz": 5');
         expect(string).to.contain('\n  "baz": "' + now.toISOString() + '"');
         expect(string).to.contain('\n  "bob": "abc"');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -92,7 +104,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(string).to.contain('\n  "name": "' + ErrorTypeName + '"');
         expect(string).to.contain('\n  "message": "Oh No! Something went wrong"');
         expect(string).to.contain('\n  "foo": "bar"');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -108,7 +123,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(string).to.contain('\n  "name": "' + ErrorTypeName + '"');
         expect(string).to.contain('\n  "message": "Oh No! Something went wrong"');
         expect(string).to.contain('\n  "foo": "bar"');
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 
@@ -122,7 +140,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         var string = err.inspect();
         expect(string).not.to.contain(factoryName);
-        err.stack && expect(string).to.contain('\n  "stack": "');
+
+        if (err.stack) {
+          expect(string).to.contain('\n  "stack": "');
+        }
       }
     );
 

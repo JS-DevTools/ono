@@ -14,10 +14,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('');
-        expect(err.stack).not.to.contain(factoryName);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithNoArgs/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithNoArgs/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -38,10 +41,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Onoes!!!');
-        expect(err.stack).not.to.contain(factoryName);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithMessage/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithMessage/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -62,10 +68,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1, 2, "3"');
-        expect(err.stack).not.to.contain(factoryName);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithParams/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithParams/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -86,10 +95,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing 1 2 3');
-        expect(err.stack).not.to.contain(factoryName);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -110,10 +122,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing %s, %d, %j');
-        expect(err.stack).not.to.contain(factoryName);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithNoParams/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithNoParams/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -141,13 +156,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('This is the inner error');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithInnerError/);
-          expect(err.stack).to.match(/makeInnerError/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithInnerError/);
+            expect(err.stack).to.match(/makeInnerError/);
+          }
         }
 
         if (host.browser.chrome) {
@@ -181,13 +199,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Oops, an error happened. \nThis is the inner error');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
-          expect(err.stack).to.match(/makeInnerError/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
+            expect(err.stack).to.match(/makeInnerError/);
+          }
         }
 
         if (host.browser.chrome) {
@@ -221,13 +242,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.foo).to.equal('bar');
         expect(err.code).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
-          expect(err.stack).to.match(/makeInnerError/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
+            expect(err.stack).to.match(/makeInnerError/);
+          }
         }
 
         if (host.browser.chrome) {
@@ -263,13 +287,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithProps/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithProps/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -309,7 +336,6 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('This is the inner error');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -317,9 +343,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/makeInnerError/);
-          expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/makeInnerError/);
+            expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
+          }
         }
 
         if (host.browser.chrome) {
@@ -357,15 +387,18 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Onoes! Something bad happened.');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -397,13 +430,16 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3"');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithPropsAndParamMessage/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithPropsAndParamMessage/);
+          }
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -447,7 +483,6 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err).to.be.an.instanceOf(ErrorType);
         expect(err.name).to.equal(ErrorTypeName);
         expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
-        expect(err.stack).not.to.contain(factoryName);
         expect(err.code).to.equal(404);
         expect(err.text).to.equal('Not Found');
         expect(err.timestamp).to.equal(now);
@@ -455,9 +490,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         expect(err.someMethod).to.equal(someMethod);
         expect(err.someMethod()).to.equal(404);
 
-        if (err.stack && !host.browser.safari) {
-          expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
-          expect(err.stack).to.match(/makeInnerError/);
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
+            expect(err.stack).to.match(/makeInnerError/);
+          }
         }
 
         if (host.browser.chrome) {

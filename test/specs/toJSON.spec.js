@@ -120,7 +120,10 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         }('Something went wrong'));
 
         var json = err.toJSON();
-        expect(json.stack).not.to.contain(factoryName);
+
+        if (json.stack) {
+          expect(json.stack).not.to.contain(factoryName);
+        }
       }
     );
 
