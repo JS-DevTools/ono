@@ -1,5 +1,5 @@
 /*!
- * Ono v3.0.0-beta.1 (June 1st 2017)
+ * Ono v3.0.0-beta.2 (June 4th 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
@@ -198,9 +198,14 @@ function extendStack (targetError, sourceError) {
  * @returns {string}
  */
 function joinStacks (newStack, originalStack) {
-  newStack = popStack(newStack || '');
-  originalStack = originalStack || '';
-  return newStack + '\n\n' + originalStack;
+  newStack = popStack(newStack);
+
+  if (newStack && originalStack) {
+    return newStack + '\n\n' + originalStack;
+  }
+  else {
+    return newStack || originalStack;
+  }
 }
 
 /**
@@ -210,20 +215,23 @@ function joinStacks (newStack, originalStack) {
  * @returns {string}
  */
 function popStack (stack) {
-  var lines = stack.split('\n');
+  if (stack) {
+    var lines = stack.split('\n');
 
-  if (lines.length > 1) {
+    if (lines.length < 2) {
+      // The stack only has one line, so there's nothing we can remove
+      return stack;
+    }
+
+    // Find the `onoFactory` call in the stack, and remove it
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       if (line.indexOf('onoFactory') >= 0) {
         lines.splice(i, 1);
-        stack = lines.join('\n');
-        break;
+        return lines.join('\n');
       }
     }
   }
-
-  return stack;
 }
 
 /**
