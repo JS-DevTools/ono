@@ -61,13 +61,11 @@ function configureCodeCoverage (config) {
     ]
   };
 
-  config.files.map(function (file) {
+  config.files = config.files.map(function (file) {
     if (typeof file === 'string') {
-      return file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.test.js');
+      file = file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.test.js');
     }
-    else {
-      return file;
-    }
+    return file;
   });
 }
 
