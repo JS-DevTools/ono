@@ -1,5 +1,5 @@
 /*!
- * Ono v3.1.0-prerelease.1 (June 12th 2017)
+ * Ono v3.1.0-prerelease.2 (June 12th 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
@@ -44,14 +44,17 @@ function create (Klass) {
     var formattedMessage;
 
     if (typeof (err) === 'string') {
-      formattedMessage = callFormatter(arguments);
+      formattedMessage = module.exports.formatter.apply(null, arguments);
       err = props = undefined;
     }
     else if (typeof (props) === 'string') {
-      formattedMessage = callFormatter(slice.call(arguments, 1));
+      formattedMessage = module.exports.formatter.apply(null, slice.call(arguments, 1));
+    }
+    else if (typeof message === 'string') {
+      formattedMessage = module.exports.formatter.apply(null, slice.call(arguments, 2));
     }
     else {
-      formattedMessage = callFormatter(slice.call(arguments, 2));
+      formattedMessage = '';
     }
 
     if (!(err instanceof Error)) {
@@ -75,21 +78,6 @@ function create (Klass) {
 
     return newError;
   };
-}
-
-/**
- * Calls the formatter function with the given arguments
- *
- * @param {string[]} [args]
- * @returns {string}
- */
-function callFormatter (args) {
-  var message;
-  if (args.length) {
-    message = module.exports.formatter.apply(null, args);
-  }
-
-  return message || '';
 }
 
 /**
