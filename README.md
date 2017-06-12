@@ -18,7 +18,7 @@ ono (Oh No!)
 
 Features
 --------------------------
-* Formatted error messages, using Node's [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format) or your own custom formatter
+* Formatted error messages, using Node's [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) or your own custom formatter
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
