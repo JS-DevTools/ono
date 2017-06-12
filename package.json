@@ -42,11 +42,11 @@
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
   },
   "devDependencies": {
-    "chai": "^4.0.0",
+    "chai": "^4.0.2",
     "codacy-coverage": "^2.0.2",
     "coveralls": "^2.13.1",
-    "eslint": "^3.19.0",
-    "eslint-config-modular": "^4.0.0",
+    "eslint": "^4.0.0",
+    "eslint-config-modular": "^4.1.0",
     "istanbul": "^0.4.2",
     "karma": "^1.7.0",
     "karma-chai": "^0.1.0",
