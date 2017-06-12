@@ -22,7 +22,7 @@
     "url": "https://github.com/bigstickcarpet/ono.git"
   },
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "lib/ono.js",
   "files": [
     "dist/ono.js",
     "dist/ono.js.map",
@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "lint": "eslint lib test/fixtures test/specs --fix",
-    "build": "simplifyify lib/index.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
+    "build": "simplifyify lib/ono.js --outfile dist/ono.js --standalone ono --bundle --debug --minify",
     "test": "mocha && npm run karma && npm run lint",
     "mocha": "mocha",
     "karma": "karma start --single-run",
