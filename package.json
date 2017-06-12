@@ -28,7 +28,7 @@
     "dist/ono.js.map",
     "dist/ono.min.js",
     "dist/ono.min.js.map",
-    "lib/index.js"
+    "lib"
   ],
   "scripts": {
     "lint": "eslint lib test/fixtures test/specs --fix",
@@ -65,5 +65,7 @@
     "simplifyify": "^3.2.2",
     "version-bump-prompt": "^3.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "format-util": "^1.0.3"
+  }
 }
