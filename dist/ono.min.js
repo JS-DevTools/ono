@@ -1,5 +1,5 @@
 /*!
- * Ono v3.1.0 (June 12th 2017)
+ * Ono v3.1.1 (June 13th 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
