@@ -1,6 +1,13 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
   'use strict';
 
+  // Errors in IE 11 and older do not include stack traces at all.
+  // Safari stack traces have the script URL and line number, but no function name
+  var STACK_TRACES_HAVE_FUNCTION_NAMES = !host.browser.safari && !(host.browser.IE && host.browser.IE.version < 12);
+
+  // Node.js and Chrome both have V8 stack traces, which start with the error name and message
+  var STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE = host.node || host.browser.chrome;
+
   var factoryName = ono.name || 'onoFactory';
 
   describe(name, function () {
@@ -20,7 +27,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithNoArgs/);
           }
         }
@@ -49,7 +56,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithMessage/);
           }
         }
@@ -78,7 +85,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithParams/);
           }
         }
@@ -107,7 +114,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
           }
         }
@@ -136,7 +143,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithNoParams/);
           }
         }
@@ -174,13 +181,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithInnerError/);
             expect(err.stack).to.match(/makeInnerError/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/SyntaxError: This is the inner error/);
         }
 
@@ -219,13 +226,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
             expect(err.stack).to.match(/makeInnerError/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/ReferenceError: This is the inner error/);
         }
 
@@ -264,13 +271,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
             expect(err.stack).to.match(/makeInnerError/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/RangeError: This is the inner error/);
         }
 
@@ -312,7 +319,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithProps/);
           }
         }
@@ -358,7 +365,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).not.to.match(/makeDOMError/);
             expect(err.stack).to.match(/newErrorWithDOMErrorAndProps/);
           }
@@ -413,13 +420,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/makeInnerError/);
             expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
@@ -475,15 +482,15 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
+          expect(err.stack).to.match(/foo\.js/);
+          expect(err.stack).to.match(/bar\.js/);
 
-          if (!host.browser.safari) {
-            expect(err.stack).to.match(/foo\.js/);
-            expect(err.stack).to.match(/bar\.js/);
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithNonErrorAndProps/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
         }
 
@@ -529,7 +536,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
           }
         }
@@ -572,7 +579,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithPropsAndParamMessage/);
           }
         }
@@ -630,13 +637,13 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
             expect(err.stack).to.match(/makeInnerError/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
@@ -686,7 +693,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
 
-          if (!host.browser.safari) {
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).not.to.match(/makeDOMError/);
             expect(err.stack).to.match(/newErrorWithDOMErrorPropsAndParamMessage/);
           }
@@ -747,15 +754,15 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         if (err.stack) {
           expect(err.stack).not.to.contain(factoryName);
+          expect(err.stack).to.match(/foo\.js/);
+          expect(err.stack).to.match(/bar\.js/);
 
-          if (!host.browser.safari) {
-            expect(err.stack).to.match(/foo\.js/);
-            expect(err.stack).to.match(/bar\.js/);
+          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
             expect(err.stack).to.match(/newErrorWithNonErrorPropsAndParamMessage/);
           }
         }
 
-        if (host.node || host.browser.chrome) {
+        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
           expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
         }
 
