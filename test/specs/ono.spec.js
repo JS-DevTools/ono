@@ -150,7 +150,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
-    it('can be called with just an inner-error',
+    it('can be called with just an inner error',
       function () {
         function makeInnerError () {
           var innerError = new SyntaxError('This is the inner error');
@@ -195,7 +195,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
-    it('can be called with an inner-error and a message',
+    it('can be called with an inner error and a message',
       function () {
         function makeInnerError () {
           var innerError = new ReferenceError('This is the inner error');
@@ -240,7 +240,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
-    it('can be called with an inner-error and a parameterized message',
+    it('can be called with an inner error and a parameterized message',
       function () {
         function makeInnerError () {
           var innerError = new RangeError('This is the inner error');
@@ -329,7 +329,54 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
-    it('can be called with an inner-error and a props object',
+    it('can be called with an inner DOM error and a props object',
+      function () {
+        var now = new Date();
+
+        function someMethod () { return this.code; }
+
+        function newErrorWithDOMErrorAndProps (domError) {
+          return ono(domError, {
+            code: 404,
+            text: 'Not Found',
+            timestamp: now,
+            someMethod: someMethod
+          });
+        }
+
+        var err = newErrorWithDOMErrorAndProps(makeDOMError());
+
+        expect(err).to.be.an.instanceOf(ErrorType);
+        expect(err.name).to.equal(ErrorTypeName);
+        expect(err.message).to.equal('This is a DOM error');
+        expect(err.code).to.equal(404);
+        expect(err.text).to.equal('Not Found');
+        expect(err.timestamp).to.equal(now);
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
+
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).not.to.match(/makeDOMError/);
+            expect(err.stack).to.match(/newErrorWithDOMErrorAndProps/);
+          }
+        }
+
+        var json = JSON.parse(JSON.stringify(err));
+        expect(json).to.satisfy(helper.matchesJSON({
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+          code: 404,
+          text: 'Not Found',
+          timestamp: now.toJSON(),
+        }));
+      }
+    );
+
+    it('can be called with an inner error and a props object',
       function () {
         var now = new Date();
 
@@ -374,6 +421,70 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
 
         if (host.browser.chrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
+        }
+
+        var json = JSON.parse(JSON.stringify(err));
+        expect(json).to.satisfy(helper.matchesJSON({
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+          code: 404,
+          text: 'Not Found',
+          timestamp: now.toJSON(),
+          foo: 'bar'
+        }));
+      }
+    );
+
+    it('can be called with a non-eror and a props object',
+      function () {
+        var now = new Date();
+
+        function someMethod () { return this.code; }
+
+        function makeNonError () {
+          return {
+            code: 'ERESET',
+            name: 'TypeError',
+            message: "This looks like an error, but it's not one",
+            stack: 'at foo.js:15:27\n  at bar.js:86:12',
+            foo: 'bar',
+          };
+        }
+
+        function newErrorWithNonErrorAndProps (nonError) {
+          return ono(nonError, {
+            code: 404,
+            text: 'Not Found',
+            timestamp: now,
+            someMethod: someMethod
+          });
+        }
+
+        var err = newErrorWithNonErrorAndProps(makeNonError());
+
+        expect(err).to.be.an.instanceOf(ErrorType);
+        expect(err.name).to.equal(ErrorTypeName);
+        expect(err.message).to.equal("This looks like an error, but it's not one");
+        expect(err.code).to.equal(404);
+        expect(err.text).to.equal('Not Found');
+        expect(err.timestamp).to.equal(now);
+        expect(err.foo).to.equal('bar');
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
+
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/foo\.js/);
+            expect(err.stack).to.match(/bar\.js/);
+            expect(err.stack).to.match(/newErrorWithNonErrorAndProps/);
+          }
+        }
+
+        if (host.browser.chrome) {
+          expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
         }
 
         var json = JSON.parse(JSON.stringify(err));
@@ -478,7 +589,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
-    it('can be called with an inner-error, props object, and a parameterized message',
+    it('can be called with an inner error, props object, and a parameterized message',
       function () {
         var now = new Date();
 
@@ -542,5 +653,151 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
       }
     );
 
+    it('can be called with an inner DOM error, props object, and a parameterized message',
+      function () {
+        var now = new Date();
+
+        function someMethod () { return this.code; }
+
+        function newErrorWithDOMErrorPropsAndParamMessage (domError) {
+          return ono(
+            domError,
+            {
+              code: 404,
+              text: 'Not Found',
+              timestamp: now,
+              someMethod: someMethod
+            },
+            'Testing, %s, %d, %j', 1, '2', '3'
+          );
+        }
+
+        var err = newErrorWithDOMErrorPropsAndParamMessage(makeDOMError());
+
+        expect(err).to.be.an.instanceOf(ErrorType);
+        expect(err.name).to.equal(ErrorTypeName);
+        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is a DOM error');
+        expect(err.code).to.equal(404);
+        expect(err.text).to.equal('Not Found');
+        expect(err.timestamp).to.equal(now);
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
+
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).not.to.match(/makeDOMError/);
+            expect(err.stack).to.match(/newErrorWithDOMErrorPropsAndParamMessage/);
+          }
+        }
+
+        var json = JSON.parse(JSON.stringify(err));
+        expect(json).to.satisfy(helper.matchesJSON({
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+          code: 404,
+          text: 'Not Found',
+          timestamp: now.toJSON(),
+        }));
+      }
+    );
+
+    it('can be called with a non-error, props object, and a parameterized message',
+      function () {
+        var now = new Date();
+
+        function someMethod () { return this.code; }
+
+        function makeNonError () {
+          return {
+            code: 'ERESET',
+            name: 'TypeError',
+            message: "This looks like an error, but it's not one",
+            stack: 'at foo.js:15:27\n  at bar.js:86:12',
+            foo: 'bar',
+          };
+        }
+
+        function newErrorWithNonErrorPropsAndParamMessage (nonError) {
+          return ono(
+            nonError,
+            {
+              code: 404,
+              text: 'Not Found',
+              timestamp: now,
+              someMethod: someMethod
+            },
+            'Testing, %s, %d, %j', 1, '2', '3'
+          );
+        }
+
+        var err = newErrorWithNonErrorPropsAndParamMessage(makeNonError());
+
+        expect(err).to.be.an.instanceOf(ErrorType);
+        expect(err.name).to.equal(ErrorTypeName);
+        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis looks like an error, but it\'s not one');
+        expect(err.code).to.equal(404);
+        expect(err.text).to.equal('Not Found');
+        expect(err.timestamp).to.equal(now);
+        expect(err.foo).to.equal('bar');
+        expect(err.someMethod).to.equal(someMethod);
+        expect(err.someMethod()).to.equal(404);
+
+        if (err.stack) {
+          expect(err.stack).not.to.contain(factoryName);
+
+          if (!host.browser.safari) {
+            expect(err.stack).to.match(/foo\.js/);
+            expect(err.stack).to.match(/bar\.js/);
+            expect(err.stack).to.match(/newErrorWithNonErrorPropsAndParamMessage/);
+          }
+        }
+
+        if (host.browser.chrome) {
+          expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
+        }
+
+        var json = JSON.parse(JSON.stringify(err));
+        expect(json).to.satisfy(helper.matchesJSON({
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+          code: 404,
+          text: 'Not Found',
+          timestamp: now.toJSON(),
+          foo: 'bar'
+        }));
+      }
+    );
+
   });
+
+  function makeDOMError () {
+    var domError;
+    var errorName = 'DOMError';
+    var errorMessage = 'This is a DOM error';
+
+    try {
+      // Try creating a DOMError
+      domError = new DOMError(errorName, errorMessage);
+    }
+    catch (e) {
+      try {
+        // DOMError is not supported, so try a DOMException instead
+        domError = new DOMException(errorMessage, errorName);
+      }
+      catch (e2) {
+        // DOMException is also not supported
+      }
+    }
+
+    if (!domError) {
+      // Just return a POJO instead
+      domError = { name: errorName, message: errorMessage };
+    }
+
+    return domError;
+  }
 });
