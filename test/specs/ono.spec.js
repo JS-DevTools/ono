@@ -180,7 +180,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/SyntaxError: This is the inner error/);
         }
 
@@ -225,7 +225,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/ReferenceError: This is the inner error/);
         }
 
@@ -270,7 +270,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/RangeError: This is the inner error/);
         }
 
@@ -419,7 +419,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
@@ -483,7 +483,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
         }
 
@@ -636,7 +636,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/EvalError: This is the inner error/);
         }
 
@@ -755,7 +755,7 @@ helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
           }
         }
 
-        if (host.browser.chrome) {
+        if (host.node || host.browser.chrome) {
           expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
         }
 
