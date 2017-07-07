@@ -1,5 +1,5 @@
 /*!
- * Ono v4.0.0 (July 7th 2017)
+ * Ono v4.0.1 (July 7th 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
@@ -42,21 +42,20 @@ function create (Klass) {
    * @returns {Error}
    */
   return function onoFactory (err, props, message, params) {   // eslint-disable-line no-unused-vars
-    var args = slice.call(arguments);
     var formatArgs = [];
     var formattedMessage = '';
 
-    // Separate the format arguments (message + props) from the rest of the arguments
+    // Determine which arguments were actually specified
     if (typeof err === 'string') {
-      formatArgs = args.splice(0, args.length);
+      formatArgs = arguments;
       err = props = undefined;
     }
     else if (typeof props === 'string') {
-      formatArgs = args.splice(1, args.length - 1);
+      formatArgs = slice.call(arguments, 1);
       props = undefined;
     }
     else if (typeof message === 'string') {
-      formatArgs = args.splice(2, args.length - 2);
+      formatArgs = slice.call(arguments, 2);
     }
 
     // If there are any format arguments, then format the error message
