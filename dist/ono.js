@@ -1,5 +1,5 @@
 /*!
- * Ono v4.0.1 (July 7th 2017)
+ * Ono v4.0.2 (July 9th 2017)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
@@ -47,7 +47,7 @@ function create (Klass) {
 
     // Determine which arguments were actually specified
     if (typeof err === 'string') {
-      formatArgs = arguments;
+      formatArgs = slice.call(arguments);
       err = props = undefined;
     }
     else if (typeof props === 'string') {

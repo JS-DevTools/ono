@@ -1,6 +1,6 @@
 {
   "name": "ono",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Throw better errors.",
   "keywords": [
     "throw",
@@ -45,7 +45,7 @@
     "chai": "^4.0.2",
     "codacy-coverage": "^2.0.2",
     "coveralls": "^2.13.1",
-    "eslint": "^4.1.1",
+    "eslint": "^4.2.0",
     "eslint-config-modular": "^4.1.0",
     "istanbul": "^0.4.2",
     "karma": "^1.7.0",
