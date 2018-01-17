@@ -1,8 +1,8 @@
 /*!
- * Ono v4.0.2 (July 9th 2017)
- *
+ * Ono v4.0.3 (January 17th 2018)
+ * 
  * https://github.com/bigstickcarpet/ono
- *
+ * 
  * @author  James Messinger (http://bigstickcarpet.com)
  * @license MIT
  */
@@ -328,7 +328,7 @@ function format(fmt) {
           break;
       }
       if(!escaped) {
-        return arg;
+        return arg; 
       }
       args.unshift(arg);
       return match;
