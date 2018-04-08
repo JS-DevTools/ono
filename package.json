@@ -66,6 +66,7 @@
     "version-bump-prompt": "^4.0.0"
   },
   "dependencies": {
-    "format-util": "^1.0.3"
+    "format-util": "^1.0.3",
+    "karma-edge-launcher": "^0.4.2"
   }
 }

@@ -84,19 +84,7 @@ function configureLocalBrowsers (config) {
     config.browsers = ['Firefox'];
   }
   else if (isWindows) {
-    config.browsers = ['Firefox', 'Chrome', 'IE9', 'IE10', 'IE'];
-
-    // NOTE: IE 6, 7, 8 are not supported by Chai
-    config.customLaunchers = {
-      IE9: {
-        base: 'IE',
-        'x-ua-compatible': 'IE=EmulateIE9'
-      },
-      IE10: {
-        base: 'IE',
-        'x-ua-compatible': 'IE=EmulateIE10'
-      },
-    };
+    config.browsers = ['Firefox', 'Chrome', 'IE', 'Edge'];
   }
 }
 
