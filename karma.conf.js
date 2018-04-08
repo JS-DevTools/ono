@@ -121,11 +121,10 @@ function configureSauceLabs (config) {
       platform: 'macOS 10.12',
       browserName: 'safari'
     },
-    SauceLabs_IE_9: {
+    SauceLabs_IE_11: {
       base: 'SauceLabs',
-      platform: 'Windows 7',
-      browserName: 'internet explorer',
-      version: '9'
+      platform: 'Windows 10',
+      browserName: 'internet explorer'
     },
     SauceLabs_IE_Edge: {
       base: 'SauceLabs',
