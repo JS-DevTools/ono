@@ -23,6 +23,7 @@
   },
   "license": "MIT",
   "main": "lib/ono.js",
+  "typings": "lib/ono.d.ts",
   "files": [
     "dist/ono.js",
     "dist/ono.js.map",
