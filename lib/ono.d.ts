@@ -51,5 +51,5 @@ declare module 'ono' {
     formatter(message: string, ...params: any[]): string;
   }
 
-  export default ono;
+  export = ono;
 }
