@@ -1,5 +1,5 @@
 /*!
- * Ono v4.0.7 (August 29th 2018)
+ * Ono v4.0.8 (September 14th 2018)
  * 
  * https://github.com/bigstickcarpet/ono
  * 
