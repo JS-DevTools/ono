@@ -38,6 +38,7 @@
     "mocha": "mocha",
     "karma": "karma start --single-run",
     "cover": "istanbul cover _mocha --dir coverage/node && npm run build -- --test && npm run karma -- --cover",
+    "test:typescript": "tsc --noEmit test/specs/typescript-definition.ts",
     "upgrade": "npm-check -u",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
@@ -65,6 +66,7 @@
     "mocha": "^5.2.0",
     "npm-check": "^5.8.0",
     "simplifyify": "^4.0.3",
+    "typescript": "^3.0.3",
     "version-bump-prompt": "^4.1.0"
   },
   "dependencies": {
