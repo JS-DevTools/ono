@@ -20,7 +20,7 @@ test_script:
 
   # run tests
   - npm run lint
-  - npm run mocha
+  - npm run test:node
 
 # Don't run MSBuild
 build: off

@@ -29,7 +29,7 @@ before_script:
 
 script:
   - npm run lint
-  - npm run cover
+  - npm run coverage
 
 after_success:
   # concatenate all code-coverage data into a single file
