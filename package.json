@@ -39,8 +39,8 @@
     "test:browser": "karma start --single-run",
     "test:typescript": "tsc --noEmit test/specs/typescript-definition.ts",
     "coverage": "npm run coverage:node && npm run coverage:browser",
-    "coverage:node": "istanbul cover _mocha --dir coverage/node",
-    "coverage:browser": "npm run build -- --test && npm run test:browser -- --cover",
+    "coverage:node": "nyc --reporter=text --reporter=lcov --report-dir coverage/node mocha",
+    "coverage:browser": "npm run build -- --coverage && npm run test:browser -- --coverage",
     "upgrade": "npm-check -u",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
     "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
@@ -51,7 +51,6 @@
     "coveralls": "^3.0.2",
     "eslint": "^5.6.1",
     "eslint-config-modular": "^4.2.1",
-    "istanbul": "^0.4.2",
     "karma": "^3.0.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -67,6 +66,7 @@
     "karma-verbose-reporter": "0.0.6",
     "mocha": "^5.2.0",
     "npm-check": "^5.9.0",
+    "nyc": "^13.0.1",
     "simplifyify": "^6.0.0",
     "typescript": "^3.1.1",
     "version-bump-prompt": "^4.1.0"

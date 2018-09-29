@@ -48,7 +48,7 @@ function exitIfDisabled () {
  * Configures the code-coverage reporter
  */
 function configureCodeCoverage (config) {
-  if (process.argv.indexOf('--cover') === -1) {
+  if (process.argv.indexOf('--coverage') === -1) {
     console.warn('Code-coverage is not enabled');
     return;
   }
@@ -63,7 +63,7 @@ function configureCodeCoverage (config) {
 
   config.files = config.files.map(function (file) {
     if (typeof file === 'string') {
-      file = file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.test.js');
+      file = file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.coverage.js');
     }
     return file;
   });
