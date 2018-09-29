@@ -11,7 +11,6 @@ ono (Oh No!)
 [![Dependencies](https://david-dm.org/James-Messinger/ono.svg)](https://david-dm.org/James-Messinger/ono)
 
 [![npm](http://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
-[![Bower](http://img.shields.io/bower/v/ono.svg)](#bower)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](https://saucelabs.com/u/bigstickcarpet-ono)
@@ -64,16 +63,10 @@ var ono = require("ono");
 ```
 
 #### Web Browsers
-Install using [bower](http://bower.io/):
-
-```bash
-bower install ono
-```
-
-Then reference [`ono.js`](dist/ono.js) or [`ono.min.js`](dist/ono.min.js) in your HTML:
+Reference [`ono.js`](dist/ono.js) or [`ono.min.js`](dist/ono.min.js) in your HTML:
 
 ```html
-<script src="bower_components/ono/dist/ono.js"></script>
+<script src="https://cdn.rawgit.com/James-Messinger/ono/master/dist/ono.js"></script>
 ```
 
 Or, if you're using AMD (Require.js), then import it into your module:
@@ -145,4 +138,3 @@ To build/test the project locally on your computer:
 License
 --------------------------
 Ono is 100% free and open-source, under the [MIT license](LICENSE). Use it however you want.
-
