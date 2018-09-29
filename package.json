@@ -14,12 +14,12 @@
   ],
   "author": {
     "name": "James Messinger",
-    "url": "http://bigstickcarpet.com"
+    "url": "https://jamesmessinger.com"
   },
-  "homepage": "https://github.com/bigstickcarpet/ono",
+  "homepage": "https://github.com/James-Messinger/ono",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bigstickcarpet/ono.git"
+    "url": "https://github.com/James-Messinger/ono.git"
   },
   "license": "MIT",
   "main": "lib/ono.js",

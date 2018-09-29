@@ -2,13 +2,13 @@ ono (Oh No!)
 ============================
 #### Throw better errors.
 
-[![Build Status](https://api.travis-ci.org/BigstickCarpet/ono.svg?branch=master)](https://travis-ci.org/BigstickCarpet/ono)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/bigstickcarpet/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/BigstickCarpet/ono)
+[![Build Status](https://api.travis-ci.org/James-Messinger/ono.svg?branch=master)](https://travis-ci.org/James-Messinger/ono)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/james-messinger/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/BigstickCarpet/ono)
 
-[![Coverage Status](https://coveralls.io/repos/BigstickCarpet/ono/badge.svg?branch=master&service=github)](https://coveralls.io/r/BigstickCarpet/ono)
+[![Coverage Status](https://coveralls.io/repos/github/James-Messinger/ono/badge.svg?branch=master)](https://coveralls.io/github/James-Messinger/ono)
 [![Codacy Score](https://api.codacy.com/project/badge/Grade/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/jamesmessinger/ono)
-[![Inline docs](http://inch-ci.org/github/BigstickCarpet/ono.svg?branch=master&style=shields)](http://inch-ci.org/github/BigstickCarpet/ono)
-[![Dependencies](https://david-dm.org/BigstickCarpet/ono.svg)](https://david-dm.org/BigstickCarpet/ono)
+[![Inline docs](http://inch-ci.org/github/James-Messinger/ono.svg?branch=master&style=shields)](http://inch-ci.org/github/James-Messinger/ono)
+[![Dependencies](https://david-dm.org/James-Messinger/ono.svg)](https://david-dm.org/James-Messinger/ono)
 
 [![npm](http://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![Bower](http://img.shields.io/bower/v/ono.svg)](#bower)
@@ -22,7 +22,7 @@ Features
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
-* [Tested](http://bigstickcarpet.github.io/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
+* [Tested](https://jamesmessinger.com/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
 
 
 Example
@@ -124,13 +124,13 @@ throw ono("$0 must be greater than $1", 4, 10);
 
 Contributing
 --------------------------
-I welcome any contributions, enhancements, and bug-fixes.  [File an issue](https://github.com/BigstickCarpet/ono/issues) on GitHub and [submit a pull request](https://github.com/BigstickCarpet/ono/pulls).
+I welcome any contributions, enhancements, and bug-fixes.  [File an issue](https://github.com/James-Messinger/ono/issues) on GitHub and [submit a pull request](https://github.com/James-Messinger/ono/pulls).
 
 #### Building/Testing
 To build/test the project locally on your computer:
 
 1. __Clone this repo__<br>
-`git clone https://github.com/bigstickcarpet/ono.git`
+`git clone https://github.com/James-Messinger/ono.git`
 
 2. __Install dependencies__<br>
 `npm install`
