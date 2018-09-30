@@ -67,12 +67,10 @@ Reference [`ono.js`](dist/ono.js) or [`ono.min.js`](dist/ono.min.js) in your HTM
 
 ```html
 <script src="https://cdn.rawgit.com/James-Messinger/ono/master/dist/ono.js"></script>
-```
-
-Or, if you're using AMD (Require.js), then import it into your module:
-
-```javascript
-define(["ono"], function(ono) { /* your module's code */ })
+<script>
+    var timestamp = new Date().toISOString();
+    throw ono('This error was thrown at %s', timestamp);
+</script>
 ```
 
 
