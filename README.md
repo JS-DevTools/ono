@@ -7,10 +7,10 @@ ono (Oh No!)
 
 [![Coverage Status](https://coveralls.io/repos/github/James-Messinger/ono/badge.svg?branch=master)](https://coveralls.io/github/James-Messinger/ono)
 [![Codacy Score](https://api.codacy.com/project/badge/Grade/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/jamesmessinger/ono)
-[![Inline docs](http://inch-ci.org/github/James-Messinger/ono.svg?branch=master&style=shields)](http://inch-ci.org/github/James-Messinger/ono)
+[![Inline docs](https://inch-ci.org/github/James-Messinger/ono.svg?branch=master&style=shields)](https://inch-ci.org/github/James-Messinger/ono)
 [![Dependencies](https://david-dm.org/James-Messinger/ono.svg)](https://david-dm.org/James-Messinger/ono)
 
-[![npm](http://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
+[![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
 [![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](https://saucelabs.com/u/bigstickcarpet-ono)
