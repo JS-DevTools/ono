@@ -2,13 +2,13 @@ ono (Oh No!)
 ============================
 #### Throw better errors.
 
-[![Build Status](https://api.travis-ci.org/James-Messinger/ono.svg?branch=master)](https://travis-ci.org/James-Messinger/ono)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/james-messinger/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/BigstickCarpet/ono)
+[![Build Status](https://api.travis-ci.org/JS-DevTools/ono.svg?branch=master)](https://travis-ci.org/JS-DevTools/ono)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/JS-DevTools/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/JamesMessinger/ono)
 
-[![Coverage Status](https://coveralls.io/repos/github/James-Messinger/ono/badge.svg?branch=master)](https://coveralls.io/github/James-Messinger/ono)
-[![Codacy Score](https://api.codacy.com/project/badge/Grade/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/jamesmessinger/ono)
-[![Inline docs](https://inch-ci.org/github/James-Messinger/ono.svg?branch=master&style=shields)](https://inch-ci.org/github/James-Messinger/ono)
-[![Dependencies](https://david-dm.org/James-Messinger/ono.svg)](https://david-dm.org/James-Messinger/ono)
+[![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
+[![Codacy Score](https://api.codacy.com/project/badge/Grade/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/JamesMessinger/ono)
+[![Inline docs](https://inch-ci.org/github/JS-DevTools/ono.svg?branch=master&style=shields)](https://inch-ci.org/github/JS-DevTools/ono)
+[![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
 
 [![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
@@ -21,7 +21,7 @@ Features
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
-* [Tested](https://jamesmessinger.com/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
+* [Tested](https://jsdevtools.org/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
 
 
 Example
@@ -66,7 +66,7 @@ var ono = require("ono");
 Reference [`ono.js`](dist/ono.js) or [`ono.min.js`](dist/ono.min.js) in your HTML:
 
 ```html
-<script src="https://cdn.rawgit.com/James-Messinger/ono/master/dist/ono.js"></script>
+<script src="https://cdn.rawgit.com/JS-DevTools/ono/master/dist/ono.js"></script>
 <script>
     var timestamp = new Date().toISOString();
     throw ono('This error was thrown at %s', timestamp);
@@ -115,13 +115,13 @@ throw ono("$0 must be greater than $1", 4, 10);
 
 Contributing
 --------------------------
-I welcome any contributions, enhancements, and bug-fixes.  [File an issue](https://github.com/James-Messinger/ono/issues) on GitHub and [submit a pull request](https://github.com/James-Messinger/ono/pulls).
+I welcome any contributions, enhancements, and bug-fixes.  [File an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
 
 #### Building/Testing
 To build/test the project locally on your computer:
 
 1. __Clone this repo__<br>
-`git clone https://github.com/James-Messinger/ono.git`
+`git clone https://github.com/JS-DevTools/ono.git`
 
 2. __Install dependencies__<br>
 `npm install`

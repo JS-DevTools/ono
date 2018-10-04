@@ -16,10 +16,10 @@
     "name": "James Messinger",
     "url": "https://jamesmessinger.com"
   },
-  "homepage": "https://github.com/James-Messinger/ono",
+  "homepage": "https://github.com/JS-DevTools/ono",
   "repository": {
     "type": "git",
-    "url": "https://github.com/James-Messinger/ono.git"
+    "url": "https://github.com/JS-DevTools/ono.git"
   },
   "license": "MIT",
   "main": "lib/ono.js",
