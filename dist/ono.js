@@ -1,8 +1,8 @@
 /*!
- * Ono v4.0.9 (September 29th 2018)
- *
+ * Ono v4.0.10 (October 4th 2018)
+ * 
  * https://github.com/JS-DevTools/ono
- *
+ * 
  * @author  James Messinger (https://jamesmessinger.com)
  * @license MIT
  */
@@ -328,7 +328,7 @@ function format(fmt) {
           break;
       }
       if(!escaped) {
-        return arg;
+        return arg; 
       }
       args.unshift(arg);
       return match;
