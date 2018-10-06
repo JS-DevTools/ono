@@ -63,7 +63,7 @@ function configureCodeCoverage (config) {
 
   config.files = config.files.map(function (file) {
     if (typeof file === 'string') {
-      file = file.replace(/^dist\/(.*)\.min\.js$/, 'dist/$1.coverage.js');
+      file = file.replace(/^dist\/(.*?)(\.min)?\.js$/, 'dist/$1.coverage.js');
     }
     return file;
   });
@@ -93,10 +93,11 @@ function configureLocalBrowsers (config) {
  * https://github.com/karma-runner/karma-sauce-launcher
  */
 function configureSauceLabs (config) {
+  var SAUCE = process.env.SAUCE === 'true';
   var username = process.env.SAUCE_USERNAME;
   var accessKey = process.env.SAUCE_ACCESS_KEY;
 
-  if (!username || !accessKey) {
+  if (!SAUCE || !username || !accessKey) {
     console.warn('SauceLabs is not enabled');
     return;
   }
@@ -105,7 +106,28 @@ function configureSauceLabs (config) {
   var testName = project.name + ' v' + project.version;
   var build = testName + ' Build #' + process.env.TRAVIS_JOB_NUMBER + ' @ ' + new Date();
 
-  var sauceLaunchers = {
+  config.sauceLabs = {
+    build: build,
+    testName: testName,
+    tags: [project.name],
+  };
+
+  config.customLaunchers = {
+    SauceLabs_Safari_Latest: {
+      base: 'SauceLabs',
+      platform: 'macOS 10.12',
+      browserName: 'safari'
+    },
+    SauceLabs_IE_11: {
+      base: 'SauceLabs',
+      platform: 'Windows 7',
+      browserName: 'internet explorer'
+    },
+    SauceLabs_IE_Edge: {
+      base: 'SauceLabs',
+      platform: 'Windows 10',
+      browserName: 'microsoftedge'
+    },
     SauceLabs_Chrome_Latest: {
       base: 'SauceLabs',
       platform: 'Windows 10',
@@ -116,29 +138,14 @@ function configureSauceLabs (config) {
       platform: 'Windows 10',
       browserName: 'firefox'
     },
-    SauceLabs_Safari_Latest: {
-      base: 'SauceLabs',
-      platform: 'macOS 10.12',
-      browserName: 'safari'
-    },
-    SauceLabs_IE_11: {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'internet explorer'
-    },
-    SauceLabs_IE_Edge: {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'microsoftedge'
-    },
   };
 
   config.reporters.push('saucelabs');
-  config.browsers = config.browsers.concat(Object.keys(sauceLaunchers));
-  config.customLaunchers = Object.assign(config.customLaunchers || {}, sauceLaunchers);
-  config.sauceLabs = {
-    build: build,
-    testName: testName,
-    tags: [project.name],
-  };
+  config.browsers = Object.keys(config.customLaunchers);
+  // config.concurrency = 1;
+  config.captureTimeout = 60000;
+  config.browserDisconnectTolerance = 5,
+  config.browserDisconnectTimeout = 60000;
+  config.browserNoActivityTimeout = 60000;
+  // config.logLevel = 'debug';
 }
