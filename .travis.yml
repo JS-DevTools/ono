@@ -3,24 +3,26 @@
 # https://docs.travis-ci.com/user/customizing-the-build/
 # https://docs.travis-ci.com/user/migrating-from-legacy/
 
-sudo: false
+dist: trusty
+sudo: required  # Required for headless Chrome
 language: node_js
+
+addons:
+  firefox: latest
+  chrome: stable
+
 matrix:
   include:
-    # Browsers
+    # Node 10 + Browser tests
     - node_js: 10
       env: KARMA=true
 
-    # Node
-    - node_js: 6
+    # Node 8 + SauceLabs tests
     - node_js: 8
-    - node_js: 10
+      env: KARMA=true SAUCE=true
 
-  # Don't include web browsers tests in the TravisCI status badge
-  # (SauceLabs has its own per-browser status badge)
-  fast_finish: true
-  allow_failures:
-    - env: KARMA=true
+    # Node 6 tests
+    - node_js: 6
 
 before_script:
   # Setup a virtual display for browser testing
