@@ -21,7 +21,7 @@ Features
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
-* [Tested](https://jsdevtools.org/ono/test/index.html) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
+* [Tested](https://jsdevtools.org/ono/test/) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
 
 
 Example
