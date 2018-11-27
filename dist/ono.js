@@ -1,5 +1,5 @@
 /*!
- * Ono v4.0.10 (October 4th 2018)
+ * Ono v4.0.10 (November 28th 2018)
  * 
  * https://github.com/JS-DevTools/ono
  * 
@@ -25,7 +25,16 @@ module.exports.reference = create(ReferenceError);
 module.exports.syntax = create(SyntaxError);
 module.exports.type = create(TypeError);
 module.exports.uri = create(URIError);
+
 module.exports.formatter = format;
+
+module.exports.custom = function (Klass) {
+  var err = new Klass();
+  var factory = create(Klass);
+  var args = [err].concat([].slice.call(arguments, 1));
+
+  return factory.apply(null, args);
+};
 
 /**
  * Creates a new {@link ono} function that creates the given Error class.
@@ -70,7 +79,13 @@ function create (Klass) {
 
     // Create the new error
     // NOTE: DON'T move this to a separate function! We don't want to pollute the stack trace
-    var newError = new Klass(formattedMessage);
+    var Constructor = Klass;
+
+    if (Constructor === null || Constructor === undefined) {
+      Constructor = Error;
+    }
+
+    var newError = new Constructor(formattedMessage);
 
     // Extend the new error with the additional properties
     extendError(newError, err);   // Copy properties of the original error

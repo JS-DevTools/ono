@@ -79,6 +79,10 @@ declare const ono: {
   uri(props: object): URIError;
   uri(props: object, message: string, ...params: any[]): URIError;
 
+  custom(ErrorLike): ErrorLike;
+  custom(ErrorLike, props: object): ErrorLike;
+  custom(ErrorLike, message: string, ...params: any[]): ErrorLike;
+  custom(ErrorLike, props: object, message: string, ...params: any[]): ErrorLike;
 
   formatter(message: string, ...params: any[]): string;
 }

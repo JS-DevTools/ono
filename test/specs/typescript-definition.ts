@@ -1,5 +1,11 @@
 import ono = require('../../');
 
+class CustomError extends Error {
+  constructor(message?: string) {
+    super(message);
+  }
+}
+
 const err = new Error();
 const errPOJO = { message: 'this is an error message' };
 const props = { id: 'NOT_FOUND', statusCode: 404 };
@@ -158,3 +164,17 @@ ono.uri(message, param1, param2);
 ono.uri(props);
 ono.uri(props, message);
 ono.uri(props, message, param1, param2);
+
+
+ono.custom(CustomError);
+ono.custom(CustomError, props);
+ono.custom(CustomError, props);
+ono.custom(CustomError, message);
+ono.custom(CustomError, message, param1, param2);
+ono.custom(CustomError, props, message);
+ono.custom(CustomError, props, message, param1, param2);
+ono.custom(CustomError, message);
+ono.custom(CustomError, message, param1, param2);
+ono.custom(CustomError, props);
+ono.custom(CustomError, props, message);
+ono.custom(CustomError, props, message, param1, param2);
