@@ -44,6 +44,9 @@ throw ono(err, {code: 413, status: "Invalid data", retry: function() {...}})
 throw ono.range(...);       // RangeError
 throw ono.syntax(...);      // SyntaxError
 throw ono.reference(...);   // ReferenceError
+
+// To throw a custom Error subtype use ono.custom
+throw ono.custom(CustomError, ...) // CustomError
 ```
 
 
@@ -97,6 +100,30 @@ Method            | Error type
 `ono.syntax()`    |[`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)
 `ono.type()`      |[`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)
 `ono.uri()`       |[`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
+
+##### Custom error types
+
+`ono.custom()` allows you to throw custom Error subtypes.
+
+```javascript
+// Define a custom Error subtype
+function CustomError (message) {
+  // Maintains proper stack trace for where our error was thrown
+  // (only available on V8)
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, this.constructor);
+  }
+  this.message = message;
+}
+
+CustomError.prototype = Object.create(Error.prototype);
+CustomError.prototype.name = 'CustomError';
+CustomError.prototype.constructor = CustomError;
+
+var timestamp = new Date().toISOString();
+// throw an instance of CustomError using ono
+throw ono.custom(CustomError, 'This error was thrown at %s', timestamp);
+```
 
 ### `ono.formatter`
 By default, Node's [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format) function is used (even in browsers) to format error messages and substitute placeholders with their corresponding values. You can set `ono.formatter` to a [third-party formatter](https://www.npmjs.com/package/format) or even your own custom implementation, like this:
