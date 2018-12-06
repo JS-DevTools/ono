@@ -13,17 +13,16 @@ os:
   - linux
   - osx
 
+node_js:
+  - 10
+  - 8
+  - 6
+
 matrix:
   include:
-    - name: Node 10 + Browser tests
-      node_js: 10
+      # Browser tests
+    - node_js: 10
       env: KARMA=true
-
-    - name: Node 8
-      node_js: 8
-
-    - name: Node 6
-      node_js: 6
 
 script:
   - npm run lint
