@@ -113,11 +113,6 @@ function configureSauceLabs (config) {
   };
 
   config.customLaunchers = {
-    SauceLabs_Safari_Latest: {
-      base: 'SauceLabs',
-      platform: 'macOS 10.12',
-      browserName: 'safari'
-    },
     SauceLabs_IE_11: {
       base: 'SauceLabs',
       platform: 'Windows 7',
@@ -127,16 +122,6 @@ function configureSauceLabs (config) {
       base: 'SauceLabs',
       platform: 'Windows 10',
       browserName: 'microsoftedge'
-    },
-    SauceLabs_Chrome_Latest: {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'chrome'
-    },
-    SauceLabs_Firefox_Latest: {
-      base: 'SauceLabs',
-      platform: 'Windows 10',
-      browserName: 'firefox'
     },
   };
 

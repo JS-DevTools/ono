@@ -34,12 +34,11 @@ matrix:
     #     chrome: stable
 
     - name: Browser tests (Windows)
-      os: windows
+      os: linux
       node_js: 10
-      env: KARMA=true
-      addons:
-        firefox: latest
-        chrome: stable
+      env:
+        - KARMA=true
+        - SAUCE=true
 
 script:
   - npm run lint
