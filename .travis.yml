@@ -9,6 +9,10 @@ addons:
   firefox: latest
   chrome: stable
 
+os:
+  - linux
+  - osx
+
 matrix:
   include:
     - name: Node 10 + Browser tests

@@ -78,7 +78,7 @@ function configureLocalBrowsers (config) {
   var isLinux = !isMac && !isWindows;
 
   if (isMac) {
-    config.browsers = ['Firefox', 'Chrome', 'Safari'];
+    config.browsers = ['FirefoxHeadless', 'ChromeHeadless', 'Safari'];
   }
   else if (isLinux) {
     config.browsers = ['FirefoxHeadless', 'ChromeHeadless'];
