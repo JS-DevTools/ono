@@ -9,9 +9,6 @@ addons:
   firefox: latest
   chrome: stable
 
-env:
-  - MOZ_HEADLESS=1
-
 matrix:
   include:
     - name: Node 10 + Browser tests
