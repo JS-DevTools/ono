@@ -81,7 +81,7 @@ function configureLocalBrowsers (config) {
     config.browsers = ['Firefox', 'Chrome', 'Safari'];
   }
   else if (isLinux) {
-    config.browsers = ['Firefox', 'ChromeHeadless'];
+    config.browsers = ['FirefoxHeadless', 'ChromeHeadless'];
   }
   else if (isWindows) {
     config.browsers = ['Firefox', 'Chrome', 'IE', 'Edge'];
