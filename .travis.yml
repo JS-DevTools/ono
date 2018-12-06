@@ -3,8 +3,6 @@
 # https://docs.travis-ci.com/user/customizing-the-build/
 # https://docs.travis-ci.com/user/migrating-from-legacy/
 
-dist: trusty
-sudo: required  # Required for headless Chrome
 language: node_js
 
 addons:
