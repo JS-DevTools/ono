@@ -6,8 +6,6 @@ ono (Oh No!)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/JS-DevTools/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/JamesMessinger/ono)
 
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
-[![Codacy Score](https://api.codacy.com/project/badge/Grade/5385a27383174c3089145ec626ffb25b)](https://www.codacy.com/public/JamesMessinger/ono)
-[![Inline docs](https://inch-ci.org/github/JS-DevTools/ono.svg?branch=master&style=shields)](https://inch-ci.org/github/JS-DevTools/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
 
 [![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
