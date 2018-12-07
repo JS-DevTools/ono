@@ -2,7 +2,7 @@ ono (Oh No!)
 ============================
 #### Throw better errors.
 
-[![Build Status](https://api.travis-ci.org/JS-DevTools/ono.svg?branch=master)](https://travis-ci.org/JS-DevTools/ono)
+[![Build Status](https://api.travis-ci.com/JS-DevTools/ono.svg?branch=master)](https://travis-ci.com/JS-DevTools/ono)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/JS-DevTools/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/JamesMessinger/ono)
 
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
