@@ -1,0 +1,4 @@
+# Coveralls config
+# https://docs.coveralls.io/supported-ci-services
+
+service_name: travis-pro
