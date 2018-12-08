@@ -42,14 +42,12 @@ matrix:
         - SAUCE=true
 
 script:
-  - npm run lint
-  - npm run coverage
-  - npm run test:typescript
+  npm run lint && npm run coverage && npm run test:typescript
 
 after_success:
-  # concatenate all code-coverage data into a single file
+  # Concatenate all code-coverage data into a single file
   - ls -R1 coverage/*/lcov.info
   - cat coverage/*/lcov.info > ./coverage/lcov.info
 
-  # send code-coverage data to Coveralls
+  # Send code-coverage data to Coveralls
   - cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js
