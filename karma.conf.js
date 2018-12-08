@@ -101,7 +101,7 @@ function configureSauceLabs (config) {
 
   config.sauceLabs = {
     build: `${project.name} v${project.version} Build #${process.env.TRAVIS_JOB_NUMBER}`,
-    testName: testName,
+    testName: `${project.name} v${project.version}`,
     tags: [project.name],
   };
 
