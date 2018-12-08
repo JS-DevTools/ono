@@ -9,4 +9,4 @@ extends:
   - modular/style
   - modular/browser
   - modular/node
-  - modular/es5
+  - modular/es5 # IE 11

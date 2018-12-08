@@ -18,31 +18,36 @@ os:
 
 matrix:
   include:
-    - name: Browser tests (Linux)
+    - name: Browser tests
       os: linux
       node_js: 10
-      env: KARMA=true
+      env: BROWSER_TESTS=true
       addons:
         firefox: latest
         chrome: stable
 
-    - name: Browser tests (OSX)
+    - name: Browser tests
       os: osx
       node_js: 10
-      env: KARMA=true
+      env: BROWSER_TESTS=true
       addons:
         firefox: latest
         chrome: stable
 
-    - name: Browser tests (Windows)
-      os: linux
+    - name: Browser tests
+      os: windows
       node_js: 10
       env:
-        - KARMA=true
-        - SAUCE=true
+        - BROWSER_TESTS=true
 
 script:
-  npm run lint && npm run coverage && npm run test:typescript
+  if [ ${BROWSER_TESTS} = "true" ]; then
+    npm run coverage:browser;
+  else
+    npm run lint;
+    npm run coverage:node;
+    npm run test:typescript;
+  fi
 
 after_success:
   # Concatenate all code-coverage data into a single file
