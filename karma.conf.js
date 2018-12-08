@@ -69,7 +69,7 @@ function configureBrowsers (config) {
     else if (isLinux) {
       config.browsers = ["FirefoxHeadless", "ChromeHeadless"];
     }
-    else if (isWindows) {
+    else if (isWindows || process.env.WINDOWS === "true") {
       // IE and Edge aren't available in CI, so use SauceLabs
       configureSauceLabs(config);
     }
