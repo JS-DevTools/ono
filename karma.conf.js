@@ -100,7 +100,7 @@ function configureSauceLabs (config) {
   let project = require("./package.json");
 
   config.sauceLabs = {
-    build: `${project.name} v${project.version} Build #${jobNumber}`,
+    build: `${project.name} v${project.version} Build #${process.env.TRAVIS_JOB_NUMBER}`,
     testName: testName,
     tags: [project.name],
   };
