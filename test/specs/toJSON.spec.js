@@ -1,137 +1,137 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
-  'use strict';
+  "use strict";
 
-  describe(name + '().toJSON', function () {
-    it('should return all built-in error properties',
+  describe(name + "().toJSON", function () {
+    it("should return all built-in error properties",
       function () {
         function newError (message) {
-          return ono('Oh No! %s', message);
+          return ono("Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! Something went wrong',
+          message: "Oh No! Something went wrong",
           stack: err.stack
         }));
       }
     );
 
-    it('should return custom properties',
+    it("should return custom properties",
       function () {
         function newError (message) {
-          return ono({ foo: 'bar', biz: 5 }, 'Oh No! %s', message);
+          return ono({ foo: "bar", biz: 5 }, "Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! Something went wrong',
+          message: "Oh No! Something went wrong",
           stack: err.stack,
-          foo: 'bar',
+          foo: "bar",
           biz: 5
         }));
       }
     );
 
-    it('should return custom object properties',
+    it("should return custom object properties",
       function () {
         var now = new Date();
         function newError (message) {
-          return ono({ foo: 'bar', biz: now }, 'Oh No! %s', message);
+          return ono({ foo: "bar", biz: now }, "Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! Something went wrong',
+          message: "Oh No! Something went wrong",
           stack: err.stack,
-          foo: 'bar',
+          foo: "bar",
           biz: now
         }));
       }
     );
 
-    it('should return inherited properties',
+    it("should return inherited properties",
       function () {
         var now = new Date();
         function newError (message) {
           var originalError = new Error(message);
-          originalError.foo = 'bar';
+          originalError.foo = "bar";
           originalError.biz = 5;
           originalError.baz = now;
 
-          return ono(originalError, { foo: 'xyz', bob: 'abc' }, 'Oh No!');
+          return ono(originalError, { foo: "xyz", bob: "abc" }, "Oh No!");
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! \nSomething went wrong',
+          message: "Oh No! \nSomething went wrong",
           stack: err.stack,
-          foo: 'xyz',
+          foo: "xyz",
           biz: 5,
           baz: now,
-          bob: 'abc'
+          bob: "abc"
         }));
       }
     );
 
-    it('should NOT return undefined properties',
+    it("should NOT return undefined properties",
       function () {
         function newError (message) {
-          return ono({ foo: 'bar', biz: undefined }, 'Oh No! %s', message);
+          return ono({ foo: "bar", biz: undefined }, "Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! Something went wrong',
+          message: "Oh No! Something went wrong",
           stack: err.stack,
-          foo: 'bar'
+          foo: "bar"
         }));
       }
     );
 
-    it('should NOT return function properties',
+    it("should NOT return function properties",
       function () {
         function noop () {}
 
         function newError (message) {
-          return ono({ foo: 'bar', biz: noop }, 'Oh No! %s', message);
+          return ono({ foo: "bar", biz: noop }, "Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         expect(json).to.satisfy(helper.matchesJSON({
           name: ErrorTypeName,
-          message: 'Oh No! Something went wrong',
+          message: "Oh No! Something went wrong",
           stack: err.stack,
-          foo: 'bar'
+          foo: "bar"
         }));
       }
     );
 
-    var factoryName = ono.name || 'onoFactory';
-    it('should NOT include ' + factoryName + ' in the stack trace',
+    var factoryName = ono.name || "onoFactory";
+    it("should NOT include " + factoryName + " in the stack trace",
       function () {
         var now = new Date();
         function newError (message) {
-          return ono({ foo: 'bar', biz: now }, 'Oh No! %s', message);
+          return ono({ foo: "bar", biz: now }, "Oh No! %s", message);
         }
 
-        var err = newError('Something went wrong');
+        var err = newError("Something went wrong");
         var json = err.toJSON();
 
         if (json.stack) {

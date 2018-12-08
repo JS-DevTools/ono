@@ -1,5 +1,5 @@
-describe('ono.formatter', function () {
-  'use strict';
+describe("ono.formatter", function () {
+  "use strict";
 
   var originalFormatter;
 
@@ -10,7 +10,7 @@ describe('ono.formatter', function () {
     ono.formatter = function (message) {
       var params = Array.prototype.slice.call(arguments, 1);
       return params.reduce(function (msg, param, index) {
-        return msg.replace('$' + index, param);
+        return msg.replace("$" + index, param);
       }, message);
     };
   });
@@ -19,13 +19,13 @@ describe('ono.formatter', function () {
     ono.formatter = originalFormatter;
   });
 
-  it('should use a custom formatter',
+  it("should use a custom formatter",
     function () {
-      var err = ono('$0 must be greater than $1', 4, 10);
+      var err = ono("$0 must be greater than $1", 4, 10);
 
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.name).to.equal('Error');
-      expect(err.message).to.equal('4 must be greater than 10');
+      expect(err.name).to.equal("Error");
+      expect(err.message).to.equal("4 must be greater than 10");
 
       var json = JSON.parse(JSON.stringify(err));
       expect(json).to.satisfy(helper.matchesJSON({
@@ -36,13 +36,13 @@ describe('ono.formatter', function () {
     }
   );
 
-  it('should use a custom formatter for type-specific methods',
+  it("should use a custom formatter for type-specific methods",
     function () {
-      var err = ono.type('$0 must be greater than $1', 4, 10);
+      var err = ono.type("$0 must be greater than $1", 4, 10);
 
       expect(err).to.be.an.instanceOf(TypeError);
-      expect(err.name).to.equal('TypeError');
-      expect(err.message).to.equal('4 must be greater than 10');
+      expect(err.name).to.equal("TypeError");
+      expect(err.message).to.equal("4 must be greater than 10");
 
       var json = JSON.parse(JSON.stringify(err));
       expect(json).to.satisfy(helper.matchesJSON({

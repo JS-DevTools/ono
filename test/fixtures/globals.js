@@ -3,7 +3,7 @@
  * them in every spec file, and also allows the same spec files to work in Node.js and web browsers.
  */
 (function () {
-  'use strict';
+  "use strict";
 
   if (host.browser) {
     // Define globals for web browsers
@@ -11,8 +11,8 @@
   }
   else {
     // Define globals for Node.js
-    global.ono = require('../../');
-    global.expect = require('chai').expect;
+    global.ono = require("../../");
+    global.expect = require("chai").expect;
   }
 
 }());

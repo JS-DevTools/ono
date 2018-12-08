@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  "use strict";
 
   /**
    * Helper methods for use in tests
@@ -15,18 +15,18 @@
    * @param {function} fn - The function that's invoked for each method
    */
   function forEachMethod (fn) {
-    var names = ['', 'error', 'eval', 'range', 'reference', 'syntax', 'type', 'uri'];
-    var types = ['Error', 'Error', 'EvalError', 'RangeError', 'ReferenceError', 'SyntaxError', 'TypeError', 'URIError'];
+    var names = ["", "error", "eval", "range", "reference", "syntax", "type", "uri"];
+    var types = ["Error", "Error", "EvalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
 
     for (var i = 0; i < names.length; i++) {
       var name, method;
 
       if (i === 0) {
-        name = 'ono';
+        name = "ono";
         method = ono;
       }
       else {
-        name = 'ono.' + names[i];
+        name = "ono." + names[i];
         method = ono[names[i]];
       }
 
@@ -45,9 +45,9 @@
     return function (json) {
       try {
         if (host.browser.firefox) {
-          expect(json.fileName).to.be.a('string').and.not.empty;
-          expect(json.lineNumber).to.be.a('number').above(0);
-          expect(json.columnNumber).to.be.a('number').above(0);
+          expect(json.fileName).to.be.a("string").and.not.empty;
+          expect(json.lineNumber).to.be.a("number").above(0);
+          expect(json.columnNumber).to.be.a("number").above(0);
           expected.fileName = json.fileName;
           expected.lineNumber = json.lineNumber;
           expected.columnNumber = json.columnNumber;
@@ -55,20 +55,20 @@
 
         // Only recent versions of Safari include these properties
         if (host.browser.safari && json.sourceURL && json.line && json.column) {
-          expect(json.sourceURL).to.be.a('string').and.not.empty;
-          expect(json.line).to.be.a('number').above(0);
-          expect(json.column).to.be.a('number').above(0);
+          expect(json.sourceURL).to.be.a("string").and.not.empty;
+          expect(json.line).to.be.a("number").above(0);
+          expect(json.column).to.be.a("number").above(0);
           expected.sourceURL = json.sourceURL;
           expected.line = json.line;
           expected.column = json.column;
         }
 
-        if (host.browser.IE && 'description' in json) {
-          expect(json.description).to.be.a('string');
+        if (host.browser.IE && "description" in json) {
+          expect(json.description).to.be.a("string");
           expected.description = json.description;
         }
 
-        if (!('stack' in json)) {
+        if (!("stack" in json)) {
           // Some browsers don't support the "stack" property
           delete expected.stack;
         }
@@ -77,8 +77,8 @@
         return true;
       }
       catch (e) {
-        console.error('\nEXPECTED: ', expected);
-        console.error('\nACTUAL: ', json);
+        console.error("\nEXPECTED: ", expected);
+        console.error("\nACTUAL: ", json);
         throw e;
       }
     };
