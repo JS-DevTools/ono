@@ -3,14 +3,13 @@ ono (Oh No!)
 #### Throw better errors.
 
 [![Build Status](https://api.travis-ci.com/JS-DevTools/ono.svg?branch=master)](https://travis-ci.com/JS-DevTools/ono)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/JS-DevTools/ono?svg=true&branch=master&failingText=Windows%20build%20failing&passingText=Windows%20build%20passing)](https://ci.appveyor.com/project/JamesMessinger/ono)
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
 
 [![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
-[![Browser Compatibility](https://saucelabs.com/browser-matrix/bigstickcarpet-ono.svg)](https://saucelabs.com/u/bigstickcarpet-ono)
+[![OS and Browser Compatibility](https://jsdevtools.org/img/ci-badges-with-ie.svg)](https://travis-ci.com/JS-DevTools/ono)
 
 Features
 --------------------------
