@@ -1,20 +1,20 @@
 /*!
- * Ono v4.0.10 (October 4th 2018)
+ * Ono v4.0.11 (December 9th 2018)
  * 
- * https://github.com/JS-DevTools/ono
+ * https://jsdevtools.org/ono
  * 
  * @author  James Messinger (https://jamesmessinger.com)
  * @license MIT
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.ono = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var format = require('format-util');
+var format = require("format-util");
 var slice = Array.prototype.slice;
-var protectedProperties = ['name', 'message', 'stack'];
+var protectedProperties = ["name", "message", "stack"];
 var errorPrototypeProperties = [
-  'name', 'message', 'description', 'number', 'code', 'fileName', 'lineNumber', 'columnNumber',
-  'sourceURL', 'line', 'column', 'stack'
+  "name", "message", "description", "number", "code", "fileName", "lineNumber", "columnNumber",
+  "sourceURL", "line", "column", "stack"
 ];
 
 module.exports = create(Error);
@@ -43,18 +43,18 @@ function create (Klass) {
    */
   return function onoFactory (err, props, message, params) {   // eslint-disable-line no-unused-vars
     var formatArgs = [];
-    var formattedMessage = '';
+    var formattedMessage = "";
 
     // Determine which arguments were actually specified
-    if (typeof err === 'string') {
+    if (typeof err === "string") {
       formatArgs = slice.call(arguments);
       err = props = undefined;
     }
-    else if (typeof props === 'string') {
+    else if (typeof props === "string") {
       formatArgs = slice.call(arguments, 1);
       props = undefined;
     }
-    else if (typeof message === 'string') {
+    else if (typeof message === "string") {
       formatArgs = slice.call(arguments, 2);
     }
 
@@ -65,7 +65,7 @@ function create (Klass) {
 
     if (err && err.message) {
       // The inner-error's message will be added to the new message
-      formattedMessage += (formattedMessage ? ' \n' : '') + err.message;
+      formattedMessage += (formattedMessage ? " \n" : "") + err.message;
     }
 
     // Create the new error
@@ -111,7 +111,7 @@ function extendToJSON (error) {
  * @param {?source} source - The object whose properties are copied
  */
 function extend (target, source) {
-  if (source && typeof source === 'object') {
+  if (source && typeof source === "object") {
     var keys = Object.keys(source);
     for (var i = 0; i < keys.length; i++) {
       var key = keys[i];
@@ -151,7 +151,7 @@ function errorToJSON () {
     var key = keys[i];
     var value = this[key];
     var type = typeof value;
-    if (type !== 'undefined' && type !== 'function') {
+    if (type !== "undefined" && type !== "function") {
       json[key] = value;
     }
   }
@@ -165,7 +165,7 @@ function errorToJSON () {
  * @returns {string}
  */
 function errorToString () {
-  return JSON.stringify(this, null, 2).replace(/\\n/g, '\n');
+  return JSON.stringify(this, null, 2).replace(/\\n/g, "\n");
 }
 
 /**
@@ -204,7 +204,7 @@ function joinStacks (newStack, originalStack) {
   newStack = popStack(newStack);
 
   if (newStack && originalStack) {
-    return newStack + '\n\n' + originalStack;
+    return newStack + "\n\n" + originalStack;
   }
   else {
     return newStack || originalStack;
@@ -219,7 +219,7 @@ function joinStacks (newStack, originalStack) {
  */
 function popStack (stack) {
   if (stack) {
-    var lines = stack.split('\n');
+    var lines = stack.split("\n");
 
     if (lines.length < 2) {
       // The stack only has one line, so there's nothing we can remove
@@ -229,9 +229,9 @@ function popStack (stack) {
     // Find the `onoFactory` call in the stack, and remove it
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
-      if (line.indexOf('onoFactory') >= 0) {
+      if (line.indexOf("onoFactory") >= 0) {
         lines.splice(i, 1);
-        return lines.join('\n');
+        return lines.join("\n");
       }
     }
 
@@ -252,7 +252,7 @@ var supportsLazyStack = (function () {
     Object.getOwnPropertyDescriptor && Object.defineProperty &&
 
     // Chrome on Android doesn't support lazy stacks :(
-    (typeof navigator === 'undefined' || !/Android/.test(navigator.userAgent))
+    (typeof navigator === "undefined" || !/Android/.test(navigator.userAgent))
   );
 }());
 
@@ -267,11 +267,11 @@ function hasLazyStack (err) {
     return false;
   }
 
-  var descriptor = Object.getOwnPropertyDescriptor(err, 'stack');
+  var descriptor = Object.getOwnPropertyDescriptor(err, "stack");
   if (!descriptor) {
     return false;
   }
-  return typeof descriptor.get === 'function';
+  return typeof descriptor.get === "function";
 }
 
 /**
@@ -281,9 +281,9 @@ function hasLazyStack (err) {
  * @param {Error} sourceError
  */
 function lazyJoinStacks (targetError, sourceError) {
-  var targetStack = Object.getOwnPropertyDescriptor(targetError, 'stack');
+  var targetStack = Object.getOwnPropertyDescriptor(targetError, "stack");
 
-  Object.defineProperty(targetError, 'stack', {
+  Object.defineProperty(targetError, "stack", {
     get: function () {
       return joinStacks(targetStack.get.apply(targetError), sourceError.stack);
     },
@@ -298,9 +298,9 @@ function lazyJoinStacks (targetError, sourceError) {
  * @param {Error} error
  */
 function lazyPopStack (error) {
-  var targetStack = Object.getOwnPropertyDescriptor(error, 'stack');
+  var targetStack = Object.getOwnPropertyDescriptor(error, "stack");
 
-  Object.defineProperty(error, 'stack', {
+  Object.defineProperty(error, "stack", {
     get: function () {
       return popStack(targetStack.get.apply(error));
     },
