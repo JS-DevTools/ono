@@ -111,7 +111,7 @@ throw ono("$0 must be greater than $1", 4, 10);
 
 Contributing
 --------------------------
-I welcome any contributions, enhancements, and bug-fixes.  [File an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
+Contributions, enhancements, and bug-fixes are welcome!  [File an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
 
 #### Building/Testing
 To build/test the project locally on your computer:
