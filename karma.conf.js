@@ -63,15 +63,15 @@ function configureBrowsers (config) {
   let isCI = process.env.CI === "true";
 
   if (isCI) {
-    if (isMac) {
+    if (isWindows || process.env.WINDOWS === "true") {
+      // IE and Edge aren't available in CI, so use SauceLabs
+      configureSauceLabs(config);
+    }
+    else if (isMac) {
       config.browsers = ["FirefoxHeadless", "ChromeHeadless", "Safari"];
     }
     else if (isLinux) {
       config.browsers = ["FirefoxHeadless", "ChromeHeadless"];
-    }
-    else if (isWindows || process.env.WINDOWS === "true") {
-      // IE and Edge aren't available in CI, so use SauceLabs
-      configureSauceLabs(config);
     }
   }
   else if (isMac) {
