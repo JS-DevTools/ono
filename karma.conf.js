@@ -57,13 +57,13 @@ function configureCodeCoverage (config) {
  * Configures the browsers for the current platform
  */
 function configureBrowsers (config) {
+  let isWindows = /^win/.test(process.platform) || process.env.WINDOWS === "true";
   let isMac = /^darwin/.test(process.platform);
-  let isWindows = /^win/.test(process.platform);
   let isLinux = !isMac && !isWindows;
   let isCI = process.env.CI === "true";
 
   if (isCI) {
-    if (isWindows || process.env.WINDOWS === "true") {
+    if (isWindows) {
       // IE and Edge aren't available in CI, so use SauceLabs
       configureSauceLabs(config);
     }

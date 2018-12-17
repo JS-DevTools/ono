@@ -43,7 +43,7 @@
     "coverage:browser": "npm run build -- --coverage && npm run test:browser -- --coverage",
     "upgrade": "npm-check -u",
     "bump": "bump --prompt --grep dist/* --tag --push --all",
-    "release": "npm run upgrade && npm run build && npm test && npm run bump && npm publish"
+    "release": "npm run upgrade && npm run build && npm test && npm run bump"
   },
   "devDependencies": {
     "chai": "^4.2.0",
