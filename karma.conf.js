@@ -10,7 +10,7 @@ module.exports = function (karma) {
 
     files: [
       // Ono
-      "dist/ono.min.js",
+      "src/ono.ts",
       { pattern: "dist/*.map", included: false, served: true },
 
       // Test Fixtures
@@ -19,6 +19,29 @@ module.exports = function (karma) {
       // Test Specs
       "test/specs/*.spec.js"
     ],
+    mime: {
+      "text/x-typescript": ["ts", "tsx"]
+    },
+
+    preprocessors: {
+      "src/ono.ts": ["webpack"],
+    },
+
+    webpack: {
+      mode: "development",
+      devtool: "inline-source-map",
+      output: {
+        library: "ono",
+      },
+      resolve: {
+        extensions: [".ts", ".tsx", ".js", ".mjs", ".json"],
+      },
+      module: {
+        rules: [
+          { test: /\.tsx?$/, use: "ts-loader" },
+        ],
+      },
+    },
   };
 
   configureCodeCoverage(config);
