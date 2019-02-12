@@ -22,7 +22,7 @@
     "url": "https://github.com/JS-DevTools/ono.git"
   },
   "license": "MIT",
-  "main": "esm/ono.js",
+  "main": "cjs/ono.js",
   "typings": "lib/ono.d.ts",
   "files": [
     "dist/ono.js",

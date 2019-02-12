@@ -1,7 +1,9 @@
-var format = require("format-util");
-var slice = Array.prototype.slice;
-var protectedProperties = ["name", "message", "stack"];
-var errorPrototypeProperties = [
+let format = require("format-util");
+// import * as format from "format-util";
+
+const slice = Array.prototype.slice;
+const protectedProperties = ["name", "message", "stack"];
+const errorPrototypeProperties = [
   "name", "message", "description", "number", "code", "fileName", "lineNumber", "columnNumber",
   "sourceURL", "line", "column", "stack"
 ];
@@ -16,13 +18,19 @@ module.exports.type = create(TypeError);
 module.exports.uri = create(URIError);
 module.exports.formatter = format;
 
+type ErrorTypes = ErrorConstructor | EvalErrorConstructor | RangeErrorConstructor |
+                  ReferenceErrorConstructor | SyntaxErrorConstructor | TypeErrorConstructor | URIErrorConstructor;
+
+
+interface OnoError extends Error {
+  toJSON?(): object;
+  inspect?(): string;
+}
+
 /**
- * Creates a new {@link ono} function that creates the given Error class.
- *
- * @param {Class} Klass - The Error subclass to create
- * @returns {ono}
+ * Creates a new `ono` function that creates the given Error class.
  */
-function create (Klass) {
+function create(klass: ErrorTypes): Error {
   /**
    * @param {Error}   [err]     - The original error, if any
    * @param {object}  [props]   - An object whose properties will be added to the error object
@@ -30,9 +38,12 @@ function create (Klass) {
    * @param {...*}    [params]  - Parameters that map to the `message` placeholders
    * @returns {Error}
    */
-  return function onoFactory (err, props, message, params) {   // eslint-disable-line no-unused-vars
-    var formatArgs = [];
-    var formattedMessage = "";
+
+  //TODO: how to handle undefined params for err, props, message, etc
+  return function onoFactory(err?: string | Error, props?: object, message?: string, params?: unknown): OnoError {
+
+    let formatArgs = [];
+    let formattedMessage = "";
 
     // Determine which arguments were actually specified
     if (typeof err === "string") {
@@ -49,7 +60,7 @@ function create (Klass) {
 
     // If there are any format arguments, then format the error message
     if (formatArgs.length > 0) {
-      formattedMessage = module.exports.formatter.apply(null, formatArgs);
+      formattedMessage = module.exports.formatter.apply(undefined, formatArgs);
     }
 
     if (err && err.message) {
@@ -59,13 +70,14 @@ function create (Klass) {
 
     // Create the new error
     // NOTE: DON'T move this to a separate function! We don't want to pollute the stack trace
-    var newError = new Klass(formattedMessage);
+    let newError = new klass(formattedMessage);
 
     // Extend the new error with the additional properties
     extendError(newError, err);   // Copy properties of the original error
     extendToJSON(newError);       // Replace the original toJSON method
-    extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
-
+    if (props) {
+      extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
+    }
     return newError;
   };
 }
@@ -73,73 +85,71 @@ function create (Klass) {
 /**
  * Extends the targetError with the properties of the source error.
  *
- * @param {Error}   targetError - The error object to extend
- * @param {?Error}  sourceError - The source error object, if any
+ * @param targetError - The error object to extend
+ * @param sourceError - The source error object, if any
  */
-function extendError (targetError, sourceError) {
+function extendError(targetError: Error, sourceError?: Error) {
   extendStack(targetError, sourceError);
   extend(targetError, sourceError);
 }
+
 
 /**
  * JavaScript engines differ in how errors are serialized to JSON - especially when it comes
  * to custom error properties and stack traces.  So we add our own toJSON method that ALWAYS
  * outputs every property of the error.
  */
-function extendToJSON (error) {
+function extendToJSON(error: OnoError) {
   error.toJSON = errorToJSON;
 
   // Also add an inspect() method, for compatibility with Node.js' `util.inspect()` method
   error.inspect = errorToString;
+
+  return error;
 }
 
 /**
  * Extends the target object with the properties of the source object.
  *
- * @param {object}  target - The object to extend
- * @param {?source} source - The object whose properties are copied
+ * @param target - The object to extend
+ * @param source - The object whose properties are copied
  */
-function extend (target, source) {
-  if (source && typeof source === "object") {
-    var keys = Object.keys(source);
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
+function extend(target: Record<string, unknown>, source?: Record<string, unknown>) {
+  if (source) {
+    let keys = Object.keys(source);
+
+    keys.forEach((key, index) => {
 
       // Don't copy "protected" properties, since they have special meaning/behavior
       // and are set by the onoFactory function
-      if (protectedProperties.indexOf(key) >= 0) {
-        continue;
+      if (protectedProperties.indexOf(key) < 0) {
+        try {
+          target[key] = source[key];
+        }
+        catch (e) {
+          // This property is read-only, so it can't be copied
+        }
       }
-
-      try {
-        target[key] = source[key];
-      }
-      catch (e) {
-        // This property is read-only, so it can't be copied
-      }
-    }
+    });
   }
 }
 
 /**
  * Custom JSON serializer for Error objects.
  * Returns all built-in error properties, as well as extended properties.
- *
- * @returns {object}
  */
-function errorToJSON () {
-  var json = {};
+function errorToJSON(this: Record<string, unknown>): object {
+  let json: Record<string, unknown> = {};
 
   // Get all the properties of this error
-  var keys = Object.keys(this);
+  let keys = Object.keys(this);
 
   // Also include properties from the Error prototype
   keys = keys.concat(errorPrototypeProperties);
 
-  for (var i = 0; i < keys.length; i++) {
-    var key = keys[i];
-    var value = this[key];
-    var type = typeof value;
+  for (let key of keys) {
+    let value = this[key];
+    let type = typeof value;
     if (type !== "undefined" && type !== "function") {
       json[key] = value;
     }
@@ -150,20 +160,15 @@ function errorToJSON () {
 
 /**
  * Serializes Error objects as human-readable JSON strings for debugging/logging purposes.
- *
- * @returns {string}
  */
-function errorToString () {
-  return JSON.stringify(this, null, 2).replace(/\\n/g, "\n");
+function errorToString(this: OnoError) {
+  return JSON.stringify(this, undefined, 2).replace(/\\n/g, "\n");
 }
 
 /**
  * Extend the error stack to include its cause
- *
- * @param {Error} targetError
- * @param {Error} sourceError
  */
-function extendStack (targetError, sourceError) {
+function extendStack(targetError: Error, sourceError?: Error): void {
   if (hasLazyStack(targetError)) {
     if (sourceError) {
       lazyJoinStacks(targetError, sourceError);
@@ -183,32 +188,25 @@ function extendStack (targetError, sourceError) {
 }
 
 /**
- * Appends the original {@link Error#stack} property to the new Error's stack.
- *
- * @param {string} newStack
- * @param {string} originalStack
- * @returns {string}
+ * Appends the original `Error.stack` property to the new Error's stack.
  */
-function joinStacks (newStack, originalStack) {
+function joinStacks(newStack: string, originalStack: string): string {
   newStack = popStack(newStack);
 
   if (newStack && originalStack) {
     return newStack + "\n\n" + originalStack;
   }
   else {
-    return newStack || originalStack;
+   return newStack || originalStack;
   }
 }
 
 /**
  * Removes Ono from the stack, so that the stack starts at the original error location
- *
- * @param {string} stack
- * @returns {string}
  */
-function popStack (stack) {
+function popStack(stack: string): string {
   if (stack) {
-    var lines = stack.split("\n");
+    let lines = stack.split("\n");
 
     if (lines.length < 2) {
       // The stack only has one line, so there's nothing we can remove
@@ -216,8 +214,8 @@ function popStack (stack) {
     }
 
     // Find the `onoFactory` call in the stack, and remove it
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i];
       if (line.indexOf("onoFactory") >= 0) {
         lines.splice(i, 1);
         return lines.join("\n");
@@ -229,13 +227,15 @@ function popStack (stack) {
     // So just return the stack as-is.
     return stack;
   }
+
+  return "";
 }
 
-/**
- * Does a one-time determination of whether this JavaScript engine
- * supports lazy `Error.stack` properties.
- */
-var supportsLazyStack = (function () {
+// /**
+//  * Does a one-time determination of whether this JavaScript engine
+//  * supports lazy `Error.stack` properties.
+//  */
+let supportsLazyStack = (() => {
   return !!(
     // ES5 property descriptors must be supported
     Object.getOwnPropertyDescriptor && Object.defineProperty &&
@@ -245,18 +245,18 @@ var supportsLazyStack = (function () {
   );
 }());
 
-/**
- * Does this error have a lazy stack property?
- *
- * @param {Error} err
- * @returns {boolean}
- */
-function hasLazyStack (err) {
+// /**
+//  * Does this error have a lazy stack property?
+//  *
+//  * @param {Error} err
+//  * @returns {boolean}
+//  */
+function hasLazyStack (err:any) {
   if (!supportsLazyStack) {
     return false;
   }
 
-  var descriptor = Object.getOwnPropertyDescriptor(err, "stack");
+  let descriptor = Object.getOwnPropertyDescriptor(err, "stack");
   if (!descriptor) {
     return false;
   }
@@ -264,17 +264,18 @@ function hasLazyStack (err) {
 }
 
 /**
- * Calls {@link joinStacks} lazily, when the {@link Error#stack} property is accessed.
- *
- * @param {Error} targetError
- * @param {Error} sourceError
+ * Calls `joinStacks` lazily, when the `Error.stack` property is accessed.
  */
-function lazyJoinStacks (targetError, sourceError) {
-  var targetStack = Object.getOwnPropertyDescriptor(targetError, "stack");
+function lazyJoinStacks(targetError: Error, sourceError: Error) {
+  let targetStack = Object.getOwnPropertyDescriptor(targetError, "stack");
 
   Object.defineProperty(targetError, "stack", {
-    get: function () {
-      return joinStacks(targetStack.get.apply(targetError), sourceError.stack);
+    get: () => {
+      if (targetStack) {
+        if (typeof sourceError.stack === "string") {
+          return joinStacks(targetStack.get.apply(targetError), sourceError.stack);
+        }
+      }
     },
     enumerable: false,
     configurable: true
@@ -282,16 +283,17 @@ function lazyJoinStacks (targetError, sourceError) {
 }
 
 /**
- * Calls {@link popStack} lazily, when the {@link Error#stack} property is accessed.
- *
- * @param {Error} error
+ * Calls `popStack` lazily, when the `Error.stack` property is accessed.
  */
-function lazyPopStack (error) {
-  var targetStack = Object.getOwnPropertyDescriptor(error, "stack");
+function lazyPopStack(error: Error) {
+  let targetStack = Object.getOwnPropertyDescriptor(error, "stack");
+
 
   Object.defineProperty(error, "stack", {
-    get: function () {
-      return popStack(targetStack.get.apply(error));
+    get: () => {
+      if (targetStack && targetStack.get) {
+        return popStack(targetStack.get.apply(error));
+      }
     },
     enumerable: false,
     configurable: true
