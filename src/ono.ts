@@ -18,6 +18,7 @@ module.exports.type = create(TypeError);
 module.exports.uri = create(URIError);
 module.exports.formatter = format;
 
+
 type ErrorTypes = ErrorConstructor | EvalErrorConstructor | RangeErrorConstructor |
                   ReferenceErrorConstructor | SyntaxErrorConstructor | TypeErrorConstructor | URIErrorConstructor;
 
@@ -39,7 +40,7 @@ function create(klass: ErrorTypes): Error {
    * @returns {Error}
    */
 
-  //TODO: how to handle undefined params for err, props, message, etc
+  // TODO: Params not being used?
   return function onoFactory(err?: string | Error, props?: object, message?: string, params?: unknown): OnoError {
 
     let formatArgs = [];
@@ -75,9 +76,8 @@ function create(klass: ErrorTypes): Error {
     // Extend the new error with the additional properties
     extendError(newError, err);   // Copy properties of the original error
     extendToJSON(newError);       // Replace the original toJSON method
-    if (props) {
-      extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
-    }
+    extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
+
     return newError;
   };
 }
@@ -243,7 +243,7 @@ let supportsLazyStack = (() => {
     // Chrome on Android doesn't support lazy stacks :(
     (typeof navigator === "undefined" || !/Android/.test(navigator.userAgent))
   );
-}());
+})();
 
 // /**
 //  * Does this error have a lazy stack property?
@@ -251,7 +251,7 @@ let supportsLazyStack = (() => {
 //  * @param {Error} err
 //  * @returns {boolean}
 //  */
-function hasLazyStack (err:any) {
+function hasLazyStack(err: Error) {
   if (!supportsLazyStack) {
     return false;
   }
