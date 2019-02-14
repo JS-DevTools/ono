@@ -46,7 +46,7 @@ throw ono.reference(...);   // ReferenceError
 Installation
 --------------------------
 #### Node
-Install using [npm](https://docs.npmjs.com/getting-started/what-is-npm):
+Install using [npm](https://docs.npmjs.com/about-npm/):
 
 ```bash
 npm install ono
