@@ -16,20 +16,18 @@
     "name": "James Messinger",
     "url": "https://jamesmessinger.com"
   },
+  "license": "MIT",
   "homepage": "https://jsdevtools.org/ono",
   "repository": {
     "type": "git",
     "url": "https://github.com/JS-DevTools/ono.git"
   },
-  "license": "MIT",
-  "main": "cjs/ono.js",
-  "typings": "lib/ono.d.ts",
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "typings": "esm/index.d.ts",
   "files": [
-    "dist/ono.js",
-    "dist/ono.js.map",
-    "dist/ono.min.js",
-    "dist/ono.min.js.map",
-    "lib"
+    "cjs",
+    "esm"
   ],
   "scripts": {
     "clean": "shx rm -rf .nyc_output coverage cjs esm",
