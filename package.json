@@ -44,7 +44,7 @@
     "coverage:node": "nyc --reporter=text --reporter=lcov --report-dir coverage/node mocha",
     "coverage:browser": "npm run test:browser -- --coverage",
     "upgrade": "npm-check -u",
-    "bump": "bump --prompt --grep dist/* --tag --push --all",
+    "bump": "bump --prompt --tag --push --all",
     "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
   },
   "devDependencies": {
