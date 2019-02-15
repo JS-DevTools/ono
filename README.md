@@ -11,13 +11,16 @@ ono (Oh No!)
 
 [![OS and Browser Compatibility](https://jsdevtools.org/img/badges/ci-badges-with-ie.svg)](https://travis-ci.com/JS-DevTools/ono)
 
+
+
 Features
 --------------------------
 * Formatted error messages, using Node's [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) or your own custom formatter
 * Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
 * Add custom properties to your errors &mdash; great for error codes, support numbers, help URLs, etc.
 * Errors can be serialized as JSON, including all native and custom properties
-* [Tested](https://jsdevtools.org/ono/test/) on Node.js and all modern web browsers on Mac, Windows, Linux, iOS, and Android
+* [Tested](https://travis-ci.com/JS-DevTools/ono) on Node.js and all modern web browsers on Mac, Windows, and Linux.
+
 
 
 Example
@@ -41,6 +44,7 @@ throw ono.range(...);       // RangeError
 throw ono.syntax(...);      // SyntaxError
 throw ono.reference(...);   // ReferenceError
 ```
+
 
 
 Installation
@@ -68,6 +72,7 @@ Reference [`ono.js`](dist/ono.js) or [`ono.min.js`](dist/ono.min.js) in your HTM
     throw ono('This error was thrown at %s', timestamp);
 </script>
 ```
+
 
 
 API
@@ -109,6 +114,7 @@ throw ono("$0 must be greater than $1", 4, 10);
 ```
 
 
+
 Contributing
 --------------------------
 Contributions, enhancements, and bug-fixes are welcome!  [File an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
@@ -129,9 +135,11 @@ To build/test the project locally on your computer:
 `npm test`
 
 
+
 License
 --------------------------
 Ono is 100% free and open-source, under the [MIT license](LICENSE). Use it however you want.
+
 
 
 Big Thanks To
