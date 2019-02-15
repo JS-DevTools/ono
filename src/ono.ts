@@ -8,20 +8,40 @@ const errorPrototypeProperties = [
   "sourceURL", "line", "column", "stack"
 ];
 
-module.exports = create(Error);
-module.exports.error = create(Error);
-module.exports.eval = create(EvalError);
-module.exports.range = create(RangeError);
-module.exports.reference = create(ReferenceError);
-module.exports.syntax = create(SyntaxError);
-module.exports.type = create(TypeError);
-module.exports.uri = create(URIError);
-module.exports.formatter = format;
+// module.exports = create(Error);
+// module.exports.error = create(Error);
+// module.exports.eval = create(EvalError);
+// module.exports.range = create(RangeError);
+// module.exports.reference = create(ReferenceError);
+// module.exports.syntax = create(SyntaxError);
+// module.exports.type = create(TypeError);
+// module.exports.uri = create(URIError);
+// module.exports.formatter = format;
+export const error = onoFactory(Error);
+export const eval = onoFactory(EvalError);
 
+// type ErrorTypes = ErrorConstructor | EvalErrorConstructor | RangeErrorConstructor |
+                  // ReferenceErrorConstructor | SyntaxErrorConstructor | TypeErrorConstructor | URIErrorConstructor;
 
-type ErrorTypes = ErrorConstructor | EvalErrorConstructor | RangeErrorConstructor |
-                  ReferenceErrorConstructor | SyntaxErrorConstructor | TypeErrorConstructor | URIErrorConstructor;
+interface ErrorPOJO {
+  message?: string;
+  stack?: string;
+  name?: string;
+  [key: string]: unknown;
+}
+type ErrorLike = Error | ErrorPOJO;
 
+type ErrorLikeConstructor = new<T>() => T;
+
+interface Ono {
+  (error: ErrorLike): Error;
+  (error: ErrorLike, props: object): Error;
+  (error: ErrorLike, message: string, ...params: any[]): Error;
+  (error: ErrorLike, props: object, message: string, ...params: any[]): Error;
+  (message: string, ...params: any[]): Error;
+  (props: object): Error;
+  (props: object, message: string, ...params: any[]): Error;
+}
 
 interface OnoError extends Error {
   toJSON?(): object;
@@ -31,7 +51,9 @@ interface OnoError extends Error {
 /**
  * Creates a new `ono` function that creates the given Error class.
  */
-function create(klass: ErrorTypes): Error {
+
+ //T is class of Error not instance of Error
+function onoFactory<T extends ErrorLikeConstructor>(klass: T): Ono {
   /**
    * @param {Error}   [err]     - The original error, if any
    * @param {object}  [props]   - An object whose properties will be added to the error object
@@ -41,7 +63,7 @@ function create(klass: ErrorTypes): Error {
    */
 
   // TODO: Params not being used?
-  return function onoFactory(err?: string | Error, props?: object, message?: string, params?: unknown): OnoError {
+  return function ono(err?: string | Error, props?: object, message?: string, params?: unknown): T {
 
     let formatArgs = [];
     let formattedMessage = "";
