@@ -50,7 +50,7 @@ jobs:
     - name: Browser tests (Windows via SauceLabs)
       os: linux
       script: npm run coverage:browser
-      env: WINDOWS=true
+      env: KARMA_PLATFORM=win32
 
     - stage: Deploy
       name: Publish to npm
