@@ -6,3 +6,4 @@ extends:
   - tslint-modular/best-practices
   - tslint-modular/style
   - tslint-modular/node
+  - tslint-modular/browser

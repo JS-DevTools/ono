@@ -4,8 +4,6 @@
 
 extends:
   - modular/test
-  - modular/browser
-
 globals:
   # ono global
   ono: false
