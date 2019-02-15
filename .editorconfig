@@ -18,8 +18,10 @@ indent_style = space
 indent_size = 2
 
 # JavaScript-specific settings
-[*.{js,jsx}]
-quote_type = single
+[*.{js,ts}]
+quote_type = double
 continuation_indent_size = 2
 curly_bracket_next_line = false
 indent_brace_style = BSD
+spaces_around_operators = true
+spaces_around_brackets = none
