@@ -1,323 +1,149 @@
-let format = require("format-util");
-// import * as format from "format-util";
+/**
+ * The default export of the "ono" module.
+ */
+export interface OnoSingleton extends Ono<Error> {
+  error: Ono<Error>;
+  eval: Ono<EvalError>;
+  range: Ono<RangeError>;
+  reference: Ono<ReferenceError>;
+  syntax: Ono<SyntaxError>;
+  type: Ono<TypeError>;
+  uri: Ono<URIError>;
+  formatter: MessageFormatter;
+}
 
-const slice = Array.prototype.slice;
-const protectedProperties = ["name", "message", "stack"];
-const errorPrototypeProperties = [
-  "name", "message", "description", "number", "code", "fileName", "lineNumber", "columnNumber",
-  "sourceURL", "line", "column", "stack"
-];
+/**
+ * An `Ono` is a function that creates errors of a specific type.
+ */
+export interface Ono<T extends ErrorLike> {
+  /**
+   * Creates a new error with the message, stack trace, and properties of another error.
+   *
+   * @param error - The original error
+   */
+  (error: ErrorLike): T & OnoError;
 
-// module.exports = create(Error);
-// module.exports.error = create(Error);
-// module.exports.eval = create(EvalError);
-// module.exports.range = create(RangeError);
-// module.exports.reference = create(ReferenceError);
-// module.exports.syntax = create(SyntaxError);
-// module.exports.type = create(TypeError);
-// module.exports.uri = create(URIError);
-// module.exports.formatter = format;
-export const error = onoFactory(Error);
-export const eval = onoFactory(EvalError);
+  /**
+   * Creates a new error with the message, stack trace, and properties of another error,
+   * as well as aditional properties.
+   *
+   * @param error - The original error
+   * @param props - An object whose properties will be added to the returned error
+   */
+  (error: ErrorLike, props: object): T & OnoError;
 
-// type ErrorTypes = ErrorConstructor | EvalErrorConstructor | RangeErrorConstructor |
-                  // ReferenceErrorConstructor | SyntaxErrorConstructor | TypeErrorConstructor | URIErrorConstructor;
+  /**
+   * Creates a new error with a formatted message and the stack trace and properties of another error.
+   *
+   * @param error - The original error
+   * @param message - The new error message, possibly including argument placeholders
+   * @param params - Optional arguments to replace the corresponding placeholders in the message
+   */
+  (error: ErrorLike, message: string, ...params: Array<unknown>): T & OnoError;
 
-interface ErrorPOJO {
+  /**
+   * Creates a new error with a formatted message and the stack trace and properties of another error,
+   * as well as additional properties.
+   *
+   * @param error - The original error
+   * @param props - An object whose properties will be added to the returned error
+   * @param message - The new error message, possibly including argument placeholders
+   * @param params - Optional arguments to replace the corresponding placeholders in the message
+   */
+  (error: ErrorLike, props: object, message: string, ...params: Array<unknown>): T & OnoError;
+
+  /**
+   * Creates an error with a formatted message.
+   *
+   * @param message - The new error message, possibly including argument placeholders
+   * @param params - Optional arguments to replace the corresponding placeholders in the message
+   */
+  (message: string, ...params: Array<unknown>): T & OnoError;
+
+  /**
+   * Creates an error with additional properties.
+   *
+   * @param props - An object whose properties will be added to the returned error
+   */
+  (props: object): T & OnoError;
+
+  /**
+   * Creates an error with a formatted message and additional properties.
+   *
+   * @param props - An object whose properties will be added to the returned error
+   * @param message - The new error message, possibly including argument placeholders
+   * @param params - Optional arguments to replace the corresponding placeholders in the message
+   */
+  (props: object, message: string, ...params: Array<unknown>): T & OnoError;
+}
+
+/**
+ * All error objects returned by Ono have these properties.
+ */
+export interface OnoError extends ErrorPOJO {
+  /**
+   * Returns a JSON representation of the error, including all built-in error properties,
+   * as well as properties that were dynamically added.
+   */
+  toJSON(): object;
+
+  /**
+   * Returns a string representation of the error for debugging/logging purposes.
+   */
+  inspect(): string;
+}
+
+/**
+ * An error object that doesn't inherit from the `Error` class, such as `DOMError`, `DOMException`,
+ * and some third-party error types.
+ */
+export interface ErrorPOJO {
   message?: string;
   stack?: string;
   name?: string;
   [key: string]: unknown;
 }
-type ErrorLike = Error | ErrorPOJO;
-
-type ErrorLikeConstructor = new<T>() => T;
-
-interface Ono {
-  (error: ErrorLike): Error;
-  (error: ErrorLike, props: object): Error;
-  (error: ErrorLike, message: string, ...params: any[]): Error;
-  (error: ErrorLike, props: object, message: string, ...params: any[]): Error;
-  (message: string, ...params: any[]): Error;
-  (props: object): Error;
-  (props: object, message: string, ...params: any[]): Error;
-}
-
-interface OnoError extends Error {
-  toJSON?(): object;
-  inspect?(): string;
-}
 
 /**
- * Creates a new `ono` function that creates the given Error class.
+ * Any object that "looks like" an `Error` object.
  */
-
- //T is class of Error not instance of Error
-function onoFactory<T extends ErrorLikeConstructor>(klass: T): Ono {
-  /**
-   * @param {Error}   [err]     - The original error, if any
-   * @param {object}  [props]   - An object whose properties will be added to the error object
-   * @param {string}  [message] - The error message. May contain {@link util#format} placeholders
-   * @param {...*}    [params]  - Parameters that map to the `message` placeholders
-   * @returns {Error}
-   */
-
-  // TODO: Params not being used?
-  return function ono(err?: string | Error, props?: object, message?: string, params?: unknown): T {
-
-    let formatArgs = [];
-    let formattedMessage = "";
-
-    // Determine which arguments were actually specified
-    if (typeof err === "string") {
-      formatArgs = slice.call(arguments);
-      err = props = undefined;
-    }
-    else if (typeof props === "string") {
-      formatArgs = slice.call(arguments, 1);
-      props = undefined;
-    }
-    else if (typeof message === "string") {
-      formatArgs = slice.call(arguments, 2);
-    }
-
-    // If there are any format arguments, then format the error message
-    if (formatArgs.length > 0) {
-      formattedMessage = module.exports.formatter.apply(undefined, formatArgs);
-    }
-
-    if (err && err.message) {
-      // The inner-error's message will be added to the new message
-      formattedMessage += (formattedMessage ? " \n" : "") + err.message;
-    }
-
-    // Create the new error
-    // NOTE: DON'T move this to a separate function! We don't want to pollute the stack trace
-    let newError = new klass(formattedMessage);
-
-    // Extend the new error with the additional properties
-    extendError(newError, err);   // Copy properties of the original error
-    extendToJSON(newError);       // Replace the original toJSON method
-    extend(newError, props);      // Copy custom properties, possibly including a custom toJSON method
-
-    return newError;
-  };
-}
+export type ErrorLike = Error | ErrorPOJO;
 
 /**
- * Extends the targetError with the properties of the source error.
+ * A constructor for `ErrorLike` objects.
+ */
+export type ErrorLikeConstructor<T extends ErrorLike = Error> =
+  ErrorLikeConstructorFunction<T> | ErrorLikeConstructorClass<T>;
+
+
+/**
+ * A constructor function for `ErrorLike` objects.
+ * Constructor functions can be called without the `new` keyword.
  *
- * @param targetError - The error object to extend
- * @param sourceError - The source error object, if any
+ * @example
+ *  throw TypeError();
  */
-function extendError(targetError: Error, sourceError?: Error) {
-  extendStack(targetError, sourceError);
-  extend(targetError, sourceError);
-}
-
-
-/**
- * JavaScript engines differ in how errors are serialized to JSON - especially when it comes
- * to custom error properties and stack traces.  So we add our own toJSON method that ALWAYS
- * outputs every property of the error.
- */
-function extendToJSON(error: OnoError) {
-  error.toJSON = errorToJSON;
-
-  // Also add an inspect() method, for compatibility with Node.js' `util.inspect()` method
-  error.inspect = errorToString;
-
-  return error;
+export interface ErrorLikeConstructorFunction<T extends ErrorLike> {
+  readonly prototype: T;
+  (): T;
 }
 
 /**
- * Extends the target object with the properties of the source object.
+ * A constructor class for `ErrorLike` objects.
+ * Constructor classes must be called with the `new` keyword.
  *
- * @param target - The object to extend
- * @param source - The object whose properties are copied
+ * @example
+ *  throw new TypeError();
  */
-function extend(target: Record<string, unknown>, source?: Record<string, unknown>) {
-  if (source) {
-    let keys = Object.keys(source);
-
-    keys.forEach((key, index) => {
-
-      // Don't copy "protected" properties, since they have special meaning/behavior
-      // and are set by the onoFactory function
-      if (protectedProperties.indexOf(key) < 0) {
-        try {
-          target[key] = source[key];
-        }
-        catch (e) {
-          // This property is read-only, so it can't be copied
-        }
-      }
-    });
-  }
+export interface ErrorLikeConstructorClass<T extends ErrorLike> {
+  readonly prototype: T;
+  new(...args: Array<unknown>): T;
 }
 
 /**
- * Custom JSON serializer for Error objects.
- * Returns all built-in error properties, as well as extended properties.
+ * A function that accepts a message template and arguments to replace template parameters.
+ *
+ * @example
+ *  format("Hello, %s! You have %d unread messages.", "John", 5);
  */
-function errorToJSON(this: Record<string, unknown>): object {
-  let json: Record<string, unknown> = {};
-
-  // Get all the properties of this error
-  let keys = Object.keys(this);
-
-  // Also include properties from the Error prototype
-  keys = keys.concat(errorPrototypeProperties);
-
-  for (let key of keys) {
-    let value = this[key];
-    let type = typeof value;
-    if (type !== "undefined" && type !== "function") {
-      json[key] = value;
-    }
-  }
-
-  return json;
-}
-
-/**
- * Serializes Error objects as human-readable JSON strings for debugging/logging purposes.
- */
-function errorToString(this: OnoError) {
-  return JSON.stringify(this, undefined, 2).replace(/\\n/g, "\n");
-}
-
-/**
- * Extend the error stack to include its cause
- */
-function extendStack(targetError: Error, sourceError?: Error): void {
-  if (hasLazyStack(targetError)) {
-    if (sourceError) {
-      lazyJoinStacks(targetError, sourceError);
-    }
-    else {
-      lazyPopStack(targetError);
-    }
-  }
-  else {
-    if (sourceError) {
-      targetError.stack = joinStacks(targetError.stack, sourceError.stack);
-    }
-    else {
-      targetError.stack = popStack(targetError.stack);
-    }
-  }
-}
-
-/**
- * Appends the original `Error.stack` property to the new Error's stack.
- */
-function joinStacks(newStack: string, originalStack: string): string {
-  newStack = popStack(newStack);
-
-  if (newStack && originalStack) {
-    return newStack + "\n\n" + originalStack;
-  }
-  else {
-   return newStack || originalStack;
-  }
-}
-
-/**
- * Removes Ono from the stack, so that the stack starts at the original error location
- */
-function popStack(stack: string): string {
-  if (stack) {
-    let lines = stack.split("\n");
-
-    if (lines.length < 2) {
-      // The stack only has one line, so there's nothing we can remove
-      return stack;
-    }
-
-    // Find the `onoFactory` call in the stack, and remove it
-    for (let i = 0; i < lines.length; i++) {
-      let line = lines[i];
-      if (line.indexOf("onoFactory") >= 0) {
-        lines.splice(i, 1);
-        return lines.join("\n");
-      }
-    }
-
-    // If we get here, then the stack doesn't contain a call to `onoFactory`.
-    // This may be due to minification or some optimization of the JS engine.
-    // So just return the stack as-is.
-    return stack;
-  }
-
-  return "";
-}
-
-// /**
-//  * Does a one-time determination of whether this JavaScript engine
-//  * supports lazy `Error.stack` properties.
-//  */
-let supportsLazyStack = (() => {
-  return !!(
-    // ES5 property descriptors must be supported
-    Object.getOwnPropertyDescriptor && Object.defineProperty &&
-
-    // Chrome on Android doesn't support lazy stacks :(
-    (typeof navigator === "undefined" || !/Android/.test(navigator.userAgent))
-  );
-})();
-
-// /**
-//  * Does this error have a lazy stack property?
-//  *
-//  * @param {Error} err
-//  * @returns {boolean}
-//  */
-function hasLazyStack(err: Error) {
-  if (!supportsLazyStack) {
-    return false;
-  }
-
-  let descriptor = Object.getOwnPropertyDescriptor(err, "stack");
-  if (!descriptor) {
-    return false;
-  }
-  return typeof descriptor.get === "function";
-}
-
-/**
- * Calls `joinStacks` lazily, when the `Error.stack` property is accessed.
- */
-function lazyJoinStacks(targetError: Error, sourceError: Error) {
-  let targetStack = Object.getOwnPropertyDescriptor(targetError, "stack");
-
-  Object.defineProperty(targetError, "stack", {
-    get: () => {
-      if (targetStack) {
-        if (typeof sourceError.stack === "string") {
-          return joinStacks(targetStack.get.apply(targetError), sourceError.stack);
-        }
-      }
-    },
-    enumerable: false,
-    configurable: true
-  });
-}
-
-/**
- * Calls `popStack` lazily, when the `Error.stack` property is accessed.
- */
-function lazyPopStack(error: Error) {
-  let targetStack = Object.getOwnPropertyDescriptor(error, "stack");
-
-
-  Object.defineProperty(error, "stack", {
-    get: () => {
-      if (targetStack && targetStack.get) {
-        return popStack(targetStack.get.apply(error));
-      }
-    },
-    enumerable: false,
-    configurable: true
-  });
-}
+export type MessageFormatter = (message: string, ...args: Array<unknown>) => string;
