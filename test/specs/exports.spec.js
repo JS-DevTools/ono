@@ -3,6 +3,7 @@
 const commonJSExport = require("../../");
 const { default: defaultExport, ono: namedExport, Ono } = require("../../");
 const { expect } = require("chai");
+const { host } = require("host-environment");
 
 describe("package exports", () => {
 
@@ -23,7 +24,13 @@ describe("package exports", () => {
   }
 
   it("should export the ono singleton as the default CommonJS export", () => {
-    expect(commonJSExport).to.satisfy(isOnoSingleton);
+    if (host.node) {
+      expect(commonJSExport).to.satisfy(isOnoSingleton);
+    }
+    else {
+      // Our browser tests are only ESM, not CommonJS
+      expect(commonJSExport).to.be.a("Module").with.keys("default", "ono", "Ono");
+    }
   });
 
   it("should export the ono singleton as the default ESM export", () => {
