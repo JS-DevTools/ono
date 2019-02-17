@@ -1,5 +1,5 @@
 // tslint:disable: no-unbound-method
-import { ErrorLike } from "./ono";
+import { ErrorLike } from "./types";
 
 const newline = /\r?\n/;
 const onoCall = /\bono\b/;

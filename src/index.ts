@@ -1,27 +1,31 @@
 import format from "format-util";
-import { onoFactory, onoSingleton } from "./ono-factory";
+import { onoConstructor, onoSingleton } from "./ono";
+import { OnoConstructor, OnoSingleton } from "./types";
 
-// external alias
-const ono = onoSingleton;
+// tslint:disable-next-line: variable-name
+const Ono = onoConstructor as OnoConstructor;
+const ono = onoSingleton as OnoSingleton;
 
 // Create Ono instances for each of the JavaScript error types
-ono.error = onoFactory(Error);
-ono.eval = onoFactory(EvalError);
-ono.range = onoFactory(RangeError);
-ono.reference = onoFactory(ReferenceError);
-ono.syntax = onoFactory(SyntaxError);
-ono.type = onoFactory(TypeError);
-ono.uri = onoFactory(URIError);
+ono.error = onoConstructor(Error);
+ono.eval = onoConstructor(EvalError);
+ono.range = onoConstructor(RangeError);
+ono.reference = onoConstructor(ReferenceError);
+ono.syntax = onoConstructor(SyntaxError);
+ono.type = onoConstructor(TypeError);
+ono.uri = onoConstructor(URIError);
+
+// Default to Node's `util.format()` functionality, but allow users to substitute their own
 ono.formatter = format;
 
-// Export the Ono singleton as the default export and a named export
+// Export type definitions
+export * from "./types";
+
+// Export the Ono singleton and the Ono constructor as named exports
+export { ono, Ono };
+
 // tslint:disable-next-line: no-default-export
 export default ono;
-export { ono };
-
-// Also export the Ono factory function,
-// so users can create their own Ono instances for custom error types
-export { onoFactory as Ono };
 
 // CommonJS default export hack
 // tslint:disable: no-unsafe-any

@@ -1,7 +1,9 @@
-import { ErrorPOJO, OnoError } from "./ono";
 import { hasLazyStack, joinStacks, lazyJoinStacks } from "./stack";
+import { ErrorPOJO, OnoError } from "./types";
 
 const protectedProperties = ["name", "message", "stack"];
+
+type Dict = Record<string, unknown>;
 
 /**
  * Extends the new error with the properties of the original error and the `props` object.
@@ -45,14 +47,14 @@ function extendStack(newError: OnoError, originalError?: ErrorPOJO): void {
  * @param newError - The error object to extend
  * @param originalError - The original error object, if any
  */
-function extend(newError: OnoError, originalError?: ErrorPOJO) {
+function extend(newError: OnoError & Dict, originalError?: ErrorPOJO & Dict) {
   if (!originalError) {
     return;
   }
 
   for (let key in originalError) {
     // Don't copy "protected" properties, since they have special meaning/behavior
-    // and are set by the onoFactory function
+    // and are set by the ono constructor
     if (protectedProperties.indexOf(key) < 0) {
       try {
         newError[key] = originalError[key];
@@ -68,8 +70,8 @@ function extend(newError: OnoError, originalError?: ErrorPOJO) {
  * Custom JSON serializer for Error objects.
  * Returns all built-in error properties, as well as extended properties.
  */
-function errorToJSON(this: OnoError): object {
-  let json: ErrorPOJO = {
+function errorToJSON(this: OnoError & Dict): ErrorPOJO {
+  let json: ErrorPOJO & Dict = {
     name: this.name,
     message: this.message,
   };
