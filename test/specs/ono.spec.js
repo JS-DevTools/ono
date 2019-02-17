@@ -1,7 +1,9 @@
-helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
-  "use strict";
+"use strict";
 
+const { expect } = require("chai");
+const { onoes, createFakeStack, compareStacks, compareJSON, host, makeDOMError } = require("../utils");
 
+for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
   var factoryName = ono.name || "onoFactory";
 
