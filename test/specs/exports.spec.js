@@ -1,0 +1,43 @@
+"use strict";
+
+const commonJSExport = require("../../");
+const { default: defaultExport, ono: namedExport, Ono } = require("../../");
+const { expect } = require("chai");
+
+describe("package exports", () => {
+
+  function isOnoSingleton (ono) {
+    expect(ono).to.be.a("function");
+    expect(ono.name).to.equal("ono");
+    expect(ono.length).to.equal(0);
+    expect(ono).to.have.property("error").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("eval").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("range").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("reference").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("syntax").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("type").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("uri").that.is.a("function").with.property("name", "ono");
+    expect(ono).to.have.property("formatter").that.is.a("function").with.property("name", "format");
+
+    return true;
+  }
+
+  it("should export the ono singleton as the default CommonJS export", () => {
+    expect(commonJSExport).to.satisfy(isOnoSingleton);
+  });
+
+  it("should export the ono singleton as the default ESM export", () => {
+    expect(defaultExport).to.satisfy(isOnoSingleton);
+  });
+
+  it("should export the ono singleton as a named ESM export", () => {
+    expect(namedExport).to.satisfy(isOnoSingleton);
+  });
+
+  it("should export the Ono constructor as a named ESM export", () => {
+    expect(Ono).to.be.a("function");
+    expect(Ono.name).to.equal("Ono");
+    expect(Ono.length).to.equal(1);
+  });
+
+});
