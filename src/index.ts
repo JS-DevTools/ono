@@ -23,8 +23,6 @@ export { ono, Ono };
 export default ono;
 
 // CommonJS default export hack
-// tslint:disable: no-unsafe-any
-if (typeof module === "object" && typeof exports === "object") {
-  module.exports = exports.default;
-  Object.assign(module.exports, exports);
+if (typeof module === "object" && typeof module.exports === "object") {
+  module.exports = Object.assign(module.exports.default, module.exports);  // tslint:disable-line: no-unsafe-any
 }
