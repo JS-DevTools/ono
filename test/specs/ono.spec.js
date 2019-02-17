@@ -4,777 +4,683 @@ const { expect } = require("chai");
 const { onoes, createFakeStack, compareStacks, compareJSON, host, makeDOMError } = require("../utils");
 
 for (let { name, ono, ErrorType, errorTypeName } of onoes) {
+  describe(name, () => {
 
-  var factoryName = ono.name || "onoFactory";
-
-  describe(name, function () {
-
-    it("can be called without any args",
-      function () {
-        function newErrorWithNoArgs () {
-          return ono();
-        }
-
-        var err = newErrorWithNoArgs();
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("");
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithNoArgs/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack
-        }));
+    it("can be called without any args", () => {
+      function newErrorWithNoArgs () {
+        return ono();
       }
-    );
 
-    it("can be called with just a message",
-      function () {
-        function newErrorWithMessage () {
-          return ono("Onoes!!!");
-        }
+      let err = newErrorWithNoArgs();
 
-        var err = newErrorWithMessage();
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("");
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("Onoes!!!");
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithMessage/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack
-        }));
+    it("can be called with the `new` operator and no args", () => {
+      function newErrorWithNoArgs () {
+        return new ono();   // eslint-disable-line new-cap
       }
-    );
 
-    it("can be called with a parameterized message",
-      function () {
-        function newErrorWithParams () {
-          return ono("Testing %s, %d, %j", 1, "2", "3");
-        }
+      let err = newErrorWithNoArgs();
 
-        var err = newErrorWithParams();
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("");
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing 1, 2, "3"');
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithParams/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack
-        }));
+    it("can be called with the `new` operator with args", () => {
+      function newErrorWithParams () {
+        return new ono("Testing %s, %d, %j", 1, "2", "3");  // eslint-disable-line new-cap
       }
-    );
 
-    it("can be called with parameters, even if the message has no placeholders",
-      function () {
-        function newErrorWithNoPlaceholders () {
-          return ono("Testing", 1, "2", "3");
-        }
+      let err = newErrorWithParams();
 
-        var err = newErrorWithNoPlaceholders();
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing 1, 2, "3"');
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("Testing 1 2 3");
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithNoPlaceholders/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack
-        }));
+    it("can be called with just a message", () => {
+      function newErrorWithMessage () {
+        return ono("Onoes!!!");
       }
-    );
 
-    it("can be called without parameters, even if the message has placeholders",
-      function () {
-        function newErrorWithNoParams () {
-          return ono("Testing %s, %d, %j");
-        }
+      let err = newErrorWithMessage();
 
-        var err = newErrorWithNoParams();
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("Onoes!!!");
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithMessage"]));
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("Testing %s, %d, %j");
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithNoParams/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack
-        }));
+    it("can be called with a parameterized message", () => {
+      function newErrorWithParams () {
+        return ono("Testing %s, %d, %j", 1, "2", "3");
       }
-    );
 
-    it("can be called with just an inner error",
-      function () {
-        function makeInnerError () {
-          var innerError = new SyntaxError("This is the inner error");
-          innerError.foo = "bar";
-          innerError.code = 404;
-          return innerError;
-        }
+      let err = newErrorWithParams();
 
-        function newErrorWithInnerError (innerErr) {
-          return ono(innerErr);
-        }
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing 1, 2, "3"');
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
 
-        var err = newErrorWithInnerError(makeInnerError());
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("This is the inner error");
-        expect(err.foo).to.equal("bar");
-        expect(err.code).to.equal(404);
+    it("can be called with parameters, even if the message has no placeholders", () => {
+      function newErrorWithNoPlaceholders () {
+        return ono("Testing", 1, "2", "3");
+      }
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
+      let err = newErrorWithNoPlaceholders();
 
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithInnerError/);
-            expect(err.stack).to.match(/makeInnerError/);
-          }
-        }
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("Testing 1 2 3");
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoPlaceholders"]));
 
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/SyntaxError: This is the inner error/);
-        }
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
 
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
+    it("can be called without parameters, even if the message has placeholders", () => {
+      function newErrorWithNoParams () {
+        return ono("Testing %s, %d, %j");
+      }
+
+      let err = newErrorWithNoParams();
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("Testing %s, %d, %j");
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoParams"]));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }));
+    });
+
+    it("can be called with just an inner error", () => {
+      function makeInnerError () {
+        let innerError = new SyntaxError("This is the inner error");
+        innerError.foo = "bar";
+        innerError.code = 404;
+        return innerError;
+      }
+
+      function newErrorWithInnerError (innerErr) {
+        return ono(innerErr);
+      }
+
+      let err = newErrorWithInnerError(makeInnerError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("This is the inner error");
+      expect(err.foo).to.equal("bar");
+      expect(err.code).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithInnerError"],
+        ["makeInnerError"]
+      ));
+
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/SyntaxError: This is the inner error/);
+      }
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        foo: "bar",
+        code: 404
+      }));
+    });
+
+    it("can be called with an inner error and a message", () => {
+      function makeInnerError () {
+        let innerError = new ReferenceError("This is the inner error");
+        innerError.foo = "bar";
+        innerError.code = 404;
+        return innerError;
+      }
+
+      function newErrorWithInnerErrorAndMessage (innerErr) {
+        return ono(innerErr, "Oops, an error happened.");
+      }
+
+      let err = newErrorWithInnerErrorAndMessage(makeInnerError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("Oops, an error happened. \nThis is the inner error");
+      expect(err.foo).to.equal("bar");
+      expect(err.code).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithInnerErrorAndMessage"],
+        ["makeInnerError"]
+      ));
+
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/ReferenceError: This is the inner error/);
+      }
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        foo: "bar",
+        code: 404
+      }));
+    });
+
+    it("can be called with an inner error and a parameterized message", () => {
+      function makeInnerError () {
+        let innerError = new RangeError("This is the inner error");
+        innerError.foo = "bar";
+        innerError.code = 404;
+        return innerError;
+      }
+
+      function newErrorWithInnerErrorAndParamMessage (innerErr) {
+        return ono(innerErr, "Testing, %s, %d, %j", 1, "2", "3");
+      }
+
+      let err = newErrorWithInnerErrorAndParamMessage(makeInnerError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+      expect(err.foo).to.equal("bar");
+      expect(err.code).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithInnerErrorAndParamMessage"],
+        ["makeInnerError"]
+      ));
+
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/RangeError: This is the inner error/);
+      }
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        foo: "bar",
+        code: 404
+      }));
+    });
+
+    it("can be called with just a props object", () => {
+      let now = new Date();
+
+      function foo () {}
+
+      function newErrorWithProps () {
+        return ono({
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          foo
+        });
+      }
+
+      let err = newErrorWithProps();
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("");
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithProps"]));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON()
+      }));
+    });
+
+    it("can be called with an inner DOM error and a props object", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function newErrorWithDOMErrorAndProps (domError) {
+        return ono(domError, {
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          someMethod
+        });
+      }
+
+      let err = newErrorWithDOMErrorAndProps(makeDOMError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("This is a DOM error");
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithDOMErrorAndProps"],
+        ["makeDOMError"]
+      ));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+      }));
+    });
+
+    it("can be called with an inner error and a props object", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function makeInnerError () {
+        let innerError = new EvalError("This is the inner error");
+        innerError.foo = "bar";
+        innerError.code = 500;
+        return innerError;
+      }
+
+      function newErrorWithInnerErrorAndProps (innerErr) {
+        return ono(innerErr, {
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          someMethod
+        });
+      }
+
+      let err = newErrorWithInnerErrorAndProps(makeInnerError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("This is the inner error");
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.foo).to.equal("bar");
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithInnerErrorAndProps"],
+        ["makeInnerError"]
+      ));
+
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/EvalError: This is the inner error/);
+      }
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+        foo: "bar"
+      }));
+    });
+
+    it("can be called with a non-eror and a props object", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function makeNonError () {
+        return {
+          code: "ERESET",
+          name: "TypeError",
+          message: "This looks like an error, but it's not one",
+          stack: createFakeStack(
+            { fn: "foo", file: "foo.js", line: 15, col: 27 },
+            { fn: "bar", file: "bar.js", line: 86, col: 12 }
+          ),
           foo: "bar",
-          code: 404
-        }));
+        };
       }
-    );
 
-    it("can be called with an inner error and a message",
-      function () {
-        function makeInnerError () {
-          var innerError = new ReferenceError("This is the inner error");
-          innerError.foo = "bar";
-          innerError.code = 404;
-          return innerError;
-        }
+      function newErrorWithNonErrorAndProps (nonError) {
+        return ono(nonError, {
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          someMethod
+        });
+      }
 
-        function newErrorWithInnerErrorAndMessage (innerErr) {
-          return ono(innerErr, "Oops, an error happened.");
-        }
+      let err = newErrorWithNonErrorAndProps(makeNonError());
 
-        var err = newErrorWithInnerErrorAndMessage(makeInnerError());
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("This looks like an error, but it's not one");
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.foo).to.equal("bar");
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithNonErrorAndProps"],
+        ["foo", "bar"]
+      ));
 
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("Oops, an error happened. \nThis is the inner error");
-        expect(err.foo).to.equal("bar");
-        expect(err.code).to.equal(404);
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
+      }
 
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+        foo: "bar"
+      }));
+    });
 
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithInnerErrorAndMessage/);
-            expect(err.stack).to.match(/makeInnerError/);
-          }
-        }
+    it("can be called with a props object and a message", () => {
+      let now = new Date();
 
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/ReferenceError: This is the inner error/);
-        }
+      function someMethod () { return this.code; }
 
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
+      function newErrorWithPropsAndMessage () {
+        return ono({
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          someMethod
+        }, "Onoes! Something bad happened.");
+      }
+
+      let err = newErrorWithPropsAndMessage();
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal("Onoes! Something bad happened.");
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithPropsAndMessage"]));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON()
+      }));
+    });
+
+    it("can be called with a props object and a parameterized message", () => {
+      let now = new Date();
+
+      function foo () {}
+
+      function newErrorWithPropsAndParamMessage () {
+        return ono({
+          code: 404,
+          text: "Not Found",
+          timestamp: now,
+          foo
+        }, "Testing, %s, %d, %j", 1, "2", "3");
+      }
+
+      let err = newErrorWithPropsAndParamMessage();
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing, 1, 2, "3"');
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithPropsAndParamMessage"]));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON()
+      }));
+    });
+
+    it("can be called with an inner error, props object, and a parameterized message", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function makeInnerError () {
+        let innerError = new EvalError("This is the inner error");
+        innerError.foo = "bar";
+        innerError.code = 500;
+        return innerError;
+      }
+
+      function newErrorWithInnerErrorPropsAndParamMessage (innerErr) {
+        return ono(
+          innerErr,
+          {
+            code: 404,
+            text: "Not Found",
+            timestamp: now,
+            someMethod
+          },
+          "Testing, %s, %d, %j", 1, "2", "3"
+        );
+      }
+
+      let err = newErrorWithInnerErrorPropsAndParamMessage(makeInnerError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.foo).to.equal("bar");
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithInnerErrorPropsAndParamMessage"],
+        ["makeInnerError"]
+      ));
+
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/EvalError: This is the inner error/);
+      }
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+        foo: "bar"
+      }));
+    });
+
+    it("can be called with an inner DOM error, props object, and a parameterized message", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function newErrorWithDOMErrorPropsAndParamMessage (domError) {
+        return ono(
+          domError,
+          {
+            code: 404,
+            text: "Not Found",
+            timestamp: now,
+            someMethod
+          },
+          "Testing, %s, %d, %j", 1, "2", "3"
+        );
+      }
+
+      let err = newErrorWithDOMErrorPropsAndParamMessage(makeDOMError());
+
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is a DOM error');
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithDOMErrorPropsAndParamMessage"],
+        ["makeDOMError"]
+      ));
+
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+      }));
+    });
+
+    it("can be called with a non-error, props object, and a parameterized message", () => {
+      let now = new Date();
+
+      function someMethod () { return this.code; }
+
+      function makeNonError () {
+        return {
+          code: "ERESET",
+          name: "TypeError",
+          message: "This looks like an error, but it's not one",
+          stack: createFakeStack(
+            { fn: "foo", file: "foo.js", line: 15, col: 27 },
+            { fn: "bar", file: "bar.js", line: 86, col: 12 }
+          ),
           foo: "bar",
-          code: 404
-        }));
+        };
       }
-    );
 
-    it("can be called with an inner error and a parameterized message",
-      function () {
-        function makeInnerError () {
-          var innerError = new RangeError("This is the inner error");
-          innerError.foo = "bar";
-          innerError.code = 404;
-          return innerError;
-        }
-
-        function newErrorWithInnerErrorAndParamMessage (innerErr) {
-          return ono(innerErr, "Testing, %s, %d, %j", 1, "2", "3");
-        }
-
-        var err = newErrorWithInnerErrorAndParamMessage(makeInnerError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
-        expect(err.foo).to.equal("bar");
-        expect(err.code).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithInnerErrorAndParamMessage/);
-            expect(err.stack).to.match(/makeInnerError/);
-          }
-        }
-
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/RangeError: This is the inner error/);
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          foo: "bar",
-          code: 404
-        }));
-      }
-    );
-
-    it("can be called with just a props object",
-      function () {
-        var now = new Date();
-
-        function foo () {}
-
-        function newErrorWithProps () {
-          return ono({
+      function newErrorWithNonErrorPropsAndParamMessage (nonError) {
+        return ono(
+          nonError,
+          {
             code: 404,
             text: "Not Found",
             timestamp: now,
-            foo: foo
-          });
-        }
-
-        var err = newErrorWithProps();
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("");
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithProps/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON()
-        }));
+            someMethod
+          },
+          "Testing, %s, %d, %j", 1, "2", "3"
+        );
       }
-    );
 
-    it("can be called with an inner DOM error and a props object",
-      function () {
-        var now = new Date();
+      let err = newErrorWithNonErrorPropsAndParamMessage(makeNonError());
 
-        function someMethod () { return this.code; }
+      expect(err).to.be.an.instanceOf(ErrorType);
+      expect(err.name).to.equal(errorTypeName);
+      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis looks like an error, but it\'s not one');
+      expect(err.code).to.equal(404);
+      expect(err.text).to.equal("Not Found");
+      expect(err.timestamp).to.equal(now);
+      expect(err.foo).to.equal("bar");
+      expect(err.someMethod).to.equal(someMethod);
+      expect(err.someMethod()).to.equal(404);
+      expect(err.stack).to.satisfy(compareStacks(
+        ["newErrorWithNonErrorPropsAndParamMessage"],
+        ["foo", "bar"]
+      ));
 
-        function newErrorWithDOMErrorAndProps (domError) {
-          return ono(domError, {
-            code: 404,
-            text: "Not Found",
-            timestamp: now,
-            someMethod: someMethod
-          });
-        }
-
-        var err = newErrorWithDOMErrorAndProps(makeDOMError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("This is a DOM error");
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).not.to.match(/makeDOMError/);
-            expect(err.stack).to.match(/newErrorWithDOMErrorAndProps/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-        }));
+      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+        expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
       }
-    );
 
-    it("can be called with an inner error and a props object",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function makeInnerError () {
-          var innerError = new EvalError("This is the inner error");
-          innerError.foo = "bar";
-          innerError.code = 500;
-          return innerError;
-        }
-
-        function newErrorWithInnerErrorAndProps (innerErr) {
-          return ono(innerErr, {
-            code: 404,
-            text: "Not Found",
-            timestamp: now,
-            someMethod: someMethod
-          });
-        }
-
-        var err = newErrorWithInnerErrorAndProps(makeInnerError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("This is the inner error");
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.foo).to.equal("bar");
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/makeInnerError/);
-            expect(err.stack).to.match(/newErrorWithInnerErrorAndProps/);
-          }
-        }
-
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/EvalError: This is the inner error/);
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-          foo: "bar"
-        }));
-      }
-    );
-
-    it("can be called with a non-eror and a props object",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function makeNonError () {
-          return {
-            code: "ERESET",
-            name: "TypeError",
-            message: "This looks like an error, but it's not one",
-            stack: "at foo.js:15:27\n  at bar.js:86:12",
-            foo: "bar",
-          };
-        }
-
-        function newErrorWithNonErrorAndProps (nonError) {
-          return ono(nonError, {
-            code: 404,
-            text: "Not Found",
-            timestamp: now,
-            someMethod: someMethod
-          });
-        }
-
-        var err = newErrorWithNonErrorAndProps(makeNonError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("This looks like an error, but it's not one");
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.foo).to.equal("bar");
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-          expect(err.stack).to.match(/foo\.js/);
-          expect(err.stack).to.match(/bar\.js/);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithNonErrorAndProps/);
-          }
-        }
-
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-          foo: "bar"
-        }));
-      }
-    );
-
-    it("can be called with a props object and a message",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function newErrorWithPropsAndMessage () {
-          return ono({
-            code: 404,
-            text: "Not Found",
-            timestamp: now,
-            someMethod: someMethod
-          }, "Onoes! Something bad happened.");
-        }
-
-        var err = newErrorWithPropsAndMessage();
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal("Onoes! Something bad happened.");
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithPropsAndMessage/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON()
-        }));
-      });
-
-    it("can be called with a props object and a parameterized message",
-      function () {
-        var now = new Date();
-
-        function foo () {}
-
-        function newErrorWithPropsAndParamMessage () {
-          return ono({
-            code: 404,
-            text: "Not Found",
-            timestamp: now,
-            foo: foo
-          }, "Testing, %s, %d, %j", 1, "2", "3");
-        }
-
-        var err = newErrorWithPropsAndParamMessage();
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing, 1, 2, "3"');
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithPropsAndParamMessage/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON()
-        }));
-      }
-    );
-
-    it("can be called with an inner error, props object, and a parameterized message",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function makeInnerError () {
-          var innerError = new EvalError("This is the inner error");
-          innerError.foo = "bar";
-          innerError.code = 500;
-          return innerError;
-        }
-
-        function newErrorWithInnerErrorPropsAndParamMessage (innerErr) {
-          return ono(
-            innerErr,
-            {
-              code: 404,
-              text: "Not Found",
-              timestamp: now,
-              someMethod: someMethod
-            },
-            "Testing, %s, %d, %j", 1, "2", "3"
-          );
-        }
-
-        var err = newErrorWithInnerErrorPropsAndParamMessage(makeInnerError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.foo).to.equal("bar");
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithInnerErrorPropsAndParamMessage/);
-            expect(err.stack).to.match(/makeInnerError/);
-          }
-        }
-
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/EvalError: This is the inner error/);
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-          foo: "bar"
-        }));
-      }
-    );
-
-    it("can be called with an inner DOM error, props object, and a parameterized message",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function newErrorWithDOMErrorPropsAndParamMessage (domError) {
-          return ono(
-            domError,
-            {
-              code: 404,
-              text: "Not Found",
-              timestamp: now,
-              someMethod: someMethod
-            },
-            "Testing, %s, %d, %j", 1, "2", "3"
-          );
-        }
-
-        var err = newErrorWithDOMErrorPropsAndParamMessage(makeDOMError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is a DOM error');
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).not.to.match(/makeDOMError/);
-            expect(err.stack).to.match(/newErrorWithDOMErrorPropsAndParamMessage/);
-          }
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-        }));
-      }
-    );
-
-    it("can be called with a non-error, props object, and a parameterized message",
-      function () {
-        var now = new Date();
-
-        function someMethod () { return this.code; }
-
-        function makeNonError () {
-          return {
-            code: "ERESET",
-            name: "TypeError",
-            message: "This looks like an error, but it's not one",
-            stack: "at foo.js:15:27\n  at bar.js:86:12",
-            foo: "bar",
-          };
-        }
-
-        function newErrorWithNonErrorPropsAndParamMessage (nonError) {
-          return ono(
-            nonError,
-            {
-              code: 404,
-              text: "Not Found",
-              timestamp: now,
-              someMethod: someMethod
-            },
-            "Testing, %s, %d, %j", 1, "2", "3"
-          );
-        }
-
-        var err = newErrorWithNonErrorPropsAndParamMessage(makeNonError());
-
-        expect(err).to.be.an.instanceOf(ErrorType);
-        expect(err.name).to.equal(ErrorTypeName);
-        expect(err.message).to.equal('Testing, 1, 2, "3" \nThis looks like an error, but it\'s not one');
-        expect(err.code).to.equal(404);
-        expect(err.text).to.equal("Not Found");
-        expect(err.timestamp).to.equal(now);
-        expect(err.foo).to.equal("bar");
-        expect(err.someMethod).to.equal(someMethod);
-        expect(err.someMethod()).to.equal(404);
-
-        if (err.stack) {
-          expect(err.stack).not.to.contain(factoryName);
-          expect(err.stack).to.match(/foo\.js/);
-          expect(err.stack).to.match(/bar\.js/);
-
-          if (STACK_TRACES_HAVE_FUNCTION_NAMES) {
-            expect(err.stack).to.match(/newErrorWithNonErrorPropsAndParamMessage/);
-          }
-        }
-
-        if (STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-          expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
-        }
-
-        var json = JSON.parse(JSON.stringify(err));
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-          code: 404,
-          text: "Not Found",
-          timestamp: now.toJSON(),
-          foo: "bar"
-        }));
-      }
-    );
-
+      let json = JSON.parse(JSON.stringify(err));
+      expect(json).to.satisfy(compareJSON({
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: 404,
+        text: "Not Found",
+        timestamp: now.toJSON(),
+        foo: "bar"
+      }));
+    });
   });
-
+}
