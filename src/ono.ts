@@ -1,15 +1,18 @@
 import { extendError } from "./extend-error";
-import { ErrorLike, ErrorLikeConstructor, Ono, OnoError, OnoSingleton } from "./types";
+import { ErrorLike, ErrorLikeConstructor, Ono, OnoConstructor, OnoError, OnoSingleton } from "./types";
 
-/**
- * The singleton `Ono` instance.  This is the default export of the "ono" package.
- */
-export const onoSingleton = onoConstructor(Error);
+const onoConstructor = Ono as OnoConstructor;
+const onoSingleton = Ono(Error) as OnoSingleton;
+
+export {
+  onoConstructor as Ono,
+  onoSingleton as ono,
+};
 
 /**
  * Creates an `Ono` instance for a specifc error type.
  */
-export function onoConstructor<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
+function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
   // tslint:disable-next-line: no-shadowed-variable
   return function ono<E extends ErrorLike, P extends object>(...args: Array<unknown>): T & E & P & OnoError {
     let originalError: E | undefined;
@@ -33,7 +36,7 @@ export function onoConstructor<T extends ErrorLike>(klass: ErrorLikeConstructor<
 
     // If there are any format arguments, then format the error message
     if (formatArgs && formatArgs.length > 0) {
-      formattedMessage = (onoSingleton as OnoSingleton).formatter.apply(undefined, formatArgs);
+      formattedMessage = onoSingleton.formatter.apply(undefined, formatArgs);
     }
 
     if (originalError && originalError.message) {

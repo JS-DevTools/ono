@@ -1,19 +1,14 @@
 import format from "format-util";
-import { onoConstructor, onoSingleton } from "./ono";
-import { OnoConstructor, OnoSingleton } from "./types";
-
-// tslint:disable-next-line: variable-name
-const Ono = onoConstructor as OnoConstructor;
-const ono = onoSingleton as OnoSingleton;
+import { Ono, ono } from "./ono";
 
 // Create Ono instances for each of the JavaScript error types
-ono.error = onoConstructor(Error);
-ono.eval = onoConstructor(EvalError);
-ono.range = onoConstructor(RangeError);
-ono.reference = onoConstructor(ReferenceError);
-ono.syntax = onoConstructor(SyntaxError);
-ono.type = onoConstructor(TypeError);
-ono.uri = onoConstructor(URIError);
+ono.error = new Ono(Error);
+ono.eval = new Ono(EvalError);
+ono.range = new Ono(RangeError);
+ono.reference = new Ono(ReferenceError);
+ono.syntax = new Ono(SyntaxError);
+ono.type = new Ono(TypeError);
+ono.uri = new Ono(URIError);
 
 // Default to Node's `util.format()` functionality, but allow users to substitute their own
 ono.formatter = format;
