@@ -1,12 +1,7 @@
 helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
   "use strict";
 
-  // Errors in IE 11 and older do not include stack traces at all.
-  // Safari stack traces have the script URL and line number, but no function name
-  var STACK_TRACES_HAVE_FUNCTION_NAMES = !host.browser.safari && !(host.browser.IE && host.browser.IE.version < 12);
 
-  // Node.js and Chrome both have V8 stack traces, which start with the error name and message
-  var STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE = host.node || host.browser.chrome;
 
   var factoryName = ono.name || "onoFactory";
 
