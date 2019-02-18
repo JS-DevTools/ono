@@ -1,10 +1,6 @@
 import { hasLazyStack, joinStacks, lazyJoinStacks } from "./stack";
 import { ErrorPOJO, OnoError } from "./types";
 
-const protectedProperties = ["name", "message", "stack"];
-
-type Dict = Record<string, unknown>;
-
 /**
  * Extends the new error with the properties of the original error and the `props` object.
  *
@@ -26,7 +22,7 @@ export function extendError(newError: OnoError, originalError?: ErrorPOJO, props
   newError.inspect = errorToString;
 
   // Copy custom properties, possibly including custom `toJSON()` and/or `inspect()` methods
-  extend(newError, props);
+  extend(newError, props, true);
 }
 
 /**
@@ -42,22 +38,23 @@ function extendStack(newError: OnoError, originalError?: ErrorPOJO): void {
 }
 
 /**
- * Copies properties of the original error to the new error
+ * Copies properties of the given object to the new error
  *
  * @param newError - The error object to extend
- * @param originalError - The original error object, if any
+ * @param props - The original error object, if any
+ * @param overwrite - Whether to overwrite existing properties of `newError`
  */
-function extend(newError: OnoError & Dict, originalError?: ErrorPOJO & Dict) {
-  if (!originalError) {
+function extend(newError: OnoError, props?: object, overwrite = false) {
+  if (!props) {
     return;
   }
 
-  for (let key in originalError) {
-    // Don't copy "protected" properties, since they have special meaning/behavior
-    // and are set by the ono constructor
-    if (protectedProperties.indexOf(key) < 0) {
+  for (let key of getDeepKeys(props)) {
+    // @ts-ignore - https://github.com/Microsoft/TypeScript/issues/1863
+    if (overwrite || newError[key] === undefined) {
       try {
-        newError[key] = originalError[key];
+        // @ts-ignore - https://github.com/Microsoft/TypeScript/issues/1863
+        newError[key] = props[key];
       }
       catch (e) {
         // This property is read-only, so it can't be copied
@@ -70,24 +67,13 @@ function extend(newError: OnoError & Dict, originalError?: ErrorPOJO & Dict) {
  * Custom JSON serializer for Error objects.
  * Returns all built-in error properties, as well as extended properties.
  */
-function errorToJSON(this: OnoError & Dict): ErrorPOJO {
-  let json: ErrorPOJO & Dict = {
-    name: this.name,
-    message: this.message,
-  };
+function errorToJSON(this: OnoError): ErrorPOJO {
+  let json: ErrorPOJO = {};
 
-  for (let key in this) {
-    if (protectedProperties.indexOf(key) < 0) {
-      let value = this[key];
-      let type = typeof value;
-      if (type !== "undefined" && type !== "function") {
-        json[key] = value;
-      }
-    }
+  for (let key of getDeepKeys(this)) {
+    // @ts-ignore - https://github.com/Microsoft/TypeScript/issues/1863
+    json[key] = this[key];
   }
-
-  // Add the stack property last. This looks better when printed, logged, debugging, etc.
-  json.stack = this.stack;
 
   return json;
 }
@@ -97,4 +83,28 @@ function errorToJSON(this: OnoError & Dict): ErrorPOJO {
  */
 function errorToString(this: OnoError) {
   return JSON.stringify(this, undefined, 2).replace(/\\n/g, "\n");
+}
+
+const objectPrototype = Object.getPrototypeOf({});
+
+/**
+ * Returns own, inherited, enumerable, non-enumerable, string, and symbol keys of `obj`.
+ * Does NOT return the "constructor" or "prototype" keys, or members of the base Object prototype
+ */
+function getDeepKeys(obj: object): Set<string | symbol> {
+  let keys: Array<string | symbol> = [];
+
+  while (obj && obj !== objectPrototype) {
+    keys = keys.concat(
+      Object.getOwnPropertyNames(obj),
+      Object.getOwnPropertySymbols(obj),
+    );
+    obj = Object.getPrototypeOf(obj) as object;
+  }
+
+  let uniqueKeys = new Set(keys);
+  uniqueKeys.delete("constructor");
+  uniqueKeys.delete("prototype");
+
+  return uniqueKeys;
 }
