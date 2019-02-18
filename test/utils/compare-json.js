@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { host } = require("host-environment");
+const host = require("./host");
 
 module.exports = compareJSON;
 
@@ -37,7 +37,7 @@ function compareJSON (expected) {
         expected.column = actual.column;
       }
 
-      if (host.browser.IE && "description" in actual) {
+      if ((host.browser.IE || host.browser.edge) && "description" in actual) {
         expect(actual.description).to.be.a("string");
         expected.description = actual.description;
       }
