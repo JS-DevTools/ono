@@ -1,144 +1,152 @@
-helper.forEachMethod(function (name, ono, ErrorType, ErrorTypeName) {
-  "use strict";
+"use strict";
 
-  describe(name + "().toJSON", function () {
-    it("should return all built-in error properties",
-      function () {
-        function newError (message) {
-          return ono("Oh No! %s", message);
-        }
+require("@babel/polyfill/noConflict");
+const { expect } = require("chai");
+const { onoes, compareJSON, compareStacks } = require("../utils");
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+for (let { name, ono, errorTypeName } of onoes) {
+  describe(name + "().toJSON", () => {
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! Something went wrong",
-          stack: err.stack
-        }));
+    it("should return all built-in error properties", () => {
+      function newError (message) {
+        return ono("Oh No! %s", message);
       }
-    );
 
-    it("should return custom properties",
-      function () {
-        function newError (message) {
-          return ono({ foo: "bar", biz: 5 }, "Oh No! %s", message);
-        }
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack
+      }));
+    });
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! Something went wrong",
-          stack: err.stack,
-          foo: "bar",
-          biz: 5
-        }));
+    it("should return custom properties", () => {
+      function newError (message) {
+        return ono({ foo: "bar", biz: 5 }, "Oh No! %s", message);
       }
-    );
 
-    it("should return custom object properties",
-      function () {
-        var now = new Date();
-        function newError (message) {
-          return ono({ foo: "bar", biz: now }, "Oh No! %s", message);
-        }
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack,
+        foo: "bar",
+        biz: 5
+      }));
+    });
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! Something went wrong",
-          stack: err.stack,
-          foo: "bar",
-          biz: now
-        }));
+    it("should return object properties", () => {
+      let now = new Date();
+      let regex = /xyz/;
+
+      function newError (message) {
+        return ono({ now, regex }, "Oh No! %s", message);
       }
-    );
 
-    it("should return inherited properties",
-      function () {
-        var now = new Date();
-        function newError (message) {
-          var originalError = new Error(message);
-          originalError.foo = "bar";
-          originalError.biz = 5;
-          originalError.baz = now;
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-          return ono(originalError, { foo: "xyz", bob: "abc" }, "Oh No!");
-        }
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack,
+        now,
+        regex,
+      }));
+    });
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+    it("should return inherited properties", () => {
+      let now = new Date();
+      function newError (message) {
+        let originalError = new Error(message);
+        originalError.foo = "bar";
+        originalError.biz = 5;
+        originalError.baz = now;
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! \nSomething went wrong",
-          stack: err.stack,
-          foo: "xyz",
-          biz: 5,
-          baz: now,
-          bob: "abc"
-        }));
+        return ono(originalError, { foo: "xyz", bob: "abc" }, "Oh No!");
       }
-    );
 
-    it("should NOT return undefined properties",
-      function () {
-        function newError (message) {
-          return ono({ foo: "bar", biz: undefined }, "Oh No! %s", message);
-        }
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! \nSomething went wrong",
+        stack: err.stack,
+        foo: "xyz",
+        biz: 5,
+        baz: now,
+        bob: "abc"
+      }));
+    });
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! Something went wrong",
-          stack: err.stack,
-          foo: "bar"
-        }));
+    it("should NOT return undefined properties", () => {
+      function newError (message) {
+        return ono({ foo: "bar", biz: undefined }, "Oh No! %s", message);
       }
-    );
 
-    it("should NOT return function properties",
-      function () {
-        function noop () {}
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-        function newError (message) {
-          return ono({ foo: "bar", biz: noop }, "Oh No! %s", message);
-        }
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack,
+        foo: "bar"
+      }));
+    });
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+    it("should NOT return function properties", () => {
+      function noop () {}
 
-        expect(json).to.satisfy(helper.matchesJSON({
-          name: ErrorTypeName,
-          message: "Oh No! Something went wrong",
-          stack: err.stack,
-          foo: "bar"
-        }));
+      function newError (message) {
+        return ono({ foo: "bar", biz: noop }, "Oh No! %s", message);
       }
-    );
 
-    var factoryName = ono.name || "onoFactory";
-    it("should NOT include " + factoryName + " in the stack trace",
-      function () {
-        var now = new Date();
-        function newError (message) {
-          return ono({ foo: "bar", biz: now }, "Oh No! %s", message);
-        }
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
 
-        var err = newError("Something went wrong");
-        var json = err.toJSON();
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack,
+        foo: "bar"
+      }));
+    });
 
-        if (json.stack) {
-          expect(json.stack).not.to.contain(factoryName);
-        }
+    it("should NOT return symbol properties", () => {
+      let symbol = Symbol();
+
+      function newError (message) {
+        return ono({ foo: symbol }, "Oh No! %s", message);
       }
-    );
+
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
+
+      expect(json).to.satisfy(compareJSON({
+        name: errorTypeName,
+        message: "Oh No! Something went wrong",
+        stack: err.stack,
+      }));
+    });
+
+    it(`should NOT include ${name} in the stack trace`, () => {
+      function newError (message) {
+        return ono("Oh No! %s", message);
+      }
+
+      let err = newError("Something went wrong");
+      let json = err.toJSON();
+
+      if (json.stack) {
+        expect(json.stack).to.satisfy(compareStacks(["newError"]));
+      }
+    });
 
   });
-});
+}
