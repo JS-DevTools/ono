@@ -320,8 +320,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.someMethod).to.equal(someMethod);
       expect(err.someMethod()).to.equal(404);
       expect(err.stack).to.satisfy(compareStacks(
-        ["newErrorWithDOMErrorAndProps"],
-        ["makeDOMError"]
+        ["newErrorWithDOMErrorAndProps"]
       ));
 
       let json = JSON.parse(JSON.stringify(err));
@@ -605,8 +604,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.someMethod).to.equal(someMethod);
       expect(err.someMethod()).to.equal(404);
       expect(err.stack).to.satisfy(compareStacks(
-        ["newErrorWithDOMErrorPropsAndParamMessage"],
-        ["makeDOMError"]
+        ["newErrorWithDOMErrorPropsAndParamMessage"]
       ));
 
       let json = JSON.parse(JSON.stringify(err));

@@ -1,7 +1,5 @@
 "use strict";
 
-const createFakeStack = require("./create-fake-stack");
-
 module.exports = makeDOMError;
 
 function makeDOMError () {
@@ -25,13 +23,7 @@ function makeDOMError () {
 
   if (!domError) {
     // Just return a POJO instead
-    domError = {
-      name: errorName,
-      message: errorMessage,
-      stack: createFakeStack(
-        { fn: "makeDOMError", file: "make-dom-error.js", line: 28, col: 4 }
-      ),
-    };
+    domError = { name: errorName, message: errorMessage };
   }
 
   return domError;
