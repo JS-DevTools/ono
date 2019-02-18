@@ -49,6 +49,7 @@
     "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.2.5",
     "@types/node": "^10.12.19",
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
