@@ -1,7 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
-const { host } = require("host-environment");
+const host = require("./host");
 
 module.exports = compareStacks;
 
@@ -20,7 +20,7 @@ function compareStacks (...expected) {
    */
   return function (stack) {
     try {
-      let actual = parseStackEntries(stack);
+      let actual = parseStacks(stack);
 
       if (actual) {
         expect(actual).to.have.lengthOf(expected.length, "error.stack doesn't have the right number of stacks");
@@ -51,32 +51,54 @@ function compareStacks (...expected) {
  * @param {string} [stack] - The `error.stack` property
  * @returns {string[][]|undefined}
  */
-function parseStackEntries (stack) {
+function parseStacks (stack) {
   if (!stack) {
     return undefined;
   }
 
   let stacks = [];
-  let stackEntries = null;
+  let functionNames = null;
   let lines = stack.split("\n");
 
   for (let line of lines) {
-    let match = /^    at (\S+) /.exec(line);
-    if (match) {
-      if (!stackEntries) {
-        stackEntries = [];
+    let functionName = parseFunctionName(line);
+    if (typeof functionName === "string") {
+      if (!functionNames) {
+        functionNames = [];
       }
-      stackEntries.push(match[1]);
+      functionNames.push(functionName);
     }
-    else if (stackEntries) {
-      stacks.push(stackEntries);
-      stackEntries = null;
+    else if (functionNames) {
+      stacks.push(functionNames);
+      functionNames = null;
     }
   }
 
-  if (stackEntries) {
-    stacks.push(stackEntries);
+  if (functionNames) {
+    stacks.push(functionNames);
   }
 
   return stacks;
+}
+
+/**
+ * Returns the function name from a single line of a stack trace.
+ *
+ * @param {string} line
+ * @returns {string}
+ */
+function parseFunctionName (line) {
+  let pattern;
+
+  if (host.browser.firefox) {
+    pattern = /^(\S+)\@/;
+  }
+  else {
+    pattern = /^ + at (\S+)/;
+  }
+
+  let match = pattern.exec(line);
+  if (match) {
+    return match[1];
+  }
 }

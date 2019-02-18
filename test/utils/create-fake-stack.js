@@ -20,7 +20,10 @@ function createFakeStack (...entries) {
   }
 
   for (let { fn, file, line, col } of entries) {
-    if (host.node || host.browser.chrome) {
+    if (host.browser.firefox) {
+      stack += `${fn}@${file}:${line}:${col}\n`;
+    }
+    else {
       stack += `    at ${fn} (${file}:${line}:${col})\n`;
     }
   }
