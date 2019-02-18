@@ -52,7 +52,7 @@ function compareStacks (...expected) {
  * @returns {string[][]|undefined}
  */
 function parseStacks (stack) {
-  if (!stack) {
+  if (!stack || !host.STACK_TRACES_HAVE_FUNCTION_NAMES) {
     return undefined;
   }
 
