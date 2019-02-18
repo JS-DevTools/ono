@@ -1,6 +1,9 @@
 import { hasLazyStack, joinStacks, lazyJoinStacks } from "./stack";
 import { ErrorPOJO, OnoError } from "./types";
 
+const nonJsonTypes = ["function", "symbol", "undefined"];
+const objectPrototype = Object.getPrototypeOf({});
+
 /**
  * Extends the new error with the properties of the original error and the `props` object.
  *
@@ -72,7 +75,13 @@ function errorToJSON(this: OnoError): ErrorPOJO {
 
   for (let key of getDeepKeys(this)) {
     // @ts-ignore - https://github.com/Microsoft/TypeScript/issues/1863
-    json[key] = this[key];
+    let value = this[key];
+    let type = typeof value;
+
+    if (!nonJsonTypes.includes(type)) {
+      // @ts-ignore - https://github.com/Microsoft/TypeScript/issues/1863
+      json[key] = value;
+    }
   }
 
   return json;
@@ -85,11 +94,10 @@ function errorToString(this: OnoError) {
   return JSON.stringify(this, undefined, 2).replace(/\\n/g, "\n");
 }
 
-const objectPrototype = Object.getPrototypeOf({});
-
 /**
  * Returns own, inherited, enumerable, non-enumerable, string, and symbol keys of `obj`.
- * Does NOT return the "constructor" or "prototype" keys, or members of the base Object prototype
+ * Does NOT return members of the base Object prototype or members that could alter the prototype
+ * chain, such as "prototype", "__proto__", "constructor", etc.
  */
 function getDeepKeys(obj: object): Set<string | symbol> {
   let keys: Array<string | symbol> = [];
@@ -105,6 +113,7 @@ function getDeepKeys(obj: object): Set<string | symbol> {
   let uniqueKeys = new Set(keys);
   uniqueKeys.delete("constructor");
   uniqueKeys.delete("prototype");
+  uniqueKeys.delete("__proto__ ");
 
   return uniqueKeys;
 }
