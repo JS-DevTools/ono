@@ -54,7 +54,31 @@ describe("ono.formatter", function () {
       stack: err.stack
     }));
   });
+
+  it("should use a custom formatter for custom Ono methods", () => {
+    class MyCustomErrorClass extends Error {
+      constructor () {
+        super("This is my custom error message");
+        this.name = "MyCustomErrorClass";
+        this.code = 12345;
+      }
     }
-  );
+
+    let myCustomOno = new Ono(MyCustomErrorClass);
+
+    let err = myCustomOno("$0 must be greater than $1", 4, 10);
+
+    expect(err).to.be.an.instanceOf(MyCustomErrorClass);
+    expect(err.name).to.equal("MyCustomErrorClass");
+    expect(err.message).to.equal("This is my custom error message");
+
+    let json = JSON.parse(JSON.stringify(err));
+    expect(json).to.satisfy(compareJSON({
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+      code: 12345,
+    }));
+  });
 
 });
