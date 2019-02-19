@@ -1,3 +1,5 @@
+import { inspect } from "util";
+
 /**
  * The default export of the "ono" module.
  */
@@ -21,7 +23,7 @@ export interface Ono<T extends ErrorLike> {
    *
    * @param error - The original error
    */
-  <E extends ErrorLike>(error: E): T & E & OnoError;
+  <E extends ErrorLike>(error: E): T & E & OnoError<T & E>;
 
   /**
    * Creates a new error with the message, stack trace, and properties of another error,
@@ -30,7 +32,7 @@ export interface Ono<T extends ErrorLike> {
    * @param error - The original error
    * @param props - An object whose properties will be added to the returned error
    */
-  <E extends ErrorLike, P extends object>(error: E, props: P): T & E & P & OnoError;
+  <E extends ErrorLike, P extends object>(error: E, props: P): T & E & P & OnoError<T & E & P>;
 
   /**
    * Creates a new error with a formatted message and the stack trace and properties of another error.
@@ -39,7 +41,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <E extends ErrorLike>(error: E, message: string, ...params: Array<unknown>): T & E & OnoError;
+  <E extends ErrorLike>(error: E, message: string, ...params: Array<unknown>): T & E & OnoError<T & E>;
 
   /**
    * Creates a new error with a formatted message and the stack trace and properties of another error,
@@ -51,7 +53,7 @@ export interface Ono<T extends ErrorLike> {
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
   <E extends ErrorLike, P extends object>(error: E, props: P, message: string, ...params: Array<unknown>)
-  : T & E & P & OnoError;
+  : T & E & P & OnoError<T & E & P>;
 
   /**
    * Creates an error with a formatted message.
@@ -59,14 +61,14 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  (message: string, ...params: Array<unknown>): T & OnoError;
+  (message: string, ...params: Array<unknown>): T & OnoError<T>;
 
   /**
    * Creates an error with additional properties.
    *
    * @param props - An object whose properties will be added to the returned error
    */
-  <P extends object>(props: P): T & P & OnoError;
+  <P extends object>(props: P): T & P & OnoError<T & P>;
 
   /**
    * Creates an error with a formatted message and additional properties.
@@ -75,23 +77,25 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <P extends object>(props: P, message: string, ...params: Array<unknown>): T & P & OnoError;
+  <P extends object>(props: P, message: string, ...params: Array<unknown>): T & P & OnoError<T & P>;
 }
 
 /**
  * All error objects returned by Ono have these properties.
  */
-export interface OnoError extends ErrorPOJO {
+export interface OnoError<T> extends ErrorPOJO {
   /**
    * Returns a JSON representation of the error, including all built-in error properties,
    * as well as properties that were dynamically added.
    */
-  toJSON(): ErrorPOJO;
+  toJSON(): ErrorPOJO & T;
 
   /**
-   * Returns a string representation of the error for debugging/logging purposes.
+   * Returns a representation of the error for Node's `util.inspect()` method.
+   *
+   * @see https://nodejs.org/api/util.html#util_custom_inspection_functions_on_objects
    */
-  inspect(): string;
+  [inspect.custom](): ErrorPOJO & T;
 }
 
 /**

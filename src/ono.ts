@@ -14,7 +14,7 @@ export {
  */
 function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
   // tslint:disable-next-line: no-shadowed-variable
-  return function ono<E extends ErrorLike, P extends object>(...args: Array<unknown>): T & E & P & OnoError {
+  return function ono<E extends ErrorLike, P extends object>(...args: Array<unknown>) {
     let originalError: E | undefined;
     let props: P | undefined;
     let formatArgs: Array<unknown> | undefined;
@@ -47,7 +47,7 @@ function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
     // @ts-ignore
     // Create the new error
     // NOTE: DON'T move this line to a separate function! We don't want to pollute the stack trace
-    let newError = new klass(formattedMessage) as T & E & P & OnoError;
+    let newError = new klass(formattedMessage) as T & E & P & OnoError<T & E & P>;
 
     // Extend the error with the properties of the original error and the `props` object
     extendError(newError, originalError, props);

@@ -1,4 +1,5 @@
-// tslint:disable: no-default-import max-classes-per-file no-parameter-properties completed-docs
+// tslint:disable: no-default-import match-default-export-name max-classes-per-file no-parameter-properties completed-docs
+import { inspect } from "util";
 import ono, { Ono } from "../../esm";
 
 class EmptyClass {}
@@ -33,13 +34,17 @@ export function testExtendedProperties() {
   error.message = "string";
   error.stack = "string";
 
+  // OnoError props
+  error.toJSON();
+  error[inspect.custom]();
+
   // Extended props
   error.foo = 123;
   error.bar = true;
-
-  // OnoError props
-  error.toJSON();
-  error.inspect();
+  error.toJSON().foo = 123;
+  error.toJSON().bar = true;
+  error[inspect.custom]().foo = 123;
+  error[inspect.custom]().bar = true;
 }
 
 
@@ -54,13 +59,17 @@ export function testExtendedPropertiesWithOriginalError() {
   // customError props
   error.isValid = true;
 
+  // OnoError props
+  error.toJSON();
+  error[inspect.custom]();
+
   // Extended props
   error.foo = 123;
   error.bar = true;
-
-  // OnoError props
-  error.toJSON();
-  error.inspect();
+  error.toJSON().foo = 123;
+  error.toJSON().bar = true;
+  error[inspect.custom]().foo = 123;
+  error[inspect.custom]().bar = true;
 }
 
 
@@ -76,13 +85,17 @@ export function testExtendedPropertiesWithCustomOno() {
   // CustomErrorClass props
   error.isValid = true;
 
+  // OnoError props
+  error.toJSON();
+  error[inspect.custom]();
+
   // Extended props
   error.foo = 123;
   error.bar = true;
-
-  // OnoError props
-  error.toJSON();
-  error.inspect();
+  error.toJSON().foo = 123;
+  error.toJSON().bar = true;
+  error[inspect.custom]().foo = 123;
+  error[inspect.custom]().bar = true;
 }
 
 
@@ -95,12 +108,14 @@ export function testOnoConstructorWithoutNew() {
   error.message = "string";
   error.stack = "string";
 
-  // CustomErrorClass props
-  error.isValid = true;
-
   // OnoError props
   error.toJSON();
-  error.inspect();
+  error[inspect.custom]();
+
+  // CustomErrorClass props
+  error.isValid = true;
+  error.toJSON().isValid = true;
+  error[inspect.custom]().isValid = true;
 }
 
 
@@ -113,12 +128,14 @@ export function testOnoConstructorWithNew() {
   error.message = "string";
   error.stack = "string";
 
-  // CustomErrorClass props
-  error.isValid = true;
-
   // OnoError props
   error.toJSON();
-  error.inspect();
+  error[inspect.custom]();
+
+  // CustomErrorClass props
+  error.isValid = true;
+  error.toJSON().isValid = true;
+  error[inspect.custom]().isValid = true;
 }
 
 
@@ -131,12 +148,14 @@ export function testOnoConstructorWithNonErrorClass() {
   error.message = "string";
   error.stack = "string";
 
-  // CustomClass props
-  error.code = 12345;
-
   // OnoError props
   error.toJSON();
-  error.inspect();
+  error[inspect.custom]();
+
+  // CustomClass props
+  error.code = 12345;
+  error.toJSON().code = 12345;
+  error[inspect.custom]().code = 12345;
 }
 
 
