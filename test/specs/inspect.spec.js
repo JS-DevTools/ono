@@ -5,7 +5,7 @@ const { expect } = require("chai");
 const { onoes } = require("../utils");
 
 for (let { name, ono, errorTypeName } of onoes) {
-  describe(name + "().inspect", function () {
+  describe.skip(name + "().inspect", function () {
 
     it('should contain newlines instead of "\\n"', () => {
       function newError () {
