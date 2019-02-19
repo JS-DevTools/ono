@@ -122,7 +122,7 @@ for (let { name, ono, errorTypeName } of onoes) {
       let symbol = Symbol();
 
       function newError (message) {
-        return ono({ foo: symbol }, "Oh No! %s", message);
+        return ono({ foo: symbol, [symbol]: "bar" }, "Oh No! %s", message);
       }
 
       let err = newError("Something went wrong");
