@@ -25,6 +25,10 @@
   "main": "cjs/index.js",
   "module": "esm/index.js",
   "typings": "esm/index.d.ts",
+  "browser": {
+    "./cjs/isomorphic.node.js": "./cjs/isomorphic.browser.js",
+    "./esm/isomorphic.node.js": "./esm/isomorphic.browser.js"
+  },
   "files": [
     "cjs",
     "esm"
