@@ -5,7 +5,7 @@ const { expect } = require("chai");
 const { onoes, compareJSON, compareStacks } = require("../utils");
 
 for (let { name, ono, errorTypeName } of onoes) {
-  describe(name + "().toJSON", () => {
+  describe(`${name} serialization`, () => {
 
     it("should return all built-in error properties", () => {
       function newError (message) {

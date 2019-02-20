@@ -2,7 +2,7 @@
 
 require("@babel/polyfill/noConflict");
 const { expect } = require("chai");
-const { onoes, createFakeStack, compareStacks, compareJSON, host, makeDOMError } = require("../utils");
+const { onoes, createFakeStack, compareKeys, compareStacks, host, makeDOMError } = require("../utils");
 
 for (let { name, ono, ErrorType, errorTypeName } of onoes) {
   describe(name, () => {
@@ -18,13 +18,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with the `new` operator and no args", () => {
@@ -38,13 +32,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with the `new` operator with args", () => {
@@ -58,13 +46,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal('Testing 1, 2, "3"');
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with just a message", () => {
@@ -78,13 +60,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("Onoes!!!");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithMessage"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with a parameterized message", () => {
@@ -98,13 +74,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal('Testing 1, 2, "3"');
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with parameters, even if the message has no placeholders", () => {
@@ -118,13 +88,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("Testing 1 2 3");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoPlaceholders"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called without parameters, even if the message has placeholders", () => {
@@ -138,13 +102,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("Testing %s, %d, %j");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoParams"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
     it("can be called with just an inner error", () => {
@@ -175,14 +133,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/SyntaxError: This is the inner error/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        foo: "bar",
-        code: 404
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "foo", "code"));
     });
 
     it("can be called with an inner error and a message", () => {
@@ -213,14 +164,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/ReferenceError: This is the inner error/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        foo: "bar",
-        code: 404
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "foo", "code"));
     });
 
     it("can be called with an inner error and a parameterized message", () => {
@@ -251,14 +195,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/RangeError: This is the inner error/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        foo: "bar",
-        code: 404
-      }));
+      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "foo", "code"));
     });
 
     it("can be called with just a props object", () => {
@@ -284,16 +221,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithProps"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON()
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "foo", "code", "text", "timestamp"
+      ));
     });
 
     it("can be called with an inner DOM error and a props object", () => {
@@ -323,16 +253,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.stack).to.satisfy(compareStacks(
         ["newErrorWithDOMErrorAndProps"]
       ));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "someMethod"
+      ));
     });
 
     it("can be called with an inner error and a props object", () => {
@@ -376,16 +299,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/EvalError: This is the inner error/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-        foo: "bar"
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "foo", "code", "text", "timestamp", "someMethod"
+      ));
     });
 
     it("can be called with a non-eror and a props object", () => {
@@ -435,16 +351,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-        foo: "bar"
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "foo", "code", "text", "timestamp", "someMethod"
+      ));
     });
 
     it("can be called with a props object and a message", () => {
@@ -472,16 +381,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.someMethod).to.equal(someMethod);
       expect(err.someMethod()).to.equal(404);
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithPropsAndMessage"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON()
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "someMethod"
+      ));
     });
 
     it("can be called with a props object and a parameterized message", () => {
@@ -507,16 +409,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithPropsAndParamMessage"]));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON()
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "foo"
+      ));
     });
 
     it("can be called with an inner error, props object, and a parameterized message", () => {
@@ -564,16 +459,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/EvalError: This is the inner error/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-        foo: "bar"
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "foo", "someMethod"
+      ));
     });
 
     it("can be called with an inner DOM error, props object, and a parameterized message", () => {
@@ -607,16 +495,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.stack).to.satisfy(compareStacks(
         ["newErrorWithDOMErrorPropsAndParamMessage"]
       ));
-
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "someMethod"
+      ));
     });
 
     it("can be called with a non-error, props object, and a parameterized message", () => {
@@ -670,16 +551,9 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
       }
 
-      let json = JSON.parse(JSON.stringify(err));
-      expect(json).to.satisfy(compareJSON({
-        name: err.name,
-        message: err.message,
-        stack: err.stack,
-        code: 404,
-        text: "Not Found",
-        timestamp: now.toJSON(),
-        foo: "bar"
-      }));
+      expect(err).to.satisfy(compareKeys(
+        "name", "message", "stack", "toJSON", "code", "text", "timestamp", "someMethod", "foo"
+      ));
     });
   });
 }
