@@ -90,7 +90,7 @@ function parseStacks (stack) {
 function parseFunctionName (line) {
   let pattern;
 
-  if (host.browser.firefox) {
+  if (host.browser.firefox || host.browser.safari) {
     pattern = /^(\S+)\@/;
   }
   else {
