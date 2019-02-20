@@ -38,8 +38,8 @@ function compareStacks (...expected) {
       return true;
     }
     catch (e) {
-      console.error("\nEXPECTED: ", expected);
-      console.error("\nACTUAL: ", stack);
+      console.error(`\nEXPECTED: ${expected.join(", \n")}`);
+      console.error(`\nACTUAL: ${stack}`);
       throw e;
     }
   };
