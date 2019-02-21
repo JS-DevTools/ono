@@ -220,6 +220,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
+      expect(err.foo).to.equal(foo);
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithProps"]));
       expect(err).to.satisfy(compareKeys(
         "name", "message", "stack", "toJSON", "foo", "code", "text", "timestamp"
