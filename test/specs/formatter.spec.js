@@ -3,7 +3,7 @@
 require("@babel/polyfill/noConflict");
 const { ono, Ono } = require("../../");
 const { expect } = require("chai");
-const { compareJSON } = require("../utils");
+const { comparePOJO } = require("../utils");
 
 // NOTE: The default formatter is already tested in ono.spec.js
 describe("ono.formatter", function () {
@@ -33,7 +33,7 @@ describe("ono.formatter", function () {
     expect(err.message).to.equal("4 must be greater than 10");
 
     let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(compareJSON({
+    expect(json).to.satisfy(comparePOJO({
       name: err.name,
       message: err.message,
       stack: err.stack
@@ -48,7 +48,7 @@ describe("ono.formatter", function () {
     expect(err.message).to.equal("4 must be greater than 10");
 
     let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(compareJSON({
+    expect(json).to.satisfy(comparePOJO({
       name: err.name,
       message: err.message,
       stack: err.stack
@@ -73,7 +73,7 @@ describe("ono.formatter", function () {
     expect(err.message).to.equal("This is my custom error message");
 
     let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(compareJSON({
+    expect(json).to.satisfy(comparePOJO({
       name: err.name,
       message: err.message,
       stack: err.stack,

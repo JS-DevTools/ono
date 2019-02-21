@@ -6,6 +6,6 @@ module.exports = {
   createFakeStack: require("./create-fake-stack"),
   compareKeys: require("./compare-keys"),
   compareStacks: require("./compare-stacks"),
-  compareJSON: require("./compare-json"),
+  comparePOJO: require("./compare-pojo"),
   makeDOMError: require("./make-dom-error"),
 };
