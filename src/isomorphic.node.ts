@@ -2,13 +2,18 @@ import util from "util";
 import { getDeepKeys } from "./to-json";
 import { ErrorPOJO, OnoError } from "./types";
 
+// The `inspect()` method is actually a Symbol, not a string key.
+// https://nodejs.org/api/util.html#util_util_inspect_custom
+const inspectMethod = util.inspect.custom || Symbol.for("nodejs.util.inspect.custom");
+
 /**
  * Adds an `inspect()` method to support Node's `util.inspect()` function.
  *
  * @see https://nodejs.org/api/util.html#util_util_inspect_custom
  */
 export function addInspectMethod<T>(newError: OnoError<T>): void {
-  newError[util.inspect.custom] = inspect;
+  // @ts-ignore
+  newError[inspectMethod] = inspect;
 }
 
 /**
@@ -27,6 +32,11 @@ function inspect<T>(this: OnoError<T>): ErrorPOJO & T {
     let value = error[key];
     pojo[key] = value;
   }
+
+  // Don't include the `inspect()` method on the output object,
+  // otherwise it will cause `util.inspect()` to go into an infinite loop
+  // @ts-ignore
+  delete pojo[inspectMethod];  // tslint:disable-line: no-dynamic-delete
 
   // tslint:enable: no-any no-unsafe-any
   return pojo as ErrorPOJO & T;
