@@ -37,14 +37,14 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
     it("can be called with the `new` operator with args", () => {
       function newErrorWithParams () {
-        return new ono("Testing %s, %d, %j", 1, "2", "3");  // eslint-disable-line new-cap
+        return new ono("Testing", 1, "2", "3");  // eslint-disable-line new-cap
       }
 
       let err = newErrorWithParams();
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing 1, 2, "3"');
+      expect(err.message).to.equal("Testing 1 2 3");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
@@ -65,43 +65,15 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
     it("can be called with a parameterized message", () => {
       function newErrorWithParams () {
-        return ono("Testing %s, %d, %j", 1, "2", "3");
+        return ono("Testing", 1, "2", "3");
       }
 
       let err = newErrorWithParams();
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing 1, 2, "3"');
-      expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
-      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
-    });
-
-    it("can be called with parameters, even if the message has no placeholders", () => {
-      function newErrorWithNoPlaceholders () {
-        return ono("Testing", 1, "2", "3");
-      }
-
-      let err = newErrorWithNoPlaceholders();
-
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
       expect(err.message).to.equal("Testing 1 2 3");
-      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoPlaceholders"]));
-      expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
-    });
-
-    it("can be called without parameters, even if the message has placeholders", () => {
-      function newErrorWithNoParams () {
-        return ono("Testing %s, %d, %j");
-      }
-
-      let err = newErrorWithNoParams();
-
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal("Testing %s, %d, %j");
-      expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoParams"]));
+      expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
     });
 
@@ -176,14 +148,14 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       }
 
       function newErrorWithInnerErrorAndParamMessage (innerErr) {
-        return ono(innerErr, "Testing, %s, %d, %j", 1, "2", "3");
+        return ono(innerErr, "Testing", 1, "2", "3");
       }
 
       let err = newErrorWithInnerErrorAndParamMessage(makeInnerError());
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+      expect(err.message).to.equal("Testing 1 2 3 \nThis is the inner error");
       expect(err.foo).to.equal("bar");
       expect(err.code).to.equal(404);
       expect(err.stack).to.satisfy(compareStacks(
@@ -398,14 +370,14 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
           text: "Not Found",
           timestamp: now,
           foo
-        }, "Testing, %s, %d, %j", 1, "2", "3");
+        }, "Testing", 1, "2", "3");
       }
 
       let err = newErrorWithPropsAndParamMessage();
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing, 1, 2, "3"');
+      expect(err.message).to.equal("Testing 1 2 3");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
@@ -436,7 +408,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
             timestamp: now,
             someMethod
           },
-          "Testing, %s, %d, %j", 1, "2", "3"
+          "Testing", 1, "2", "3"
         );
       }
 
@@ -444,7 +416,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is the inner error');
+      expect(err.message).to.equal("Testing 1 2 3 \nThis is the inner error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
@@ -479,7 +451,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
             timestamp: now,
             someMethod
           },
-          "Testing, %s, %d, %j", 1, "2", "3"
+          "Testing", 1, "2", "3"
         );
       }
 
@@ -487,7 +459,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis is a DOM error');
+      expect(err.message).to.equal("Testing 1 2 3 \nThis is a DOM error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
@@ -528,7 +500,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
             timestamp: now,
             someMethod
           },
-          "Testing, %s, %d, %j", 1, "2", "3"
+          "Testing", 1, "2", "3"
         );
       }
 
@@ -536,7 +508,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       expect(err).to.be.an.instanceOf(ErrorType);
       expect(err.name).to.equal(errorTypeName);
-      expect(err.message).to.equal('Testing, 1, 2, "3" \nThis looks like an error, but it\'s not one');
+      expect(err.message).to.equal("Testing 1 2 3 \nThis looks like an error, but it's not one");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
       expect(err.timestamp).to.equal(now);
@@ -549,7 +521,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       ));
 
       if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
-        expect(err.stack).to.match(/Error: Testing, 1, 2, "3" \nThis looks like an error, but it's not one/);
+        expect(err.stack).to.match(/Error: Testing 1 2 3 \nThis looks like an error, but it's not one/);
       }
 
       expect(err).to.satisfy(compareKeys(

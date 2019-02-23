@@ -56,7 +56,7 @@ for (let { name, ono, errorTypeName } of onoes) {
     });
 
     it("should return custom properties", () => {
-      let err = ono({ foo: "bar", biz: 5 }, "Oh No! %s", "Something went wrong");
+      let err = ono({ foo: "bar", biz: 5 }, "Oh No!", "Something went wrong");
 
       expect(err.toJSON()).to.satisfy(comparePOJO({
         name: errorTypeName,

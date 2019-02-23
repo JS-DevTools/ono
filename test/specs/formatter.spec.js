@@ -3,82 +3,101 @@
 require("@babel/polyfill/noConflict");
 const { ono, Ono } = require("../../");
 const { expect } = require("chai");
-const { comparePOJO } = require("../utils");
+const { host } = require("../utils");
 
-// NOTE: The default formatter is already tested in ono.spec.js
 describe("ono.formatter", function () {
-  let originalFormatter;
+  describe("default behavior", () => {
 
-  before(function () {
-    originalFormatter = ono.formatter;
+    it("should do nothing if no args are passed", () => {
+      let err = ono("%s must be greater than %d");
+      expect(err.message).to.equal("%s must be greater than %d");
+    });
 
-    // A simple formatter that replaces $0, $1, $2, etc. with the corresponding param
-    ono.formatter = function (message) {
-      let params = Array.prototype.slice.call(arguments, 1);
-      return params.reduce(function (msg, param, index) {
-        return msg.replace("$" + index, param);
-      }, message);
-    };
-  });
-
-  after(function () {
-    ono.formatter = originalFormatter;
-  });
-
-  it("should use a custom formatter", () => {
-    let err = ono("$0 must be greater than $1", 4, 10);
-
-    expect(err).to.be.an.instanceOf(Error);
-    expect(err.name).to.equal("Error");
-    expect(err.message).to.equal("4 must be greater than 10");
-
-    let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(comparePOJO({
-      name: err.name,
-      message: err.message,
-      stack: err.stack
-    }));
-  });
-
-  it("should use a custom formatter for type-specific methods", () => {
-    let err = ono.type("$0 must be greater than $1", 4, 10);
-
-    expect(err).to.be.an.instanceOf(TypeError);
-    expect(err.name).to.equal("TypeError");
-    expect(err.message).to.equal("4 must be greater than 10");
-
-    let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(comparePOJO({
-      name: err.name,
-      message: err.message,
-      stack: err.stack
-    }));
-  });
-
-  it("should use a custom formatter for custom Ono methods", () => {
-    class MyCustomErrorClass extends Error {
-      constructor () {
-        super("This is my custom error message");
-        this.name = "MyCustomErrorClass";
-        this.code = 12345;
+    it("should work with fewer args than placeholders", () => {
+      let err = ono("%s must be greater than %d", 4);
+      if (host.node) {
+        expect(err.message).to.equal("4 must be greater than %d");
       }
-    }
+      else {
+        expect(err.message).to.equal("%s must be greater than %d 4");
+      }
+    });
 
-    let myCustomOno = new Ono(MyCustomErrorClass);
+    it("should work with more args than placeholders", () => {
+      let err = ono("%s must be greater than %d", 4, 10, 20);
+      if (host.node) {
+        expect(err.message).to.equal("4 must be greater than 10 20");
+      }
+      else {
+        expect(err.message).to.equal("%s must be greater than %d 4 10 20");
+      }
+    });
 
-    let err = myCustomOno("$0 must be greater than $1", 4, 10);
+    it("should convert values to the appropriate string representations", () => {
+      let obj = { foo: "bar" };
+      let err = ono("String: %s, Number: %d, JSON: %j, Object: %o, Literal: %%", obj, obj, obj, obj, obj);
+      if (host.node) {
+        expect(err.message).to.equal(
+          "String: [object Object], " +
+          "Number: NaN, " +
+          "JSON: {\"foo\":\"bar\"}, " +
+          "Object: { foo: \'bar\' }, " +
+          "Literal: % " +
+          "{ foo: \'bar\' }"
+        );
+      }
+      else {
+        expect(err.message).to.equal(
+          "String: %s, Number: %d, JSON: %j, Object: %o, Literal: %% " +
+          "[object Object] [object Object] [object Object] [object Object] [object Object]"
+        );
+      }
+    });
 
-    expect(err).to.be.an.instanceOf(MyCustomErrorClass);
-    expect(err.name).to.equal("MyCustomErrorClass");
-    expect(err.message).to.equal("This is my custom error message");
-
-    let json = JSON.parse(JSON.stringify(err));
-    expect(json).to.satisfy(comparePOJO({
-      name: err.name,
-      message: err.message,
-      stack: err.stack,
-      code: 12345,
-    }));
   });
 
+  describe("custom formatter", () => {
+    let originalFormatter;
+
+    beforeEach(() => {
+      originalFormatter = ono.formatter;
+
+      // A simple formatter that replaces $0, $1, $2, etc. with the corresponding param
+      ono.formatter = function (message) {
+        let params = Array.prototype.slice.call(arguments, 1);
+        return params.reduce(function (msg, param, index) {
+          return msg.replace("$" + index, param);
+        }, message);
+      };
+    });
+
+    afterEach(() => {
+      ono.formatter = originalFormatter;
+    });
+
+    it("should use a custom formatter", () => {
+      let err = ono("$0 must be greater than $1", 4, 10);
+      expect(err.message).to.equal("4 must be greater than 10");
+    });
+
+    it("should use a custom formatter for type-specific methods", () => {
+      let err = ono.type("$0 must be greater than $1", 4, 10);
+      expect(err.message).to.equal("4 must be greater than 10");
+    });
+
+    it("should use a custom formatter for custom Ono methods", () => {
+      class MyCustomErrorClass extends Error {
+        constructor () {
+          super("This is my custom error message");
+          this.name = "MyCustomErrorClass";
+          this.code = 12345;
+        }
+      }
+
+      let myCustomOno = new Ono(MyCustomErrorClass);
+      let err = myCustomOno("$0 must be greater than $1", 4, 10);
+      expect(err.message).to.equal("This is my custom error message");
+    });
+
+  });
 });
