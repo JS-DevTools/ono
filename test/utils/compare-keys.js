@@ -32,7 +32,20 @@ function compareKeys (...expected) {
       }
     }
 
-    expect(actual).to.have.same.members(expected);
+    try {
+      expect(actual).to.have.same.members(expected);
+    }
+    catch (e) {
+      console.error(`
+EXPECTED:
+  ${expected.join("\n  ")}
+
+ACTUAL:
+  ${actual.join("\n  ")}
+`);
+      throw e;
+    }
+
     return true;
   };
 }
