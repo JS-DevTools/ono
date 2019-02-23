@@ -1,6 +1,7 @@
 "use strict";
 
 const { expect } = require("chai");
+const host = require("./host");
 
 module.exports = compareKeys;
 
@@ -30,6 +31,10 @@ function compareKeys (...expected) {
       if (!actual.includes(key)) {
         actual.push(key);
       }
+    }
+
+    if ((host.browser.IE || host.browser.edge) && actual.includes("description")) {
+      expected.push("description");
     }
 
     try {
