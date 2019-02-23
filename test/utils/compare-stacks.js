@@ -40,10 +40,10 @@ function compareStacks (...expected) {
     catch (e) {
       console.error(`
 EXPECTED:
-  ${expected.join(", \n  ")}
+  ${expected.join("\n  ")}
 
 ACTUAL:
-   ${stack}
+  ${stack}
 `);
       throw e;
     }
