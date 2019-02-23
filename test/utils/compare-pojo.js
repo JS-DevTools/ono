@@ -47,7 +47,83 @@ function comparePOJO (expected) {
       delete expected.stack;
     }
 
-    expect(actual).to.deep.equal(expected);
+    try {
+      expect(actual).to.deep.equal(expected);
+
+      // Chai's `deep.equal()` doesn't currently support symbols
+      // https://github.com/chaijs/chai/projects/2#card-10444215
+      for (let sym of Object.getOwnPropertySymbols(expected)) {
+        expect(actual).to.have.property(sym, expected[sym]);
+      }
+      for (let sym of Object.getOwnPropertySymbols(actual)) {
+        expect(expected).to.have.property(sym, actual[sym]);
+      }
+    }
+    catch (e) {
+      console.error(`
+EXPECTED:
+  ${prettyPrint(expected, "  ")}
+
+ACTUAL:
+  ${prettyPrint(actual, "  ")}
+`);
+      throw e;
+    }
+
     return true;
   };
+}
+
+/**
+ * A simplistic implementation of Node's `util.format()`
+ */
+function prettyPrint (obj, indent) {
+  let json = "{\n";
+
+  // eslint-disable-next-line guard-for-in
+  for (let key in obj) {
+    json += `${indent}  ${key}: ${prettyPrintValue(obj[key], indent)}\n`;
+  }
+
+  for (let sym of Object.getOwnPropertySymbols(obj)) {
+    json += `${indent}  [${String(sym)}]: ${prettyPrintValue(obj[sym], indent)}\n`;
+  }
+
+  json += `${indent}}\n`;
+  return json;
+}
+
+function prettyPrintValue (value, indent) {
+  let type = typeof value;
+
+  switch (type) {
+    case "string":
+      return JSON.stringify(value);
+
+    case "number":
+    case "boolean":
+    case "undefined":
+    case "symbol":
+      return String(value);
+
+    case "function":
+      return `[function ${value.name}]`;
+
+    default:
+      if (value === null) {
+        return "null";
+      }
+      else if (typeof value.toJSON === "function") {
+        return prettyPrintValue(value.toJSON(), indent);
+      }
+      else {
+        let str = String(value);
+        if (str === "[object Object]") {
+          return prettyPrint(value, `${indent}  `);
+        }
+        else {
+          return str;
+        }
+      }
+  }
 }
