@@ -16,11 +16,13 @@ export function toJSON<T>(this: OnoError<T>): ErrorPOJO & T {
   let error = this as any;
 
   for (let key of getDeepKeys(error)) {
-    let value = error[key];
-    let type = typeof value;
+    if (typeof key === "string") {
+      let value = error[key];
+      let type = typeof value;
 
-    if (!nonJsonTypes.includes(type)) {
-      pojo[key] = value;
+      if (!nonJsonTypes.includes(type)) {
+        pojo[key] = value;
+      }
     }
   }
 
