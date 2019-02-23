@@ -7,6 +7,13 @@ import { ErrorPOJO, OnoError } from "./types";
 const inspectMethod = util.inspect.custom || Symbol.for("nodejs.util.inspect.custom");
 
 /**
+ * Ono supports Node's `util.format()` formatting for error messages.
+ *
+ * @see https://nodejs.org/api/util.html#util_util_format_format_args
+ */
+export const formatter = util.format;
+
+/**
  * Adds an `inspect()` method to support Node's `util.inspect()` function.
  *
  * @see https://nodejs.org/api/util.html#util_util_inspect_custom

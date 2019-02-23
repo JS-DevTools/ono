@@ -73,7 +73,5 @@
     "typescript-tslint-plugin": "^0.3.0",
     "version-bump-prompt": "^4.2.1"
   },
-  "dependencies": {
-    "format-util": "^1.0.3"
-  }
+  "dependencies": {}
 }

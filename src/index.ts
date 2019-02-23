@@ -1,4 +1,4 @@
-import format from "format-util";
+import { formatter } from "./isomorphic.node";
 import { Ono, ono } from "./ono";
 
 // Create Ono instances for each of the JavaScript error types
@@ -11,7 +11,7 @@ ono.type = new Ono(TypeError);
 ono.uri = new Ono(URIError);
 
 // Default to Node's `util.format()` functionality, but allow users to substitute their own
-ono.formatter = format;
+ono.formatter = formatter;
 
 // Export type definitions
 export * from "./types";
