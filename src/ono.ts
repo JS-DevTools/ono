@@ -25,7 +25,12 @@ function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
       formatArgs = args;
     }
     else if (typeof args[1] === "string") {
-      originalError = args[0] as E;
+      if (args[0] instanceof Error) {
+        originalError = args[0] as E;
+      }
+      else {
+        props = args[0] as P;
+      }
       formatArgs = args.slice(1);
     }
     else {
