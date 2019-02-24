@@ -1,7 +1,9 @@
 "use strict";
 
 const { host } = require("host-environment");
+const makeDOMError = require("./make-dom-error");
 const sampleError = getSampleError();
+const sampleDOMError = makeDOMError();
 
 module.exports = Object.assign({}, host, {
   error: {
@@ -45,6 +47,16 @@ module.exports = Object.assign({}, host, {
      */
     hasFileName: hasKey(sampleError, "fileName"),
 
+    /**
+     * The DOMError or DOMException class, if either exists.
+     */
+    domErrorClass: sampleDOMError.constructor,
+
+    /**
+     * The property keys that exist on DOMErrors.
+     */
+    domErrorKeys: getKeys(sampleDOMError),
+
     stack: hasKey(sampleError, "stack") && {
       /**
        * Indicates whether stack traces include the error name and message
@@ -73,4 +85,15 @@ function hasKey (error, key) {
 function isEnumerable (error, key) {
   let descriptor = Object.getOwnPropertyDescriptor(error, key);
   return Boolean(descriptor && descriptor.enumerable);
+}
+
+function getKeys (error) {
+  let keys = [];
+
+  // eslint-disable-next-line guard-for-in
+  for (let key in error) {
+    keys.push(key);
+  }
+
+  return keys;
 }

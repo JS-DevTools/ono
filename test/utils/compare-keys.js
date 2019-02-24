@@ -33,6 +33,15 @@ function compareKeys (...expected) {
       }
     }
 
+    // Some DOMErrors have additional properties
+    if (error instanceof host.error.domErrorClass) {
+      for (let key of host.error.domErrorKeys) {
+        if (!actual.includes(key)) {
+          actual.push(key);
+        }
+      }
+    }
+
     if (host.error.hasColumn) {
       expected.push("column");
     }
