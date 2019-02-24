@@ -55,9 +55,9 @@ module.exports = Object.assign({}, host, {
        * Indicates whether the stack traces include function names
        *
        * IE 11 and older do not include stack traces at all.
-       * Safari includes the script URL and line number, but no function name.
+       * Safari normally includes the function name, but not with code coverage instrumentation.
        */
-      includesFunctionNames: sampleError.stack.includes("getSampleError"),
+      includesFunctionNames: sampleError.stack.includes("getSampleError") && !host.browser.safari,
     }
   },
 });
