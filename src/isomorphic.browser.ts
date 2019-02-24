@@ -7,7 +7,7 @@
  *
  * @see https://github.com/tmpfs/format-util
  */
-export function formatter(...args: Array<unknown>): string {
+export function formatter(...args: unknown[]): string {
   return args.join(" ");
 }
 

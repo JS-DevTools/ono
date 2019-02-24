@@ -14,10 +14,10 @@ export {
  */
 function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
   // tslint:disable-next-line: no-shadowed-variable
-  return function ono<E extends ErrorLike, P extends object>(...args: Array<unknown>) {
+  return function ono<E extends ErrorLike, P extends object>(...args: unknown[]) {
     let originalError: E | undefined;
     let props: P | undefined;
-    let formatArgs: Array<unknown> | undefined;
+    let formatArgs: unknown[] | undefined;
     let formattedMessage = "";
 
     // Determine which arguments were actually specified

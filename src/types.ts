@@ -41,7 +41,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <E extends ErrorLike>(error: E, message: string, ...params: Array<unknown>): T & E & OnoError<T & E>;
+  <E extends ErrorLike>(error: E, message: string, ...params: unknown[]): T & E & OnoError<T & E>;
 
   /**
    * Creates a new error with a formatted message and the stack trace and properties of another error,
@@ -52,7 +52,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <E extends ErrorLike, P extends object>(error: E, props: P, message: string, ...params: Array<unknown>)
+  <E extends ErrorLike, P extends object>(error: E, props: P, message: string, ...params: unknown[])
   : T & E & P & OnoError<T & E & P>;
 
   /**
@@ -61,7 +61,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  (message: string, ...params: Array<unknown>): T & OnoError<T>;
+  (message: string, ...params: unknown[]): T & OnoError<T>;
 
   /**
    * Creates an error with additional properties.
@@ -77,7 +77,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <P extends object>(props: P, message: string, ...params: Array<unknown>): T & P & OnoError<T & P>;
+  <P extends object>(props: P, message: string, ...params: unknown[]): T & P & OnoError<T & P>;
 }
 
 /**
@@ -119,7 +119,7 @@ export type ErrorLike = Error | ErrorPOJO;
  * @example
  *  format("Hello, %s! You have %d unread messages.", "John", 5);
  */
-export type MessageFormatter = (message: string, ...args: Array<unknown>) => string;
+export type MessageFormatter = (message: string, ...args: unknown[]) => string;
 
 /**
  * Creates an `Ono` instance for a specifc error type.
@@ -157,5 +157,5 @@ export interface ErrorLikeConstructorFunction<T extends ErrorLike> {
  */
 export interface ErrorLikeConstructorClass<T extends ErrorLike> {
   readonly prototype: T;
-  new(...args: Array<unknown>): T;
+  new(...args: unknown[]): T;
 }
