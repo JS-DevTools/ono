@@ -1,2 +1,0 @@
---bail
-test/specs/**/*.spec.js
