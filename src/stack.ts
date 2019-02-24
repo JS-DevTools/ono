@@ -35,15 +35,15 @@ export function hasLazyStack(error: ErrorLike): boolean {
 /**
  * Appends the original `Error.stack` property to the new Error's stack.
  */
-export function joinStacks(newError: ErrorLike, originalError?: ErrorLike): string {
+export function joinStacks(newError: ErrorLike, originalError?: ErrorLike): string | undefined {
   let newStack = popStack(newError.stack);
-  let originalStack = originalError ? originalError.stack : "";
+  let originalStack = originalError ? originalError.stack : undefined;
 
   if (newStack && originalStack) {
     return newStack + "\n\n" + originalStack;
   }
   else {
-   return newStack || originalStack || "";
+   return newStack || originalStack;
   }
 }
 
@@ -71,9 +71,9 @@ export function lazyJoinStacks(newError: ErrorLike, originalError?: ErrorLike): 
 /**
  * Removes Ono from the stack, so that the stack starts at the original error location
  */
-function popStack(stack?: string): string {
-  if (!stack) {
-    return "";
+function popStack(stack?: string): string | undefined {
+  if (stack === undefined) {
+    return undefined;
   }
 
   let lines = stack.split(newline);
