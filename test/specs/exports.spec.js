@@ -1,6 +1,5 @@
 "use strict";
 
-require("@babel/polyfill/noConflict");
 const commonJSExport = require("../../");
 const { default: defaultExport, ono: namedExport, Ono } = require("../../");
 const { expect } = require("chai");

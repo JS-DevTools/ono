@@ -7,6 +7,7 @@ const { karmaConfig } = require("karma-config");
 
 module.exports = karmaConfig({
   sourceDir: "esm",
+  fixtures: "test/fixtures/**/*.js",
   browsers: {
     ie: true,
   },

@@ -1,6 +1,5 @@
 "use strict";
 
-require("@babel/polyfill/noConflict");
 const { ono, Ono } = require("../../");
 const { expect } = require("chai");
 const { host } = require("../utils");

@@ -1,6 +1,5 @@
 "use strict";
 
-require("@babel/polyfill/noConflict");
 const { expect } = require("chai");
 const { onoes, createFakeStack, compareKeys, compareStacks, host, makeDOMError } = require("../utils");
 
