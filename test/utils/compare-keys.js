@@ -33,7 +33,20 @@ function compareKeys (...expected) {
       }
     }
 
-    if ((host.browser.IE || host.browser.edge) && actual.includes("description")) {
+    if (host.error.hasColumn) {
+      expected.push("column");
+    }
+
+    if (host.error.hasLine) {
+      expected.push("line");
+    }
+
+    if (host.error.hasSourceURL) {
+      expected.push("sourceURL");
+    }
+
+    // IE & Edge have a `description` field on SOME error types, but not all
+    if (host.error.hasEnumerableDescription && "description" in error) {
       expected.push("description");
     }
 

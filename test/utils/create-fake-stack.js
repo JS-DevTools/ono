@@ -15,7 +15,7 @@ module.exports = createFakeStack;
 function createFakeStack (...entries) {
   let stack = "";
 
-  if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+  if (host.error.stack.includesErrorMessage) {
     stack += "Error: This is a fake error\n";
   }
 

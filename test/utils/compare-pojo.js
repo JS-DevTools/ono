@@ -18,31 +18,43 @@ function comparePOJO (expected) {
    * @returns {boolean}
    */
   return function (actual) {
-    if (host.browser.firefox) {
-      expect(actual.fileName).to.be.a("string").and.not.empty;
-      expect(actual.lineNumber).to.be.a("number").above(0);
-      expect(actual.columnNumber).to.be.a("number").above(0);
-      expected.fileName = actual.fileName;
-      expected.lineNumber = actual.lineNumber;
-      expected.columnNumber = actual.columnNumber;
-    }
-
-    // Only recent versions of Safari include these properties
-    if (host.browser.safari && actual.sourceURL && actual.line && actual.column) {
-      expect(actual.sourceURL).to.be.a("string").and.not.empty;
-      expect(actual.line).to.be.a("number").above(0);
+    if (host.error.hasColumn) {
       expect(actual.column).to.be.a("number").above(0);
-      expected.sourceURL = actual.sourceURL;
-      expected.line = actual.line;
       expected.column = actual.column;
     }
 
-    if ((host.browser.IE || host.browser.edge) && "description" in actual) {
+    if (host.error.hasColumnNumber) {
+      expect(actual.columnNumber).to.be.a("number").above(0);
+      expected.columnNumber = actual.columnNumber;
+    }
+
+    if (host.error.hasLine) {
+      expect(actual.line).to.be.a("number").above(0);
+      expected.line = actual.line;
+    }
+
+    if (host.error.hasLineNumber) {
+      expect(actual.lineNumber).to.be.a("number").above(0);
+      expected.lineNumber = actual.lineNumber;
+    }
+
+    if (host.error.hasFileName) {
+      expect(actual.fileName).to.be.a("string").and.not.empty;
+      expected.fileName = actual.fileName;
+    }
+
+    if (host.error.hasSourceURL) {
+      expect(actual.sourceURL).to.be.a("string").and.not.empty;
+      expected.sourceURL = actual.sourceURL;
+    }
+
+    // IE & Edge have a `description` field on SOME error types, but not all
+    if (host.error.hasDescription && "description" in actual) {
       expect(actual.description).to.be.a("string");
       expected.description = actual.description;
     }
 
-    if (!("stack" in actual)) {
+    if (!host.error.stack) {
       // Some browsers don't support the "stack" property
       delete expected.stack;
     }

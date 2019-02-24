@@ -57,7 +57,7 @@ ACTUAL:
  * @returns {string[][]|undefined}
  */
 function parseStacks (stack) {
-  if (!stack || !host.STACK_TRACES_HAVE_FUNCTION_NAMES) {
+  if (!stack || !host.error.stack.includesFunctionNames) {
     return undefined;
   }
 

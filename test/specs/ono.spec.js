@@ -100,7 +100,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["makeInnerError"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/SyntaxError: This is the inner error/);
       }
 
@@ -131,7 +131,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["makeInnerError"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/ReferenceError: This is the inner error/);
       }
 
@@ -162,7 +162,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["makeInnerError"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/RangeError: This is the inner error/);
       }
 
@@ -267,7 +267,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["makeInnerError"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/EvalError: This is the inner error/);
       }
 
@@ -319,7 +319,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["foo", "bar"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/Error: This looks like an error, but it's not one/);
       }
 
@@ -427,7 +427,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["makeInnerError"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/EvalError: This is the inner error/);
       }
 
@@ -519,7 +519,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
         ["foo", "bar"]
       ));
 
-      if (host.STACK_TRACE_INCLUDES_ERROR_NAME_AND_MESSAGE) {
+      if (host.error.stack.includesErrorMessage) {
         expect(err.stack).to.match(/Error: Testing 1 2 3 \nThis looks like an error, but it's not one/);
       }
 
