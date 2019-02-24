@@ -37,14 +37,27 @@ describe("ono.formatter", function () {
       let obj = { foo: "bar" };
       let err = ono("String: %s, Number: %d, JSON: %j, Object: %o, Literal: %%", obj, obj, obj, obj, obj);
       if (host.node) {
-        expect(err.message).to.equal(
-          "String: [object Object], " +
-          "Number: NaN, " +
-          "JSON: {\"foo\":\"bar\"}, " +
-          "Object: { foo: \'bar\' }, " +
-          "Literal: % " +
-          "{ foo: \'bar\' }"
-        );
+        if (host.node.version > 7) {
+          expect(err.message).to.equal(
+            "String: [object Object], " +
+            "Number: NaN, " +
+            "JSON: {\"foo\":\"bar\"}, " +
+            "Object: { foo: \'bar\' }, " +
+            "Literal: % " +
+            "{ foo: \'bar\' }"
+          );
+        }
+        else {
+          // Node <= 6
+          expect(err.message).to.equal(
+            "String: [object Object], " +
+            "Number: NaN, " +
+            "JSON: {\"foo\":\"bar\"}, " +
+            "Object: %o, " +
+            "Literal: % " +
+            "{ foo: \'bar\' } { foo: \'bar\' }"
+          );
+        }
       }
       else {
         expect(err.message).to.equal(
