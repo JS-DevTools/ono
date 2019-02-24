@@ -62,18 +62,6 @@ module.exports = Object.assign({}, host, {
   },
 });
 
-console.log(`
-=======================================================
-=======================================================
-
-host = ${JSON.stringify(module.exports.error, null, 2)}
-
-sampleError = ${JSON.stringify(sampleError, null, 2)}
-
-=======================================================
-=======================================================
-`);
-
 function getSampleError () {
   return new Error("THIS IS THE MESSAGE");
 }
