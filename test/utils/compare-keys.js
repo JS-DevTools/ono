@@ -33,28 +33,18 @@ function compareKeys (...expected) {
       }
     }
 
-    // Some DOMErrors have additional properties
-    if (error instanceof host.error.domErrorClass) {
-      for (let key of host.error.domErrorKeys) {
-        if (!actual.includes(key)) {
-          actual.push(key);
-        }
-      }
-    }
-
-    if (host.error.hasColumn) {
+    if (host.error.hasColumn && "column" in error) {
       expected.push("column");
     }
 
-    if (host.error.hasLine) {
+    if (host.error.hasLine && "line" in error) {
       expected.push("line");
     }
 
-    if (host.error.hasSourceURL) {
+    if (host.error.hasSourceURL && "sourceURL" in error) {
       expected.push("sourceURL");
     }
 
-    // IE & Edge have a `description` field on SOME error types, but not all
     if (host.error.hasEnumerableDescription && "description" in error) {
       expected.push("description");
     }

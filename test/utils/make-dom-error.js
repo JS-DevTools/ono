@@ -3,28 +3,15 @@
 module.exports = makeDOMError;
 
 function makeDOMError () {
-  let domError;
-  let errorName = "DOMError";
-  let errorMessage = "This is a DOM error";
+  let name = "DOMError";
+  let message = "This is a DOM error";
 
   try {
     // Try creating a DOMError
-    domError = new DOMError(errorName, errorMessage);
+    return new DOMError(name, message);
   }
   catch (e) {
-    try {
-      // DOMError is not supported, so try a DOMException instead
-      domError = new DOMException(errorMessage, errorName);
-    }
-    catch (e2) {
-      // DOMException is also not supported
-    }
+    // DOMError is not supported, so return a POJO instead
+    return { name, message };
   }
-
-  if (!domError) {
-    // Just return a POJO instead
-    domError = { name: errorName, message: errorMessage };
-  }
-
-  return domError;
 }
