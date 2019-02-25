@@ -1,6 +1,6 @@
 {
   "name": "ono",
-  "version": "4.0.11",
+  "version": "5.0.0",
   "description": "Throw better errors.",
   "keywords": [
     "throw",
@@ -10,7 +10,10 @@
     "printf",
     "format",
     "wrap",
-    "inner"
+    "inner",
+    "original",
+    "stack",
+    "properties"
   ],
   "author": {
     "name": "James Messinger",
