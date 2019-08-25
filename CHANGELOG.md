@@ -13,7 +13,7 @@ All notable changes will be documented in this file.
 
 #### in Web Browsers
 
-- We no longer automatically include a polyfill for [Node's `util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args).  We recommend using [ES6 template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) instead. Or you can import [a polyfill](https://github.com/tmpfs/format-util) yourself and assign it to [the `ono.formatter` property](https://jsdevtools.org/ono/#onoformatter).
+- We no longer automatically include a polyfill for [Node's `util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args).  We recommend using [ES6 template strings](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) instead. Or you can import [a polyfill](https://github.com/tmpfs/format-util) yourself and assign it to [the `ono.formatter` property](https://jstools.dev/ono/#onoformatter).
 
 ### New Features
 
@@ -21,7 +21,7 @@ All notable changes will be documented in this file.
 
 - Ono is now completely dependency free.
 
-- You can now create your own Ono functions for custom error classes.  See [the docs](https://jsdevtools.org/ono/#custom-error-classes) for details.
+- You can now create your own Ono functions for custom error classes.  See [the docs](https://jstools.dev/ono/#custom-error-classes) for details.
 
 - Symbol-keyed properties are now supported.  If the `originalError` and/or `props` objects has Symbol-keyed properties, they will be copied to the Ono error.
 
