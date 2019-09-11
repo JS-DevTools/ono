@@ -47,4 +47,10 @@ describe("package exports", () => {
     expect(Ono.length).to.equal(1);
   });
 
+  it("should export the Ono.toJSON static method", () => {
+    expect(Ono.toJSON).to.be.a("function");
+    expect(Ono.toJSON.name).to.equal("toJSON");
+    expect(Ono.toJSON.length).to.equal(1);
+  });
+
 });

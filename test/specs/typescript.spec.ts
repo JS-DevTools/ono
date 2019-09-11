@@ -159,6 +159,23 @@ export function testOnoConstructorWithNonErrorClass() {
 }
 
 
+export function testOnoToJSON() {
+  let pojo = Ono.toJSON(err);
+
+  // ErrorPOJO props
+  pojo.name = "string";
+  pojo.message = "string";
+  pojo.stack = "string";
+
+  let pojo2 = Ono.toJSON(errPOJO);
+
+  // ErrorPOJO props
+  pojo2.name = "string";
+  pojo2.message = "string";
+  pojo2.stack = "string";
+}
+
+
 export function testOnoSignatures() {
   ono(message);
   ono(message, param1, param2);
