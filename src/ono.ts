@@ -17,7 +17,7 @@ function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
   return function ono<E extends ErrorLike, P extends object>(...args: unknown[]) {
     let originalError: E | undefined;
     let props: P | undefined;
-    let formatArgs: unknown[] | undefined;
+    let formatArgs: unknown[];
     let formattedMessage = "";
 
     // Determine which arguments were actually specified
@@ -40,7 +40,7 @@ function Ono<T extends ErrorLike>(klass: ErrorLikeConstructor<T>): Ono<T> {
     }
 
     // If there are any format arguments, then format the error message
-    if (formatArgs && formatArgs.length > 0) {
+    if (formatArgs.length > 0) {
       formattedMessage = onoSingleton.formatter.apply(undefined, formatArgs);
     }
 
