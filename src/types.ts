@@ -127,6 +127,12 @@ export type MessageFormatter = (message: string, ...args: unknown[]) => string;
 export interface OnoConstructor {
   new<T extends ErrorLike>(constructor: ErrorLikeConstructor<T>): Ono<T>;
   <T extends ErrorLike>(constructor: ErrorLikeConstructor<T>): Ono<T>;
+
+  /**
+   * Returns an object containing all properties of the given Error object,
+   * which can be used with `JSON.stringify()`.
+   */
+  toJSON<E extends ErrorLike>(error: E): ErrorPOJO & E;
 }
 
 /**
