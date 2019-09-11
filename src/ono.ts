@@ -4,10 +4,7 @@ import { ErrorLike, ErrorLikeConstructor, Ono, OnoConstructor, OnoError, OnoSing
 const onoConstructor = Ono as OnoConstructor;
 const onoSingleton = Ono(Error) as OnoSingleton;
 
-export {
-  onoConstructor as Ono,
-  onoSingleton as ono,
-};
+export { onoConstructor as Ono, onoSingleton as ono };
 
 /**
  * Creates an `Ono` instance for a specifc error type.
