@@ -1,5 +1,5 @@
 import { addInspectMethod } from "./isomorphic.node";
-import { hasLazyStack, joinStacks, lazyJoinStacks } from "./stack";
+import { isLazyStack, isWritableStack, joinStacks, lazyJoinStacks } from "./stack";
 import { getDeepKeys, toJSON } from "./to-json";
 import { ErrorLike, ErrorPOJO, OnoError } from "./types";
 
@@ -40,10 +40,12 @@ export function extendError<T>(newError: OnoError<T>, originalError?: ErrorPOJO,
  * Extend the error stack to include its cause
  */
 function extendStack(newError: ErrorLike, originalError?: ErrorPOJO): void {
-  if (hasLazyStack(newError)) {
-    lazyJoinStacks(newError, originalError);
+  let stackProp = Object.getOwnPropertyDescriptor(newError, "stack");
+
+  if (isLazyStack(stackProp)) {
+    lazyJoinStacks(stackProp, newError, originalError);
   }
-  else {
+  else if (isWritableStack(stackProp)) {
     newError.stack = joinStacks(newError, originalError);
   }
 }

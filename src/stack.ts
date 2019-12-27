@@ -5,31 +5,38 @@ const newline = /\r?\n/;
 const onoCall = /\bono\b/;
 
 /**
- * Does a one-time determination of whether this JavaScript engine
- * supports lazy `Error.stack` properties.
+ * The Property Descriptor of a lazily-computed `stack` property.
  */
-export const supportsLazyStack = Boolean(
-  // ES5 property descriptors must be supported
-  Object.getOwnPropertyDescriptor && Object.defineProperty &&
+interface LazyStack {
+  configurable: true;
 
-  // Chrome on Android doesn't support lazy stacks :(
-  (typeof navigator === "undefined" || !/Android/.test(navigator.userAgent))
-);
+  /**
+   * Lazily computes the error's stack trace.
+   */
+  get(): string | undefined;
+}
 
 /**
- * Does this error have a lazy stack property?
+ * Is the property lazily computed?
  */
-export function hasLazyStack(error: ErrorLike): boolean {
-  if (!supportsLazyStack) {
-    return false;
-  }
+export function isLazyStack(stackProp: PropertyDescriptor | undefined): stackProp is LazyStack {
+  return Boolean(
+    stackProp &&
+    stackProp.configurable &&
+    typeof stackProp.get === "function"
+  );
+}
 
-  let descriptor = Object.getOwnPropertyDescriptor(error, "stack");
-  if (!descriptor) {
-    return false;
-  }
-
-  return typeof descriptor.get === "function";
+/**
+ * Is the stack property writable?
+ */
+export function isWritableStack(stackProp: PropertyDescriptor | undefined): boolean {
+  return Boolean(
+    // If there is no stack property, then it's writable, since assigning it will create it
+    !stackProp ||
+    stackProp.writable ||
+    typeof stackProp.set === "function"
+  );
 }
 
 /**
@@ -50,13 +57,11 @@ export function joinStacks(newError: ErrorLike, originalError?: ErrorLike): stri
 /**
  * Calls `joinStacks` lazily, when the `Error.stack` property is accessed.
  */
-export function lazyJoinStacks(newError: ErrorLike, originalError?: ErrorLike): void {
-  let descriptor = Object.getOwnPropertyDescriptor(newError, "stack");
-
-  if (originalError && descriptor && typeof descriptor.get === "function") {
+export function lazyJoinStacks(lazyStack: LazyStack, newError: ErrorLike, originalError?: ErrorLike): void {
+  if (originalError) {
     Object.defineProperty(newError, "stack", {
       get: () => {
-        let newStack = descriptor!.get!.apply(newError) as string;
+        let newStack = lazyStack.get.apply(newError);
         return joinStacks({ stack: newStack }, originalError);
       },
       enumerable: false,
@@ -64,31 +69,29 @@ export function lazyJoinStacks(newError: ErrorLike, originalError?: ErrorLike): 
     });
   }
   else {
-    lazyPopStack(newError);
+    lazyPopStack(newError, lazyStack);
   }
 }
 
 /**
  * Removes Ono from the stack, so that the stack starts at the original error location
  */
-function popStack(stack?: string): string | undefined {
-  if (stack === undefined) {
-    return undefined;
-  }
+function popStack(stack: string | undefined): string | undefined {
+  if (stack) {
+    let lines = stack.split(newline);
 
-  let lines = stack.split(newline);
+    if (lines.length < 2) {
+      // The stack only has one line, so there's nothing we can remove
+      return stack;
+    }
 
-  if (lines.length < 2) {
-    // The stack only has one line, so there's nothing we can remove
-    return stack;
-  }
-
-  // Find the `ono` call in the stack, and remove it
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i];
-    if (onoCall.test(line)) {
-      lines.splice(i, 1);
-      return lines.join("\n");
+    // Find the `ono` call in the stack, and remove it
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i];
+      if (onoCall.test(line)) {
+        lines.splice(i, 1);
+        return lines.join("\n");
+      }
     }
   }
 
@@ -101,14 +104,10 @@ function popStack(stack?: string): string | undefined {
 /**
  * Calls `popStack` lazily, when the `Error.stack` property is accessed.
  */
-function lazyPopStack(error: ErrorLike): void {
-  let descriptor = Object.getOwnPropertyDescriptor(error, "stack");
-
-  if (descriptor && typeof descriptor.get === "function") {
-    Object.defineProperty(error, "stack", {
-      get: () => popStack(descriptor!.get!.apply(error) as string),
-      enumerable: false,
-      configurable: true
-    });
-  }
+function lazyPopStack(error: ErrorLike, lazyStack: LazyStack): void {
+  Object.defineProperty(error, "stack", {
+    get: () => popStack(lazyStack.get.apply(error)),
+    enumerable: false,
+    configurable: true
+  });
 }
