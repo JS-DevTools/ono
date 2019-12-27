@@ -56,25 +56,25 @@
     "release": "npm run upgrade && npm run clean && npm run build && npm test && npm run bump"
   },
   "devDependencies": {
-    "@babel/polyfill": "^7.6.0",
-    "@types/node": "^12.7.4",
+    "@babel/polyfill": "^7.7.0",
+    "@types/node": "^13.1.1",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.6",
-    "eslint": "^6.3.0",
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
     "eslint-config-modular": "^7.0.1",
     "host-environment": "^1.1.4",
-    "karma": "^4.3.0",
+    "karma": "^4.4.1",
     "karma-cli": "^2.0.0",
-    "karma-config": "^1.5.5",
-    "mocha": "^6.2.0",
+    "karma-config": "^1.5.7",
+    "mocha": "^6.2.2",
     "npm-check": "^5.9.0",
-    "nyc": "^14.1.1",
+    "nyc": "^15.0.0",
     "shx": "^0.3.2",
-    "tslint": "^5.20.0",
+    "tslint": "^5.20.1",
     "tslint-modular": "^1.6.0",
-    "typescript": "^3.6.3",
-    "typescript-tslint-plugin": "^0.5.4",
-    "version-bump-prompt": "^5.0.5"
+    "typescript": "^3.7.4",
+    "typescript-tslint-plugin": "^0.5.5",
+    "version-bump-prompt": "^5.0.6"
   },
   "dependencies": {}
 }
