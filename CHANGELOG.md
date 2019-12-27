@@ -9,7 +9,7 @@ All notable changes will be documented in this file.
 
 - Added a static `Ono.toJSON()` method that accepts any `Error` (even a non-Ono error) and returns a POJO that can be used with `JSON.stringify()`.  Ono errors already have a built-in `toJSON()` method, but this exposes that enhanced functionality in a way that can be used with _any_ error.
 
-[Full Changelog](https://github.com/JS-DevTools/ono/compare/v4.0.11...v5.0.0)
+[Full Changelog](https://github.com/JS-DevTools/ono/compare/v5.0.2...v5.1.0)
 
 
 
