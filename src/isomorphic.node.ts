@@ -42,7 +42,6 @@ function inspect<T>(this: OnoError<T>): ErrorPOJO & T {
 
   // Don't include the `inspect()` method on the output object,
   // otherwise it will cause `util.inspect()` to go into an infinite loop
-  // @ts-ignore
   delete pojo[inspectMethod];  // tslint:disable-line: no-dynamic-delete
 
   // tslint:enable: no-any no-unsafe-any
