@@ -15,11 +15,11 @@ ono (Oh No!)
 
 Features
 --------------------------
-- Wrap and re-throw an error _without_ losing the original error's message, stack trace, and properties
+- Wrap and re-throw an error _without_ losing the original error's type, message, stack trace, and properties
 
 - Add custom properties to errors &mdash; great for error numbers, status codes, etc.
 
-- Use [format strings](#onoformatter) for error messages &mdash; great for localization
+- Use [format strings](#format-option) for error messages &mdash; great for localization
 
 - Enhanced support for [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) and [`util.inspect()`](https://nodejs.org/api/util.html#util_util_inspect_object_options) &mdash; great for logging
 
@@ -53,7 +53,7 @@ throw ono.range(...);                           // RangeError
 throw ono.syntax(...);                          // SyntaxError
 throw ono.reference(...);                       // ReferenceError
 
-// Create an Ono instance for your own custom error class
+// Create an Ono method for your own custom error class
 const { Ono } = require("ono");
 class MyErrorClass extends Error {}
 ono.myError = new Ono(MyErrorClass);
@@ -103,34 +103,123 @@ API
 ### `ono([originalError], [props], [message, ...])`
 Creates an [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) object with the given properties.
 
-* `originalError` - _(optional)_ The original error that occurred, if any. This error's message, stack trace, and properties will be copied to the new error.
+* `originalError` - _(optional)_ The original error that occurred, if any. This error's message, stack trace, and properties will be copied to the new error. If this error's type is one of the [known error types](#specific-error-types), then the new error will be of the same type.
 
 * `props` - _(optional)_ An object whose properties will be copied to the new error. Properties can be anything, including objects and functions.
 
-* `message` - _(optional)_ The error message string. If it contains placeholders, then pass each placeholder's value as an additional parameter.  See [`ono.formatter`](#onoformatter) for more info.
+* `message` - _(optional)_ The error message string. If it contains placeholders, then pass each placeholder's value as an additional parameter.  See the [`format` option](#format-option) for more info.
 
-#### Specific error types
-The default `ono()` function always creates [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) objects, but you can use any of the following methods to explicitly create the corresponding Error subclass.  The method signatures are exactly the same as above.
+### Specific error types
+The default `ono()` function may return an instance of the base [`Error` class](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error), or it may return a more specific sub-class, based on the type of the `originalError` argument.  If you want to _explicitly_ create a specific type of error, then you can use any of the following methods:
 
-|Method            | Return Type
-|:-----------------|:-------------------
-|`ono.error()`     |[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
-|`ono.eval()`      |[`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError)
-|`ono.range()`     |[`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError)
-|`ono.reference()` |[`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError)
-|`ono.syntax()`    |[`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)
-|`ono.type()`      |[`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)
-|`ono.uri()`       |[`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
+The method signatures and arguments are exactly the same as [the default `ono()` function](#onooriginalerror-props-message-).
+
+|Method                      | Return Type
+|:---------------------------|:-------------------
+|`ono.error()`               |[`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
+|`ono.eval()`                |[`EvalError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError)
+|`ono.range()`               |[`RangeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError)
+|`ono.reference()`           |[`ReferenceError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError)
+|`ono.syntax()`              |[`SyntaxError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError)
+|`ono.type()`                |[`TypeError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError)
+|`ono.uri()`                 |[`URIError`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError)
+|`ono.yourCustomErrorHere()` |Add your own [custom error classes](#custom-error-classes) to ono
 
 
-### `ono.formatter`
-When running in Node.js, the `ono.formatter` property is set to [the `util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args), which let you use placeholders such as `%s`, `%d`, and `%j`.  You can provide the values for these when calling `ono` or any Ono method:
+
+### `Ono(Error, [options])`
+The `Ono` constructor is used to create your own [custom `ono` methods](#custom-error-classes) for custom error types, or to change the default behavior of the built-in methods.
+
+> **Warning:** Be sure not to confuse `ono` (lowercase) and `Ono` (capitalized). The latter one is a class.
+
+* `Error` - The Error sub-class that this Ono method will create instances of
+
+* `options` - _(optional)_ An [options object](#options), which customizes the behavior of the Ono method
+
+
+
+Options
+---------------------------------
+The `Ono` constructor takes an optional options object as a second parameter. The object can have the following properties, all of which are optional:
+
+|Option           |Type        |Default      |Description
+|-----------------|------------|-------------|---------------------------------------------------------------
+|`concatMessages` |boolean     |`true`       |When Ono is used to wrap an error, this setting determines whether the inner error's message is appended to the new error message.
+|`format`         |function or boolean |[`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) in Node.js<br><br>`false` in web browsers|A function that replaces placeholders like in error messages with values.<br><br>If set to `false`, then error messages will be treated as literals and no placeholder replacement will occur.
+
+
+### `concatMessages` Option
+When wrapping an error, Ono's default behavior is to append the error's message to your message, with a newline between them.  For example:
+
+```javascript
+const ono = require("ono");
+
+function createArray(length) {
+  try {
+    return new Array(length);
+  }
+  catch (error) {
+    // Wrap and re-throw the error
+    throw ono(error, "Sorry, I was unable to create the array.");
+  }
+}
+
+// Try to create an array with a negative length
+createArray(-5);
+```
+
+The above code produces the following error message:
+
+```
+Sorry, I was unable to create the array.
+Invalid array length;
+```
+
+If you'd rather not include the original message, then you can set the `concatMessages` option to `false`. For example:
+
+```javascript
+const { ono, Ono } = require("ono");
+
+// Override the default behavior for the RangeError
+ono.range = new Ono(RangeError, { concatMessages: false });
+
+function createArray(length) {
+  try {
+    return new Array(length);
+  }
+  catch (error) {
+    // Wrap and re-throw the error
+    throw ono(error, "Sorry, I was unable to create the array.");
+  }
+}
+
+// Try to create an array with a negative length
+createArray(-5);
+```
+
+Now the error only includes your message, not the original error message.
+
+```
+Sorry, I was unable to create the array.
+```
+
+
+### `format` option
+The `format` option let you set a format function, which replaces placeholders in error messages with values.
+
+When running in Node.js, Ono uses [the `util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args) by default, which lets you use placeholders such as %s, %d, and %j. You can provide the values for these placeholders when calling any Ono method:
 
 ```javascript
 throw ono("%s is invalid. Must be at least %d characters.", username, minLength);
 ```
 
-This is especially useful for localization.  Here's a simplistic example:
+Of course, the above example could be accomplished using [ES6 template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals) instead of format strings:
+
+```javascript
+throw ono(`${username} is invalid. Must be at least ${minLength} characters.`);
+```
+
+Format strings are most useful when you don't alrady know the values at the time that you're writing the string. A common scenario is localization.  Here's a simplistic example:
 
 ```javascript
 const errorMessages {
@@ -146,8 +235,8 @@ let lang = getCurrentUsersLanguage();
 throw ono(errorMessages.invalidLength[lang], username, minLength);
 ```
 
-#### `ono.formatter` in web browsers
-Web browsers don't have a built-in equivalent of Node's [`util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args), so format strings are only supported in Node.js by default.  However, you can set the `ono.formatter` property to any compatible polyfill library to enable this functionality in web browsers too.
+#### The `format` option in web browsers
+Web browsers don't have a built-in equivalent of Node's [`util.format()` function](https://nodejs.org/api/util.html#util_util_format_format_args), so format strings are only supported in Node.js by default.  However, you can set the `format` option to any compatible polyfill library to enable this functionality in web browsers too.
 
 Here are some compatible polyfill libraries:
 
@@ -155,20 +244,30 @@ Here are some compatible polyfill libraries:
 - [format-util](https://github.com/tmpfs/format-util)
 
 
-#### Custom `ono.formatter` implementation
-If the standard [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) functionality isn't sufficient for your needs, then you can set the `ono.formatter` property to your own custom implementation.  Here's a simplistic example:
+#### Custom `format` implementation
+If the standard [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) functionality isn't sufficient for your needs, then you can set the `format` option to your own custom implementation.  Here's a simplistic example:
 
 ```javascript
-// This is a simple formatter that replaces $0, $1, $2, ... with the corresponding argument
-function myCustomFormatter(message, ...args) {
-  for (let [index, arg] of args) {
-    message = message.replace("$" + index, arg);
-  }
-  return message;
-}
+const { ono, Ono } = require("ono");
 
-// Tell Ono to use your custom formatter
-ono.formatter = myCustomFormatter;
+// This is a simple formatter that replaces $0, $1, $2, ... with the corresponding argument
+let options = {
+  format(message, ...args) {
+    for (let [index, arg] of args.entries()) {
+      message = message.replace("$" + index, arg);
+    }
+    return message;
+  }
+};
+
+// Use your custom formatter for all of the built-in error types
+ono.error = new Ono(Error, options);
+ono.eval = new Ono(EvalError, options);
+ono.range = new Ono(RangeError, options);
+ono.reference = new Ono(ReferenceError, options);
+ono.syntax = new Ono(SyntaxError, options);
+ono.type = new Ono(TypeError, options);
+ono.uri = new Ono(URIError, options);
 
 // Now all Ono functions support your custom formatter
 throw ono("$0 is invalid. Must be at least $1 characters.", username, minLength);
@@ -176,9 +275,10 @@ throw ono("$0 is invalid. Must be at least $1 characters.", username, minLength)
 
 
 
+
 Custom Error Classes
---------------------------
-Ono has built-in support for all of [the built-in JavaScript Error types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types).  For example, you can use `ono.reference()` to create a `ReferenceError`, or `ono.syntax()` to create a `SyntaxError`.  In addition to the built-in types, you can also create Ono instances for your own custom error classes.
+-----------------------------
+Ono has built-in support for all of [the built-in JavaScript Error types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types).  For example, you can use `ono.reference()` to create a `ReferenceError`, or `ono.syntax()` to create a `SyntaxError`.  In addition to the built-in types, you can also create Ono methods for your own custom error classes.
 
 ```javascript
 const { ono, Ono } = require("ono");
