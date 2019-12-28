@@ -7,7 +7,7 @@
  *
  * @see https://github.com/tmpfs/format-util
  */
-export const formatter = false;
+export const format = false;
 
 /**
  * The `util.inspect()` functionality only applies to Node.js.

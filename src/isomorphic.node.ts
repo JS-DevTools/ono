@@ -11,7 +11,7 @@ const inspectMethod = util.inspect.custom || Symbol.for("nodejs.util.inspect.cus
  *
  * @see https://nodejs.org/api/util.html#util_util_format_format_args
  */
-export const formatter = util.format;
+export const format = util.format;
 
 /**
  * Adds an `inspect()` method to support Node's `util.inspect()` function.

@@ -4,7 +4,7 @@ const { ono, Ono } = require("../../");
 const { expect } = require("chai");
 const { host } = require("../utils");
 
-describe("ono.formatter", () => {
+describe("Error message formatter", () => {
 
   it("should do nothing if no args are passed", () => {
     let err = ono("%s must be greater than %d");
@@ -84,7 +84,7 @@ describe("ono.formatter", () => {
       }, message);
     }
 
-    let myCustomOno = new Ono(SyntaxError, { formatter: myCustomFormatter });
+    let myCustomOno = new Ono(SyntaxError, { format: myCustomFormatter });
     let err = myCustomOno("$0 must be greater than $1", 4, 10);
     expect(err.message).to.equal("4 must be greater than 10");
   });

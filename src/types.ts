@@ -179,7 +179,7 @@ export interface OnoOptions {
    *
    * Defaults to `utils.inspect()` in Node.js.  Defaults to `Array.join()` in browsers.
    */
-  formatter?: MessageFormatter | false;
+  format?: MessageFormatter | false;
 }
 
 /**

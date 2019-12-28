@@ -145,7 +145,7 @@ describe("Ono options", () => {
     });
   });
 
-  describe("formatter", () => {
+  describe("format", () => {
     it("should use the default formatter, depending on the host", () => {
       let myCustomOno = new Ono(SyntaxError);
       let err = myCustomOno("%s must be greater than %d", 4, 10);
@@ -160,7 +160,7 @@ describe("Ono options", () => {
 
     it("should use the default formatter if explicitly set to undefined", () => {
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: undefined,
+        format: undefined,
       });
 
       let err = myCustomOno("%s must be greater than %d", 4, 10);
@@ -183,7 +183,7 @@ describe("Ono options", () => {
       }
 
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: myCustomFormatter
+        format: myCustomFormatter
       });
 
       let err = myCustomOno("$0 must be greater than $1", 4, 10);
@@ -192,7 +192,7 @@ describe("Ono options", () => {
 
     it("should not use a formatter if disabled", () => {
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: false
+        format: false
       });
 
       let err = myCustomOno("%s must be greater than %d", 4, 10);
@@ -201,7 +201,7 @@ describe("Ono options", () => {
 
     it("should not use a formatter if set to a falsy value", () => {
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: ""
+        format: ""
       });
 
       let err = myCustomOno("%s must be greater than %d", 4, 10);
@@ -210,7 +210,7 @@ describe("Ono options", () => {
 
     it("should not use a formatter if set to null", () => {
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: null
+        format: null
       });
 
       let err = myCustomOno("%s must be greater than %d", 4, 10);
@@ -219,7 +219,7 @@ describe("Ono options", () => {
 
     it("should not use a formatter if set to an invalid value", () => {
       let myCustomOno = new Ono(SyntaxError, {
-        formatter: 42,
+        format: 42,
       });
 
       let err = myCustomOno("%s must be greater than %d", 4, 10);

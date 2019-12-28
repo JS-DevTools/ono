@@ -1,4 +1,4 @@
-import { formatter } from "./isomorphic.node";
+import { format } from "./isomorphic.node";
 import { ErrorLike, OnoOptions } from "./types";
 
 /**
@@ -8,8 +8,8 @@ export function normalizeOptions(options?: OnoOptions): OnoOptions {
   options = options || {};
   return {
     concatMessages: options.concatMessages === undefined ? true : Boolean(options.concatMessages),
-    formatter: options.formatter === undefined ? formatter
-      : (typeof options.formatter === "function" ? options.formatter : false),
+    format: options.format === undefined ? format
+      : (typeof options.format === "function" ? options.format : false),
   };
 }
 
@@ -43,8 +43,8 @@ export function normalizeArgs<E extends ErrorLike, P extends object>(args: unkno
 
   // If there are any format arguments, then format the error message
   if (formatArgs.length > 0) {
-    if (options.formatter) {
-      message = options.formatter.apply(undefined, formatArgs);
+    if (options.format) {
+      message = options.format.apply(undefined, formatArgs);
     }
     else {
       message = formatArgs.join(" ");
