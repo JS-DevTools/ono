@@ -33,7 +33,12 @@ describe("Ono options", () => {
     newError = ono(originalError, 'Error while saving the "%s" file.', "some-file.txt");
 
     // It should use use the default behavior, NOT our overridden behavior
-    expect(newError.message).to.equal('Error while saving the "some-file.txt" file. \nBoom!');
+    if (host.node) {
+      expect(newError.message).to.equal('Error while saving the "some-file.txt" file. \nBoom!');
+    }
+    else {
+      expect(newError.message).to.equal('Error while saving the "%s" file. some-file.txt \nBoom!');
+    }
 
     // Restore the default RangeError behavior
     ono.range = ORIGINAL_RANGE;
