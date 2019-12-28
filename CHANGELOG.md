@@ -4,6 +4,29 @@ All notable changes will be documented in this file.
 `ono` adheres to [Semantic Versioning](http://semver.org/).
 
 
+[v6.0.0](https://github.com/JS-DevTools/ono/tree/v6.0.0) (2019-12-28)
+----------------------------------------------------------------------------------------------------
+
+### Breaking Changes
+
+- Dropped support for IE8 and other JavaScript engines that don't support [`Object.getOwnPropertyDescriptor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptor)
+
+- Removed `ono.formatter`.  It has been replaced with [the `format` option](https://github.com/JS-DevTools/ono#format-option)
+
+- When using the default `ono()` function to wrap an error, it will now try to match the error's type, rather than simply using the base `Error` class.
+
+### New Features
+
+- The [`Ono` constructor](https://github.com/JS-DevTools/ono#onoerror-options) now accepts an optional [options parameter](https://github.com/JS-DevTools/ono#options), which lets you customize the behavior of Ono
+
+- The [`concatMessages` option](https://github.com/JS-DevTools/ono#concatmessages-option) lets you control whether the original error's message is appended to your error message
+
+- The [`format` option](https://github.com/JS-DevTools/ono#format-option) lets you provide a custom function for replacing placeholders in error messages
+
+
+[Full Changelog](https://github.com/JS-DevTools/ono/compare/v5.1.0...v6.0.0)
+
+
 [v5.1.0](https://github.com/JS-DevTools/ono/tree/v5.1.0) (2019-09-10)
 ----------------------------------------------------------------------------------------------------
 
