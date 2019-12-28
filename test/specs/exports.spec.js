@@ -44,7 +44,7 @@ describe("package exports", () => {
   it("should export the Ono constructor as a named ESM export", () => {
     expect(Ono).to.be.a("function");
     expect(Ono.name).to.equal("Ono");
-    expect(Ono.length).to.equal(1);
+    expect(Ono.length).to.equal(2);
   });
 
   it("should export the Ono.toJSON static method", () => {
