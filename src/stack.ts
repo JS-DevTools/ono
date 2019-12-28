@@ -2,7 +2,7 @@
 import { ErrorLike } from "./types";
 
 const newline = /\r?\n/;
-const onoCall = /\bono\b/;
+const onoCall = /(^| )ono[ @]/;
 
 /**
  * The Property Descriptor of a lazily-computed `stack` property.
@@ -80,18 +80,28 @@ function popStack(stack: string | undefined): string | undefined {
   if (stack) {
     let lines = stack.split(newline);
 
-    if (lines.length < 2) {
-      // The stack only has one line, so there's nothing we can remove
-      return stack;
-    }
-
-    // Find the `ono` call in the stack, and remove it
+    // Find the Ono call(s) in the stack, and remove them
+    let onoStart;
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i];
+
       if (onoCall.test(line)) {
-        lines.splice(i, 1);
-        return lines.join("\n");
+        if (onoStart === undefined) {
+          // We found the first Ono call in the stack trace.
+          // There may be other subsequent Ono calls as well.
+          onoStart = i;
+        }
       }
+      else if (onoStart !== undefined) {
+        // We found the first non-Ono call after one or more Ono calls.
+        // So remove the Ono call lines from the stack trace
+        lines.splice(onoStart, i - onoStart);
+        break;
+      }
+    }
+
+    if (lines.length > 0) {
+      return lines.join("\n");
     }
   }
 
