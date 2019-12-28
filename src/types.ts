@@ -11,13 +11,31 @@ export interface OnoSingleton extends Ono<Error> {
   syntax: Ono<SyntaxError>;
   type: Ono<TypeError>;
   uri: Ono<URIError>;
-  formatter: MessageFormatter;
+}
+
+/**
+ * Creates an `Ono` instance for a specifc error type.
+ */
+export interface OnoConstructor {
+  <T extends ErrorLike>(constructor: ErrorLikeConstructor<T>, options?: OnoOptions): Ono<T>;
+  new<T extends ErrorLike>(constructor: ErrorLikeConstructor<T>, options?: OnoOptions): Ono<T>;
+
+  /**
+   * Returns an object containing all properties of the given Error object,
+   * which can be used with `JSON.stringify()`.
+   */
+  toJSON<E extends ErrorLike>(error: E): ErrorPOJO & E;
 }
 
 /**
  * An `Ono` is a function that creates errors of a specific type.
  */
 export interface Ono<T extends ErrorLike> {
+  /**
+   * The type of Error that this `Ono` function produces.
+   */
+  readonly [Symbol.species]: ErrorLikeConstructor<T>;
+
   /**
    * Creates a new error with the message, stack trace, and properties of another error.
    *
@@ -114,33 +132,10 @@ export interface ErrorPOJO {
 export type ErrorLike = Error | ErrorPOJO;
 
 /**
- * A function that accepts a message template and arguments to replace template parameters.
- *
- * @example
- *  format("Hello, %s! You have %d unread messages.", "John", 5);
- */
-export type MessageFormatter = (message: string, ...args: unknown[]) => string;
-
-/**
- * Creates an `Ono` instance for a specifc error type.
- */
-export interface OnoConstructor {
-  new<T extends ErrorLike>(constructor: ErrorLikeConstructor<T>): Ono<T>;
-  <T extends ErrorLike>(constructor: ErrorLikeConstructor<T>): Ono<T>;
-
-  /**
-   * Returns an object containing all properties of the given Error object,
-   * which can be used with `JSON.stringify()`.
-   */
-  toJSON<E extends ErrorLike>(error: E): ErrorPOJO & E;
-}
-
-/**
  * A constructor for `ErrorLike` objects.
  */
 export type ErrorLikeConstructor<T extends ErrorLike> =
   ErrorLikeConstructorFunction<T> | ErrorLikeConstructorClass<T>;
-
 
 /**
  * A constructor function for `ErrorLike` objects.
@@ -165,3 +160,32 @@ export interface ErrorLikeConstructorClass<T extends ErrorLike> {
   readonly prototype: T;
   new(...args: unknown[]): T;
 }
+
+/**
+ * Options that determine the behavior of an `Ono` instance.
+ */
+export interface OnoOptions {
+  /**
+   * When `Ono` is used to wrap an error, this setting determines whether the inner error's message
+   * is appended to the new error message.
+   *
+   * Defaults to `true`.
+   */
+  concatMessages?: boolean;
+
+  /**
+   * A function that replaces placeholders like "%s" or "%d" in error messages with values.
+   * If set to `false`, then error messages will be treated as literals and no placeholder replacement will occur.
+   *
+   * Defaults to `utils.inspect()` in Node.js.  Defaults to `Array.join()` in browsers.
+   */
+  formatter?: MessageFormatter | false;
+}
+
+/**
+ * A function that accepts a message template and arguments to replace template parameters.
+ *
+ * @example
+ *  format("Hello, %s! You have %d unread messages.", "John", 5);
+ */
+export type MessageFormatter = (message: string, ...args: unknown[]) => string;
