@@ -1,10 +1,43 @@
 "use strict";
 
-const { Ono } = require("../../");
+const { ono, Ono } = require("../../");
 const { expect } = require("chai");
 const { host } = require("../utils");
 
 describe("Ono options", () => {
+
+  it("should override default behavior", () => {
+    let ORIGINAL_RANGE = ono.range;
+
+    // Override the default behavior for RangeErrors
+    ono.range = new Ono(RangeError, {
+      concatMessages: false,
+      format: false,
+    });
+
+    // Use ono() to wrap a RangeError
+    let originalError = new RangeError("Boom!");
+    let newError = ono(originalError, 'Error while saving the "%s" file.', "some-file.txt");
+
+    // It should use our overridden behavior instead of the default behavior
+    expect(newError.message).to.equal('Error while saving the "%s" file. some-file.txt');
+
+    // Use ono.range() to wrap a RangeError
+    newError = ono.range(originalError, 'Error while saving the "%s" file.', "some-file.txt");
+
+    // It should use our overridden behavior instead of the default behavior
+    expect(newError.message).to.equal('Error while saving the "%s" file. some-file.txt');
+
+    // Use ono() to wrap a different type of error
+    originalError = new SyntaxError("Boom!");
+    newError = ono(originalError, 'Error while saving the "%s" file.', "some-file.txt");
+
+    // It should use use the default behavior, NOT our overridden behavior
+    expect(newError.message).to.equal('Error while saving the "some-file.txt" file. \nBoom!');
+
+    // Restore the default RangeError behavior
+    ono.range = ORIGINAL_RANGE;
+  });
 
   describe("concatMessages", () => {
     it("should concatenate error messages by default", () => {
