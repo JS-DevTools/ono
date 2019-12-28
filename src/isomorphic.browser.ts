@@ -7,9 +7,7 @@
  *
  * @see https://github.com/tmpfs/format-util
  */
-export function formatter(...args: unknown[]): string {
-  return args.join(" ");
-}
+export const formatter = false;
 
 /**
  * The `util.inspect()` functionality only applies to Node.js.

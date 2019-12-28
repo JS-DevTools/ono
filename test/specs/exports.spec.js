@@ -18,7 +18,6 @@ describe("package exports", () => {
     expect(ono).to.have.property("syntax").that.is.a("function").with.property("name", "ono");
     expect(ono).to.have.property("type").that.is.a("function").with.property("name", "ono");
     expect(ono).to.have.property("uri").that.is.a("function").with.property("name", "ono");
-    expect(ono).to.have.property("formatter").that.is.a("function");
 
     return true;
   }
