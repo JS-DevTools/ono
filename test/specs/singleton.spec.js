@@ -13,8 +13,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithNoArgs();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
@@ -27,8 +27,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithNoArgs();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithNoArgs"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
@@ -41,8 +41,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithParams();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Testing 1 2 3");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
@@ -55,8 +55,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithMessage();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Onoes!!!");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithMessage"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
@@ -69,8 +69,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithParams();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Testing 1 2 3");
       expect(err.stack).to.satisfy(compareStacks(["newErrorWithParams"]));
       expect(err).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
@@ -90,8 +90,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithInnerError(makeInnerError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || SyntaxError);
+      expect(err.name).to.equal(errorTypeName || "SyntaxError");
       expect(err.message).to.equal("This is the inner error");
       expect(err.foo).to.equal("bar");
       expect(err.code).to.equal(404);
@@ -121,8 +121,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithInnerErrorAndMessage(makeInnerError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || ReferenceError);
+      expect(err.name).to.equal(errorTypeName || "ReferenceError");
       expect(err.message).to.equal("Oops, an error happened. \nThis is the inner error");
       expect(err.foo).to.equal("bar");
       expect(err.code).to.equal(404);
@@ -152,8 +152,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithInnerErrorAndParamMessage(makeInnerError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || RangeError);
+      expect(err.name).to.equal(errorTypeName || "RangeError");
       expect(err.message).to.equal("Testing 1 2 3 \nThis is the inner error");
       expect(err.foo).to.equal("bar");
       expect(err.code).to.equal(404);
@@ -185,8 +185,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithProps();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -214,8 +214,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithDOMErrorAndProps(makeDOMError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("This is a DOM error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -253,8 +253,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithInnerErrorAndProps(makeInnerError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || EvalError);
+      expect(err.name).to.equal(errorTypeName || "EvalError");
       expect(err.message).to.equal("This is the inner error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -276,7 +276,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       ));
     });
 
-    it("can be called with a non-eror and a props object", () => {
+    it("can be called with a non-error and a props object", () => {
       let now = new Date();
 
       function someMethod () { return this.code; }
@@ -305,8 +305,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithNonErrorAndProps(makeNonError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || TypeError);
+      expect(err.name).to.equal(errorTypeName || "TypeError");
       expect(err.message).to.equal("This looks like an error, but it's not one");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -344,8 +344,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithPropsAndMessage();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Onoes! Something bad happened.");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -374,8 +374,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithPropsAndParamMessage();
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Testing 1 2 3");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -413,8 +413,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithInnerErrorPropsAndParamMessage(makeInnerError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || EvalError);
+      expect(err.name).to.equal(errorTypeName || "EvalError");
       expect(err.message).to.equal("Testing 1 2 3 \nThis is the inner error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -456,8 +456,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithDOMErrorPropsAndParamMessage(makeDOMError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || Error);
+      expect(err.name).to.equal(errorTypeName || "Error");
       expect(err.message).to.equal("Testing 1 2 3 \nThis is a DOM error");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");
@@ -480,7 +480,7 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
       function makeNonError () {
         return {
           code: "ERESET",
-          name: "TypeError",
+          name: "RangeError",
           message: "This looks like an error, but it's not one",
           stack: createFakeStack(
             { fn: "foo", file: "foo.js", line: 15, col: 27 },
@@ -505,8 +505,8 @@ for (let { name, ono, ErrorType, errorTypeName } of onoes) {
 
       let err = newErrorWithNonErrorPropsAndParamMessage(makeNonError());
 
-      expect(err).to.be.an.instanceOf(ErrorType);
-      expect(err.name).to.equal(errorTypeName);
+      expect(err).to.be.an.instanceOf(ErrorType || RangeError);
+      expect(err.name).to.equal(errorTypeName || "RangeError");
       expect(err.message).to.equal("Testing 1 2 3 \nThis looks like an error, but it's not one");
       expect(err.code).to.equal(404);
       expect(err.text).to.equal("Not Found");

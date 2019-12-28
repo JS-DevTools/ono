@@ -29,14 +29,14 @@ if (host.error.stack) {
         ));
 
         if (host.error.stack.includesErrorMessage) {
-          expect(outerError.stack).to.match(new RegExp(`${errorTypeName}: Oops, an error happened`));
+          expect(outerError.stack).to.match(new RegExp(`${errorTypeName || "ReferenceError"}: Oops, an error happened`));
           expect(outerError.stack).to.match(/ReferenceError: This is the original error/);
         }
       });
 
       it("should only have the new error's stack if the original error had none", () => {
         function makeOriginalError () {
-          let originalError = new ReferenceError("This is the original error");
+          let originalError = new SyntaxError("This is the original error");
           originalError.stack = undefined;
           return originalError;
         }
@@ -55,8 +55,8 @@ if (host.error.stack) {
         ));
 
         if (host.error.stack.includesErrorMessage) {
-          expect(outerError.stack).to.match(new RegExp(`${errorTypeName}: Oops, an error happened. \nThis is the original error\n`));
-          expect(outerError.stack).not.to.match(/ReferenceError: This is the original error/);
+          expect(outerError.stack).to.match(new RegExp(`${errorTypeName || "SyntaxError"}: Oops, an error happened. \nThis is the original error\n`));
+          expect(outerError.stack).not.to.match(/SyntaxError: This is the original error/);
         }
       });
     });

@@ -3,7 +3,7 @@
 const { ono } = require("../../");
 
 module.exports = [
-  { name: "ono", ono, ErrorType: Error, errorTypeName: "Error" },
+  { name: "ono", ono },
   { name: "ono.error", ono: ono.error, ErrorType: Error, errorTypeName: "Error" },
   { name: "ono.eval", ono: ono.eval, ErrorType: EvalError, errorTypeName: "EvalError" },
   { name: "ono.range", ono: ono.range, ErrorType: RangeError, errorTypeName: "RangeError" },
