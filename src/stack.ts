@@ -2,7 +2,7 @@
 import { ErrorLike } from "./types";
 
 const newline = /\r?\n/;
-const onoCall = /(^| )ono[ @]/;
+const onoCall = /\bono[ @]/;
 
 /**
  * The Property Descriptor of a lazily-computed `stack` property.
