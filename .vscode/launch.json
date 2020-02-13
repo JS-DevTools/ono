@@ -1,0 +1,72 @@
+// VSCode Launch Configuration
+// https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
+
+// Available variables which can be used inside of strings.
+// ${workspaceRoot}: the root folder of the team
+// ${file}: the current opened file
+// ${fileBasename}: the current opened file's basename
+// ${fileDirname}: the current opened file's dirname
+// ${fileExtname}: the current opened file's extension
+// ${cwd}: the current working directory of the spawned process
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Mocha",
+      "type": "node",
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+      "stopOnEntry": false,
+      "args": [
+        "--timeout=600000",
+        "--retries=0",
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "cwd": "${workspaceRoot}",
+      "console": "internalConsole",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/cjs/**/*.js",
+      ],
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ],
+    },
+
+    {
+      "name": "Run Karma",
+      "type": "node",
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/karma/bin/karma",
+      "stopOnEntry": false,
+      "args": [
+        "start",
+        "--single-run"
+      ],
+      "env": {
+        "NODE_ENV": "test"
+      },
+      "cwd": "${workspaceRoot}",
+      "console": "internalConsole",
+      "outputCapture": "std",
+      "sourceMaps": false,
+      "outFiles": [
+        "${workspaceRoot}/esm/**/*.js",
+      ],
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ],
+    }
+  ]
+}
