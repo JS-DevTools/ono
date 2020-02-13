@@ -3,7 +3,7 @@
 const commonJSExport = require("../../");
 const { default: defaultExport, ono: namedExport, Ono } = require("../../");
 const { expect } = require("chai");
-const { host } = require("host-environment");
+const { host } = require("@jsdevtools/host-environment");
 
 describe("package exports", () => {
 

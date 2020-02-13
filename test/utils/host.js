@@ -1,6 +1,6 @@
 "use strict";
 
-const { host } = require("host-environment");
+const { host } = require("@jsdevtools/host-environment");
 const sampleError = getSampleError();
 
 module.exports = Object.assign({}, host, {
