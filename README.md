@@ -2,14 +2,14 @@ ono (Oh No!)
 ============================
 ### Throw better errors.
 
-[![Build Status](https://api.travis-ci.com/JS-DevTools/ono.svg?branch=master)](https://travis-ci.com/JS-DevTools/ono)
+[![Build Status](https://github.com/JS-DevTools/ono/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
 
 [![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
 [![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
 
-[![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://travis-ci.com/JS-DevTools/ono)
+[![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 
 
 
@@ -25,7 +25,7 @@ Features
 
 - Create Ono instances for your own [custom error classes](#custom-error-classes)
 
-- [Tested](https://travis-ci.com/JS-DevTools/ono) on Node.js and all modern web browsers on Mac, Windows, and Linux.
+- Tested on Node.js and all modern web browsers on Mac, Windows, and Linux.
 
 
 
