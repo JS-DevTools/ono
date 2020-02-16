@@ -1,6 +1,6 @@
 {
   "name": "@jsdevtools/ono",
-  "version": "6.0.1",
+  "version": "7.0.0",
   "description": "Throw better errors.",
   "keywords": [
     "throw",

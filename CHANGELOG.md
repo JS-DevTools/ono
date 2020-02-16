@@ -4,6 +4,17 @@ All notable changes will be documented in this file.
 `ono` adheres to [Semantic Versioning](http://semver.org/).
 
 
+[v7.0.0](https://github.com/JS-DevTools/ono/tree/v7.0.0) (2020-02-16)
+----------------------------------------------------------------------------------------------------
+
+- Moved Ono to the [@JSDevTools scope](https://www.npmjs.com/org/jsdevtools) on NPM
+
+- The "ono" NPM package is now just a wrapper around the scoped "@jsdevtools/ono" package
+
+
+[Full Changelog](https://github.com/JS-DevTools/ono/compare/v6.0.1...v7.0.0)
+
+
 [v6.0.0](https://github.com/JS-DevTools/ono/tree/v6.0.0) (2019-12-28)
 ----------------------------------------------------------------------------------------------------
 
