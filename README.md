@@ -5,9 +5,9 @@ ono (Oh No!)
 [![Build Status](https://github.com/JS-DevTools/ono/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
 
-[![npm](https://img.shields.io/npm/v/ono.svg)](https://www.npmjs.com/package/ono)
+[![npm](https://img.shields.io/npm/v/@jsdevtools/ono.svg)](https://www.npmjs.com/package/@jsdevtools/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
-[![License](https://img.shields.io/npm/l/ono.svg)](LICENSE)
+[![License](https://img.shields.io/npm/l/@jsdevtools/ono.svg)](LICENSE)
 
 [![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 
@@ -33,7 +33,7 @@ Example
 --------------------------
 
 ```javascript
-const ono = require("ono");
+const ono = require("@jsdevtools/ono");
 
 // Throw an error with custom properties
 throw ono({ code: "NOT_FOUND", status: 404 }, `Resource not found: ${url}`);
@@ -54,7 +54,7 @@ throw ono.syntax(...);                          // SyntaxError
 throw ono.reference(...);                       // ReferenceError
 
 // Create an Ono method for your own custom error class
-const { Ono } = require("ono");
+const { Ono } = require("@jsdevtools/ono");
 class MyErrorClass extends Error {}
 ono.myError = new Ono(MyErrorClass);
 
@@ -79,13 +79,13 @@ Usage
 When using Ono in Node.js apps, you'll probably want to use **CommonJS** syntax:
 
 ```javascript
-const ono = require("ono");
+const ono = require("@jsdevtools/ono");
 ```
 
 When using a transpiler such as [Babel](https://babeljs.io/) or [TypeScript](https://www.typescriptlang.org/), or a bundler such as [Webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org/), you can use **ECMAScript modules** syntax instead:
 
 ```javascript
-import ono from "ono";
+import ono from "@jsdevtools/ono";
 ```
 
 
@@ -152,7 +152,7 @@ The `Ono` constructor takes an optional options object as a second parameter. Th
 When wrapping an error, Ono's default behavior is to append the error's message to your message, with a newline between them.  For example:
 
 ```javascript
-const ono = require("ono");
+const ono = require("@jsdevtools/ono");
 
 function createArray(length) {
   try {
@@ -178,7 +178,7 @@ Invalid array length;
 If you'd rather not include the original message, then you can set the `concatMessages` option to `false`. For example:
 
 ```javascript
-const { ono, Ono } = require("ono");
+const { ono, Ono } = require("@jsdevtools/ono");
 
 // Override the default behavior for the RangeError
 ono.range = new Ono(RangeError, { concatMessages: false });
@@ -248,7 +248,7 @@ Here are some compatible polyfill libraries:
 If the standard [`util.format()`](https://nodejs.org/api/util.html#util_util_format_format_args) functionality isn't sufficient for your needs, then you can set the `format` option to your own custom implementation.  Here's a simplistic example:
 
 ```javascript
-const { ono, Ono } = require("ono");
+const { ono, Ono } = require("@jsdevtools/ono");
 
 // This is a simple formatter that replaces $0, $1, $2, ... with the corresponding argument
 let options = {
@@ -281,7 +281,7 @@ Custom Error Classes
 Ono has built-in support for all of [the built-in JavaScript Error types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types).  For example, you can use `ono.reference()` to create a `ReferenceError`, or `ono.syntax()` to create a `SyntaxError`.  In addition to the built-in types, you can also create Ono methods for your own custom error classes.
 
 ```javascript
-const { ono, Ono } = require("ono");
+const { ono, Ono } = require("@jsdevtools/ono");
 let counter = 0;
 
 // A custom Error class that assigns a unique ID and timestamp to each error
