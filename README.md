@@ -69,7 +69,7 @@ Installation
 Install using [npm](https://docs.npmjs.com/about-npm/):
 
 ```bash
-npm install ono
+npm install @jsdevtools/ono
 ```
 
 
