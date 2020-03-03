@@ -170,7 +170,6 @@ describe("Ono.extend()", () => {
     }
     catch (error) {
       expect(error).to.be.an.instanceOf(TypeError);
-      expect(error.message).to.include("undefined");
     }
   });
 
@@ -181,7 +180,6 @@ describe("Ono.extend()", () => {
     }
     catch (error) {
       expect(error).to.be.an.instanceOf(TypeError);
-      expect(error.message).to.include("null");
     }
   });
 
