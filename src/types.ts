@@ -25,6 +25,43 @@ export interface OnoConstructor {
    * which can be used with `JSON.stringify()`.
    */
   toJSON<E extends ErrorLike>(error: E): ErrorPOJO & E;
+
+  /**
+   * Extends the given Error object with enhanced Ono functionality, such as improved support for
+   * `JSON.stringify()`.
+   *
+   * @param error - The error object to extend. This object instance will be modified and returned.
+   */
+  extend<T extends ErrorLike>(error: T): T & OnoError<T>;
+
+  /**
+   * Extends the given Error object with enhanced Ono functionality, such as additional properties
+   * and improved support for `JSON.stringify()`.
+   *
+   * @param error - The error object to extend. This object instance will be modified and returned.
+   * @param props - An object whose properties will be added to the error
+   */
+  extend<T extends ErrorLike, P extends object>(error: T, props?: P): T & P & OnoError<T & P>;
+
+  /**
+   * Extends the given Error object with enhanced Ono functionality, such as nested stack traces
+   * and improved support for `JSON.stringify()`.
+   *
+   * @param error - The error object to extend. This object instance will be modified and returned.
+   * @param originalError - The original error. This error's stack trace will be added to the error's stack trace.
+   */
+  extend<T extends ErrorLike, E extends ErrorLike>(error: T, originalError?: E): T & E & OnoError<T & E>;
+
+  /**
+   * Extends the given Error object with enhanced Ono functionality, such as nested stack traces,
+   * additional properties, and improved support for `JSON.stringify()`.
+   *
+   * @param error - The error object to extend. This object instance will be modified and returned.
+   * @param originalError - The original error. This error's stack trace will be added to the error's stack trace.
+   * @param props - An object whose properties will be added to the error
+   */
+  extend<T extends ErrorLike, E extends ErrorLike, P extends object>(error: T, originalError?: E, props?: P)
+  : T & E & P & OnoError<T & E & P>;
 }
 
 /**

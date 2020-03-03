@@ -12,28 +12,32 @@ const protectedProps: Array<string | symbol> = ["name", "message", "stack"];
  * @param originalError - The original error object, if any
  * @param props - Additional properties to add, if any
  */
-export function extendError<T>(newError: OnoError<T>, originalError?: ErrorPOJO, props?: object) {
-  extendStack(newError, originalError);
+export function extendError<T extends ErrorLike, E extends ErrorLike, P extends object>(error: T, originalError?: E, props?: P) {
+  let onoError = error as unknown as T & E & P & OnoError<T & E & P>;
+
+  extendStack(onoError, originalError);
 
   // Copy properties from the original error
   if (originalError && typeof originalError === "object") {
-    mergeErrors(newError, originalError);
+    mergeErrors(onoError, originalError);
   }
 
   // The default `toJSON` method doesn't output props like `name`, `message`, `stack`, etc.
   // So replace it with one that outputs every property of the error.
-  newError.toJSON = toJSON;
+  onoError.toJSON = toJSON;
 
   // On Node.js, add support for the `util.inspect()` method
   if (addInspectMethod) {
-    addInspectMethod(newError);
+    addInspectMethod(onoError);
   }
 
   // Finally, copy custom properties that were specified by the user.
   // These props OVERWRITE any previous props
   if (props && typeof props === "object") {
-    Object.assign(newError, props);
+    Object.assign(onoError, props);
   }
+
+  return onoError;
 }
 
 /**
