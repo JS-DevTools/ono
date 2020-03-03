@@ -52,4 +52,10 @@ describe("package exports", () => {
     expect(Ono.toJSON.length).to.equal(1);
   });
 
+  it("should export the Ono.extend static method", () => {
+    expect(Ono.extend).to.be.a("function");
+    expect(Ono.extend.name).to.equal("extend");
+    expect(Ono.extend.length).to.equal(3);
+  });
+
 });
