@@ -4,6 +4,17 @@ All notable changes will be documented in this file.
 `ono` adheres to [Semantic Versioning](http://semver.org/).
 
 
+
+[v7.1.0](https://github.com/JS-DevTools/ono/tree/v7.1.0) (2020-03-03)
+----------------------------------------------------------------------------------------------------
+
+- Added a static `Ono.extend()` method that allows Ono to extend errors that were created outside of Ono. The extended error gets all the Ono functionality, including nested stack traces, custom properties, improved support for `JSON.stringify()`, etc.
+
+
+[Full Changelog](https://github.com/JS-DevTools/ono/compare/v7.0.1...v7.1.0)
+
+
+
 [v7.0.0](https://github.com/JS-DevTools/ono/tree/v7.0.0) (2020-02-16)
 ----------------------------------------------------------------------------------------------------
 
@@ -13,6 +24,7 @@ All notable changes will be documented in this file.
 
 
 [Full Changelog](https://github.com/JS-DevTools/ono/compare/v6.0.1...v7.0.0)
+
 
 
 [v6.0.0](https://github.com/JS-DevTools/ono/tree/v6.0.0) (2019-12-28)
@@ -34,8 +46,8 @@ All notable changes will be documented in this file.
 
 - The [`format` option](https://github.com/JS-DevTools/ono#format-option) lets you provide a custom function for replacing placeholders in error messages
 
-
 [Full Changelog](https://github.com/JS-DevTools/ono/compare/v5.1.0...v6.0.0)
+
 
 
 [v5.1.0](https://github.com/JS-DevTools/ono/tree/v5.1.0) (2019-09-10)
