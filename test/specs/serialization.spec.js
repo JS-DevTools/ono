@@ -4,16 +4,7 @@ const { expect } = require("chai");
 const { onoes, comparePOJO, host } = require("../utils");
 
 // https://nodejs.org/api/util.html#util_util_inspect_custom
-const inspect = (() => {
-  if (host.node.version >= 10.12) {
-    // The well-known symbol was added in Node v10.12
-    return Symbol.for("nodejs.util.inspect.custom");
-  }
-  else if (host.node) {
-    // Older versions of Node only exposed the symbal via util.inspect.custom
-    return require("util").inspect.custom;
-  }
-})();
+const inspect = Symbol.for("nodejs.util.inspect.custom");
 
 for (let { name, ono, errorTypeName } of onoes) {
   describe(`${name} serialization`, () => {
