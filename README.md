@@ -2,12 +2,13 @@ ono (Oh No!)
 ============================
 ### Throw better errors.
 
+[![npm](https://img.shields.io/npm/v/@jsdevtools/ono.svg)](https://www.npmjs.com/package/@jsdevtools/ono)
+[![License](https://img.shields.io/npm/l/@jsdevtools/ono.svg)](LICENSE)
+[![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/JS-DevTools/ono)
+
 [![Build Status](https://github.com/JS-DevTools/ono/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
-
-[![npm](https://img.shields.io/npm/v/@jsdevtools/ono.svg)](https://www.npmjs.com/package/@jsdevtools/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
-[![License](https://img.shields.io/npm/l/@jsdevtools/ono.svg)](LICENSE)
 
 [![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
 
@@ -340,6 +341,8 @@ To build/test the project locally on your computer:
 License
 --------------------------
 Ono is 100% free and open-source, under the [MIT license](LICENSE). Use it however you want.
+
+This package is [Treeware](http://treeware.earth). If you use it in production, then we ask that you [**buy the world a tree**](https://plant.treeware.earth/JS-DevTools/ono) to thank us for our work. By contributing to the Treeware forest you’ll be creating employment for local families and restoring wildlife habitats.
 
 
 
