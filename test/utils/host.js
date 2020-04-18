@@ -58,12 +58,20 @@ module.exports = Object.assign({}, host, {
        * Safari normally includes the function name, but not with code coverage instrumentation.
        */
       includesFunctionNames: sampleError.stack.includes("getSampleError") && !host.browser.safari,
+
+      /**
+       * Indicates whether the stack traces include error class names
+       *
+       * As of April 2020, only Firefox does this
+       */
+      includesClassNames: sampleError.stack.includes("CustomError"),
     }
   },
 });
 
 function getSampleError () {
-  return new Error("THIS IS THE MESSAGE");
+  class CustomError extends Error {}
+  return new CustomError("THIS IS THE MESSAGE");
 }
 
 function hasKey (error, key) {

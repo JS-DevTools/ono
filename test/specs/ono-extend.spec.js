@@ -58,7 +58,11 @@ describe("Ono.extend()", () => {
     expect(error).to.be.an.instanceOf(ValidationError);
     expect(error.name).to.equal("ValidationError");
     expect(error.message).to.equal("Error #42: Invalid emailAddress");
-    expect(error.stack).to.satisfy(compareStacks(["createValidationError"]));
+    expect(error.stack).to.satisfy(compareStacks(
+      host.error.stack.includesClassNames
+        ? ["ValidationError", "createValidationError"]
+        : ["createValidationError"]
+    ));
     expect(error).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "errorNumber", "fieldName"));
 
     expect(error.toJSON()).to.satisfy(comparePOJO({
@@ -106,7 +110,9 @@ describe("Ono.extend()", () => {
     expect(error.name).to.equal("ServerError");
     expect(error.message).to.equal("HTTP 500: A server error occurred");
     expect(error.stack).to.satisfy(compareStacks(
-      ["createServerError"],
+      host.error.stack.includesClassNames
+        ? ["ServerError", "createServerError"]
+        : ["createServerError"],
       ["createOriginalError"],
     ));
     expect(error).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "method", "url"));
