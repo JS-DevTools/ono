@@ -2,6 +2,7 @@
 
 const { host } = require("@jsdevtools/host-environment");
 const sampleError = getSampleError();
+const sampleCustomError = getSampleCustomError();
 
 module.exports = Object.assign({}, host, {
   error: {
@@ -64,14 +65,18 @@ module.exports = Object.assign({}, host, {
        *
        * As of April 2020, only Firefox does this
        */
-      includesClassNames: sampleError.stack.includes("CustomError"),
+      includesClassNames: sampleCustomError.stack.includes("MyCustomError"),
     }
   },
 });
 
 function getSampleError () {
-  class CustomError extends Error {}
-  return new CustomError("THIS IS THE MESSAGE");
+  return new Error("THIS IS THE MESSAGE");
+}
+
+function getSampleCustomError () {
+  class MyCustomError extends Error {}
+  return new MyCustomError("THIS IS THE MESSAGE");
 }
 
 function hasKey (error, key) {
