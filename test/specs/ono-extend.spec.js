@@ -40,41 +40,94 @@ describe("Ono.extend()", () => {
     }
   });
 
+  it("should enhance an error class with Ono functionality", () => {
+    class ValidationError extends Error {
+      constructor (errorNumber, fieldName) {
+        super(`Error #${errorNumber}: Invalid ${fieldName}`);
+        this.name = ValidationError.name;
+        Ono.extend(this, { errorNumber, fieldName });
+      }
+    }
+
+    function createValidationError () {
+      return new ValidationError(42, "emailAddress");
+    }
+
+    let error = createValidationError();
+
+    expect(error).to.be.an.instanceOf(ValidationError);
+    expect(error.name).to.equal("ValidationError");
+    expect(error.message).to.equal("Error #42: Invalid emailAddress");
+    expect(error.stack).to.satisfy(compareStacks(["createValidationError"]));
+    expect(error).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "errorNumber", "fieldName"));
+
+    expect(error.toJSON()).to.satisfy(comparePOJO({
+      name: "ValidationError",
+      message: "Error #42: Invalid emailAddress",
+      stack: error.stack,
+      errorNumber: 42,
+      fieldName: "emailAddress",
+    }));
+
+    if (host.node) {
+      expect(error[inspect]()).to.satisfy(comparePOJO({
+        name: "ValidationError",
+        message: "Error #42: Invalid emailAddress",
+        stack: error.stack,
+        errorNumber: 42,
+        fieldName: "emailAddress",
+        toJSON: error.toJSON,
+        toString: error.toString,
+      }));
+    }
+  });
+
   it("should include the stack trace of the original error", () => {
+    class ServerError extends Error {
+      constructor (error, method, url) {
+        super("HTTP 500: A server error occurred");
+        this.name = ServerError.name;
+        Ono.extend(this, error, { method, url });
+      }
+    }
+
+    function createServerError (originalError) {
+      return new ServerError(originalError, "POST", "/customers/123456");
+    }
+
     function createOriginalError () {
       return new RangeError("Bad range");
     }
 
-    function createNewError () {
-      return new SyntaxError("Invalid syntax");
-    }
-
     let originalError = createOriginalError();
-    let newError = createNewError();
-    let onoError = Ono.extend(newError, originalError);
+    let error = createServerError(originalError);
 
-    expect(onoError).to.equal(newError);
-    expect(onoError.name).to.equal("SyntaxError");
-    expect(onoError.message).to.equal("Invalid syntax");
-    expect(onoError.stack).to.satisfy(compareStacks(
-      ["createNewError"],
+    expect(error).to.be.an.instanceOf(ServerError);
+    expect(error.name).to.equal("ServerError");
+    expect(error.message).to.equal("HTTP 500: A server error occurred");
+    expect(error.stack).to.satisfy(compareStacks(
+      ["createServerError"],
       ["createOriginalError"],
     ));
-    expect(onoError).to.satisfy(compareKeys("name", "message", "stack", "toJSON"));
+    expect(error).to.satisfy(compareKeys("name", "message", "stack", "toJSON", "method", "url"));
 
-    expect(onoError.toJSON()).to.satisfy(comparePOJO({
-      name: "SyntaxError",
-      message: "Invalid syntax",
-      stack: newError.stack
+    expect(error.toJSON()).to.satisfy(comparePOJO({
+      name: "ServerError",
+      message: "HTTP 500: A server error occurred",
+      stack: error.stack,
+      method: "POST",
+      url: "/customers/123456",
     }));
 
     if (host.node) {
-      expect(onoError[inspect]()).to.satisfy(comparePOJO({
-        name: "SyntaxError",
-        message: "Invalid syntax",
-        stack: newError.stack,
-        toJSON: newError.toJSON,
-        toString: newError.toString,
+      expect(error[inspect]()).to.satisfy(comparePOJO({
+        name: "ServerError",
+        message: "HTTP 500: A server error occurred",
+        stack: error.stack,
+        method: "POST",
+        url: "/customers/123456",
+        toJSON: error.toJSON,
+        toString: error.toString,
       }));
     }
   });

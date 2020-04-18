@@ -24,7 +24,7 @@ Features
 
 - Enhanced support for [`JSON.stringify()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) and [`util.inspect()`](https://nodejs.org/api/util.html#util_util_inspect_object_options) &mdash; great for logging
 
-- Create Ono instances for your own [custom error classes](#custom-error-classes)
+- Supports and enhances your own [custom error classes](#custom-error-classes)
 
 - Tested on Node.js and all modern web browsers on Mac, Windows, and Linux.
 
@@ -279,7 +279,12 @@ throw ono("$0 is invalid. Must be at least $1 characters.", username, minLength)
 
 Custom Error Classes
 -----------------------------
-Ono has built-in support for all of [the built-in JavaScript Error types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types).  For example, you can use `ono.reference()` to create a `ReferenceError`, or `ono.syntax()` to create a `SyntaxError`.  In addition to the built-in types, you can also create Ono methods for your own custom error classes.
+There are two ways to use Ono with your own custom error classes.  Which one you choose depends on what parameters your custom error class accepts, and whether you'd prefer to use `ono.myError()` syntax or `new MyError()` syntax.
+
+### Option 1: Standard Errors
+Ono has built-in support for all of [the built-in JavaScript Error types](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Error_types).  For example, you can use `ono.reference()` to create a `ReferenceError`, or `ono.syntax()` to create a `SyntaxError`.
+
+All of these built-in JavaScript Error types accept a single parameter: the error message string. If your own error classes also work this way, then you can create Ono methods for your custom error classes. Here's an example:
 
 ```javascript
 const { ono, Ono } = require("@jsdevtools/ono");
@@ -315,11 +320,43 @@ The code above throws an instance of `MyErrorClass` that looks like this:
 }
 ```
 
+### Option 2: Enhanced Error Classes
+If your custom error classes require more than just an error message string parameter, then you'll need to use Ono differently. Rather than creating a [custom Ono method](#option-1-standard-errors) and using `ono.myError()` syntax, you'll use Ono _inside_ your error class's constructor. This has a few benefits:
+
+- Your error class can accept whatever parameters you want
+- Ono is encapsulated within your error class
+- You can use `new MyError()` syntax rather than `ono.myError()` syntax
+
+```javascript
+const { ono, Ono } = require("@jsdevtools/ono");
+
+// A custom Error class for 404 Not Found
+class NotFoundError extends Error {
+  constructor(method, url) {
+    super(`404: ${method} ${url} was not found`);
+
+    // Add custom properties, enhance JSON.stringify() support, etc.
+    Ono.extend(this, { statusCode: 404, method, url });
+  }
+}
+
+// A custom Error class for 500 Server Error
+class ServerError extends Error {
+  constructor(originalError, method, url) {
+    super(`500: A server error occurred while responding to ${method} ${url}`);
+
+    // Append the stack trace and custom properties of the original error,
+    // and add new custom properties, enhance JSON.stringify() support, etc.
+    Ono.extend(this, originalError, { statusCode: 500, method, url });
+  }
+}
+```
+
 
 
 Contributing
 --------------------------
-Contributions, enhancements, and bug-fixes are welcome!  [File an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
+Contributions, enhancements, and bug-fixes are welcome!  [Open an issue](https://github.com/JS-DevTools/ono/issues) on GitHub and [submit a pull request](https://github.com/JS-DevTools/ono/pulls).
 
 #### Building/Testing
 To build/test the project locally on your computer:
