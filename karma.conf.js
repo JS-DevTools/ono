@@ -10,10 +10,10 @@ module.exports = karmaConfig({
   sourceDir: "esm",
   fixtures: "test/fixtures/**/*.js",
   browsers: {
-    chrome: true,
-    firefox: host.os.linux,
-    safari: host.os.linux,    // SauceLabs
-    edge: host.os.linux,      // SauceLabs
+    chrome: host.ci ? host.os.linux : true,
+    firefox: host.ci ? host.os.linux : true,
+    safari: host.ci ? host.os.linux : host.os.mac,    // SauceLabs in CI
+    edge: host.ci ? host.os.linux : host.os.windows,  // SauceLabs in CI
     ie: host.os.windows,
   },
 });
