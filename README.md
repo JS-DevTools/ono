@@ -6,11 +6,11 @@ ono (Oh No!)
 [![License](https://img.shields.io/npm/l/@jsdevtools/ono.svg)](LICENSE)
 [![Buy us a tree](https://img.shields.io/badge/Treeware-%F0%9F%8C%B3-lightgreen)](https://plant.treeware.earth/JS-DevTools/ono)
 
-[![Build Status](https://github.com/JS-DevTools/ono/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
+[![Build Status](https://github.com/JS-DevTools/ono/workflows/CI-CD/badge.svg)](https://github.com/JS-DevTools/ono/actions)
 [![Coverage Status](https://coveralls.io/repos/github/JS-DevTools/ono/badge.svg?branch=master)](https://coveralls.io/github/JS-DevTools/ono)
 [![Dependencies](https://david-dm.org/JS-DevTools/ono.svg)](https://david-dm.org/JS-DevTools/ono)
 
-[![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://github.com/JS-DevTools/ono/blob/master/.github/workflows/CI-CD.yaml)
+[![OS and Browser Compatibility](https://jstools.dev/img/badges/ci-badges-with-ie.svg)](https://github.com/JS-DevTools/ono/actions)
 
 
 
