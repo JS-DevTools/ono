@@ -20,11 +20,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "plugins": [
-      { "name": "typescript-tslint-plugin" }
-    ]
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src/**/*.ts"

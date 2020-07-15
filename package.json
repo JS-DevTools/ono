@@ -38,9 +38,7 @@
   ],
   "scripts": {
     "clean": "shx rm -rf .nyc_output coverage cjs esm",
-    "lint": "npm run lint:typescript && npm run lint:javascript",
-    "lint:typescript": "tslint -p tsconfig.json",
-    "lint:javascript": "eslint test ./*.js",
+    "lint": "eslint src test",
     "build": "npm run build:cjs && npm run build:esm",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir cjs",
@@ -57,10 +55,9 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.10.4",
-    "@jsdevtools/eslint-config-modular": "^8.0.3",
+    "@jsdevtools/eslint-config": "^0.0.1",
     "@jsdevtools/host-environment": "^2.0.3",
     "@jsdevtools/karma-config": "^3.1.4",
-    "@jsdevtools/tslint-modular": "^2.0.5",
     "@jsdevtools/version-bump-prompt": "^6.0.3",
     "@types/node": "^14.0.19",
     "chai": "^4.2.0",
@@ -71,9 +68,7 @@
     "npm-check": "^5.9.2",
     "nyc": "^15.1.0",
     "shx": "^0.3.2",
-    "tslint": "^6.1.2",
-    "typescript": "^3.9.6",
-    "typescript-tslint-plugin": "^0.5.5"
+    "typescript": "^3.9.6"
   },
   "dependencies": {}
 }
