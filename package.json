@@ -55,9 +55,9 @@
   },
   "devDependencies": {
     "@babel/polyfill": "^7.10.4",
-    "@jsdevtools/eslint-config": "^0.0.1",
+    "@jsdevtools/eslint-config": "^1.0.0",
     "@jsdevtools/host-environment": "^2.0.3",
-    "@jsdevtools/karma-config": "^3.1.4",
+    "@jsdevtools/karma-config": "^3.1.6",
     "@jsdevtools/version-bump-prompt": "^6.0.3",
     "@types/node": "^14.0.19",
     "chai": "^4.2.0",
