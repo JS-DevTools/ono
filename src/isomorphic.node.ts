@@ -19,7 +19,7 @@ export const format = util.format;
  * @see https://nodejs.org/api/util.html#util_util_inspect_custom
  */
 export function addInspectMethod<T>(newError: OnoError<T>): void {
-  // @ts-ignore
+  // @ts-expect-error - TypeScript doesn't support symbol indexers
   newError[inspectMethod] = inspect;
 }
 
@@ -31,7 +31,6 @@ export function addInspectMethod<T>(newError: OnoError<T>): void {
 function inspect<T>(this: OnoError<T>): ErrorPOJO & T {
   // HACK: We have to cast the objects to `any` so we can use symbol indexers.
   // see https://github.com/Microsoft/TypeScript/issues/1863
-  // tslint:disable: no-any no-unsafe-any
   let pojo: any = {};
   let error = this as any;
 
@@ -42,8 +41,8 @@ function inspect<T>(this: OnoError<T>): ErrorPOJO & T {
 
   // Don't include the `inspect()` method on the output object,
   // otherwise it will cause `util.inspect()` to go into an infinite loop
-  delete pojo[inspectMethod];  // tslint:disable-line: no-dynamic-delete
+  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+  delete pojo[inspectMethod];
 
-  // tslint:enable: no-any no-unsafe-any
   return pojo as ErrorPOJO & T;
 }

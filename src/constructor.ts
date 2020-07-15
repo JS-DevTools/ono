@@ -9,7 +9,7 @@ export { constructor as Ono };
 /**
  * Creates an `Ono` instance for a specifc error type.
  */
-// tslint:disable-next-line: variable-name
+// eslint-disable-next-line @typescript-eslint/naming-convention
 function Ono<T extends ErrorLike>(ErrorConstructor: ErrorLikeConstructor<T>, options?: OnoOptions) {
   options = normalizeOptions(options);
 

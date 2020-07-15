@@ -60,8 +60,7 @@ export interface OnoConstructor {
    * @param originalError - The original error. This error's stack trace will be added to the error's stack trace.
    * @param props - An object whose properties will be added to the error
    */
-  extend<T extends ErrorLike, E extends ErrorLike, P extends object>(error: T, originalError?: E, props?: P)
-  : T & E & P & OnoError<T & E & P>;
+  extend<T extends ErrorLike, E extends ErrorLike, P extends object>(error: T, originalError?: E, props?: P): T & E & P & OnoError<T & E & P>;
 }
 
 /**
@@ -107,8 +106,7 @@ export interface Ono<T extends ErrorLike> {
    * @param message - The new error message, possibly including argument placeholders
    * @param params - Optional arguments to replace the corresponding placeholders in the message
    */
-  <E extends ErrorLike, P extends object>(error: E, props: P, message: string, ...params: unknown[])
-  : T & E & P & OnoError<T & E & P>;
+  <E extends ErrorLike, P extends object>(error: E, props: P, message: string, ...params: unknown[]): T & E & P & OnoError<T & E & P>;
 
   /**
    * Creates an error with a formatted message.

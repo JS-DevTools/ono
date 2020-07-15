@@ -17,12 +17,12 @@ for (let { name, ono, errorTypeName } of onoes) {
         expect(err[inspect]).to.be.a("function").with.property("name", "inspect");
       }
       else {
-        expect(err[inspect]).to.be.undefined;
+        expect(err[inspect]).to.equal(undefined);
       }
 
       // The inpsect() method is actually a Symbol, _not_ the word "inspect"
       expect(err).not.to.have.property("inspect");
-      expect(err.inspect).to.be.undefined;
+      expect(err.inspect).to.equal(undefined);
     });
 
     it("should return all built-in error properties", () => {

@@ -79,9 +79,7 @@ describe("Error message formatter", () => {
     // A simple formatter that replaces $0, $1, $2, etc. with the corresponding param
     function myCustomFormatter (message) {
       let params = Array.prototype.slice.call(arguments, 1);
-      return params.reduce(function (msg, param, index) {
-        return msg.replace("$" + index, param);
-      }, message);
+      return params.reduce((msg, param, index) => msg.replace("$" + index, param), message);
     }
 
     let myCustomOno = new Ono(SyntaxError, { format: myCustomFormatter });

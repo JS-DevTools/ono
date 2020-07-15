@@ -1,4 +1,3 @@
-// tslint:disable: no-unbound-method
 import { ErrorLike } from "./types";
 
 const newline = /\r?\n/;
@@ -50,7 +49,7 @@ export function joinStacks(newError: ErrorLike, originalError?: ErrorLike): stri
     return newStack + "\n\n" + originalStack;
   }
   else {
-   return newStack || originalStack;
+    return newStack || originalStack;
   }
 }
 

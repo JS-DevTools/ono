@@ -1,17 +1,17 @@
-// tslint:disable: no-default-import match-default-export-name max-classes-per-file no-parameter-properties completed-docs
 import { inspect } from "util";
 import ono, { Ono } from "../../esm";
 
 class EmptyClass {}
 
 class CustomClass {
-  // tslint:disable-next-line: no-shadowed-variable
+  // eslint-disable-next-line @typescript-eslint/no-parameter-properties
   public constructor(public code: number, public message: string) {}
 }
 
 class CustomErrorClass extends Error {
+  // eslint-disable-next-line @typescript-eslint/no-parameter-properties
   public constructor(public isValid: boolean) {
-    super(`Onoes!`);
+    super("Onoes!");
   }
 }
 
@@ -100,6 +100,7 @@ export function testExtendedPropertiesWithCustomOno() {
 
 
 export function testOnoConstructorWithoutNew() {
+  // eslint-disable-next-line new-cap
   let customOno = Ono(CustomErrorClass);
   let error = customOno(message, param1, param2);
 
@@ -545,6 +546,7 @@ export function testURISignatures() {
 
 
 export function testCustomSignatures() {
+  // eslint-disable-next-line new-cap
   let customOno = Ono(CustomErrorClass);
 
   customOno(message);

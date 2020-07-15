@@ -3,6 +3,7 @@
 // https://jstools.dev/karma-config/
 
 "use strict";
+
 const { karmaConfig } = require("@jsdevtools/karma-config");
 const { host } = require("@jsdevtools/host-environment");
 

@@ -11,7 +11,6 @@ const objectPrototype = Object.getPrototypeOf({});
 export function toJSON<E extends ErrorLike>(this: E): ErrorPOJO & E {
   // HACK: We have to cast the objects to `any` so we can use symbol indexers.
   // see https://github.com/Microsoft/TypeScript/issues/1863
-  // tslint:disable: no-any no-unsafe-any
   let pojo: any = {};
   let error = this as any;
 
@@ -26,7 +25,6 @@ export function toJSON<E extends ErrorLike>(this: E): ErrorPOJO & E {
     }
   }
 
-  // tslint:enable: no-any no-unsafe-any
   return pojo as ErrorPOJO & E;
 }
 

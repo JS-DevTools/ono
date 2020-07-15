@@ -27,6 +27,7 @@ export function extendError<T extends ErrorLike, E extends ErrorLike, P extends 
   onoError.toJSON = toJSON;
 
   // On Node.js, add support for the `util.inspect()` method
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (addInspectMethod) {
     addInspectMethod(onoError);
   }
@@ -69,7 +70,6 @@ function mergeErrors(newError: ErrorLike, originalError: ErrorPOJO) {
 
   // HACK: We have to cast the errors to `any` so we can use symbol indexers.
   // see https://github.com/Microsoft/TypeScript/issues/1863
-  // tslint:disable: no-any no-unsafe-any
   let _newError = newError as any;
   let _originalError = originalError as any;
 

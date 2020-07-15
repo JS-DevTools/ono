@@ -39,12 +39,12 @@ function comparePOJO (expected) {
     }
 
     if (host.error.hasFileName) {
-      expect(actual.fileName).to.be.a("string").and.not.empty;
+      expect(actual.fileName).to.be.a("string").with.length.above(0);
       expected.fileName = actual.fileName;
     }
 
     if (host.error.hasSourceURL) {
-      expect(actual.sourceURL).to.be.a("string").and.not.empty;
+      expect(actual.sourceURL).to.be.a("string").with.length.above(0);
       expected.sourceURL = actual.sourceURL;
     }
 
