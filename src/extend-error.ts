@@ -12,8 +12,10 @@ const protectedProps: Array<string | symbol> = ["name", "message", "stack"];
  * @param originalError - The original error object, if any
  * @param props - Additional properties to add, if any
  */
-export function extendError<T extends ErrorLike, E extends ErrorLike, P extends object>(error: T, originalError?: E, props?: P) {
-  let onoError = error as unknown as T & E & P & OnoError<T & E & P>;
+export function extendError<TError extends ErrorLike, TOriginal extends ErrorLike, TProps extends object>(
+  error: TError, originalError?: TOriginal, props?: TProps) {
+
+  let onoError = error as unknown as TError & TOriginal & TProps & OnoError<TError & TOriginal & TProps>;
 
   extendStack(onoError, originalError);
 

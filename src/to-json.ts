@@ -8,7 +8,7 @@ const objectPrototype = Object.getPrototypeOf({});
  * Custom JSON serializer for Error objects.
  * Returns all built-in error properties, as well as extended properties.
  */
-export function toJSON<E extends ErrorLike>(this: E): ErrorPOJO & E {
+export function toJSON<T extends ErrorLike>(this: T): ErrorPOJO & T {
   // HACK: We have to cast the objects to `any` so we can use symbol indexers.
   // see https://github.com/Microsoft/TypeScript/issues/1863
   let pojo: any = {};
@@ -25,7 +25,7 @@ export function toJSON<E extends ErrorLike>(this: E): ErrorPOJO & E {
     }
   }
 
-  return pojo as ErrorPOJO & E;
+  return pojo as ErrorPOJO & T;
 }
 
 

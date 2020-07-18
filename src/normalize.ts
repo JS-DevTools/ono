@@ -16,9 +16,9 @@ export function normalizeOptions(options?: OnoOptions): OnoOptions {
 /**
  * Normalizes the Ono arguments, accounting for defaults, options, and optional arguments.
  */
-export function normalizeArgs<E extends ErrorLike, P extends object>(args: unknown[], options: OnoOptions) {
-  let originalError: E | undefined;
-  let props: P | undefined;
+export function normalizeArgs<TError extends ErrorLike, TProps extends object>(args: unknown[], options: OnoOptions) {
+  let originalError: TError | undefined;
+  let props: TProps | undefined;
   let formatArgs: unknown[];
   let message = "";
 
@@ -28,16 +28,16 @@ export function normalizeArgs<E extends ErrorLike, P extends object>(args: unkno
   }
   else if (typeof args[1] === "string") {
     if (args[0] instanceof Error) {
-      originalError = args[0] as E;
+      originalError = args[0] as TError;
     }
     else {
-      props = args[0] as P;
+      props = args[0] as TProps;
     }
     formatArgs = args.slice(1);
   }
   else {
-    originalError = args[0] as E;
-    props = args[1] as P;
+    originalError = args[0] as TError;
+    props = args[1] as TProps;
     formatArgs = args.slice(2);
   }
 

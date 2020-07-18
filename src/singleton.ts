@@ -19,7 +19,7 @@ const onoMap = ono as unknown as Record<string, Ono<Error>>;
  * Creates a new error with the specified message, properties, and/or inner error.
  * If an inner error is provided, then the new error will match its type, if possible.
  */
-function ono<E extends ErrorLike, P extends object>(...args: unknown[]) {
+function ono<TError extends ErrorLike, TProps extends object>(...args: unknown[]) {
   let originalError = args[0] as ErrorLike | undefined;
 
   // Is the first argument an Error-like object?

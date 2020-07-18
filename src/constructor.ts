@@ -13,8 +13,8 @@ export { constructor as Ono };
 function Ono<T extends ErrorLike>(ErrorConstructor: ErrorLikeConstructor<T>, options?: OnoOptions) {
   options = normalizeOptions(options);
 
-  function ono<E extends ErrorLike, P extends object>(...args: unknown[]) {
-    let { originalError, props, message } = normalizeArgs<E, P>(args, options!);
+  function ono<TError extends ErrorLike, TProps extends object>(...args: unknown[]) {
+    let { originalError, props, message } = normalizeArgs<TError, TProps>(args, options!);
 
     // Create a new error of the specified type
     let newError = new (ErrorConstructor as ErrorLikeConstructorClass<T>)(message);
